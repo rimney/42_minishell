@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/14 02:49:07 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/15 05:05:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
+# include <stdlib.h>
+# include <string.h>
+# include "parsing/lexer_tokanizer.h"
 
 
 char    ft_strcmp(char *s1, char *s2);
 void    ft_pwd(void);
 void    ft_echo(char *str, int flag);
+
 
 # endif
