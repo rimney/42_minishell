@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:10 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/15 06:00:00 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/15 06:16:44 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_increment_lexer(t_lexer *lexer)
 
 void	ft_lexer_skip_whitespace(t_lexer *lexer)
 {
-	while(lexer->c == ' ' || lexer->c == '\t')
+	if (lexer->c == ' ' || lexer->c == '\t')
 		ft_increment_lexer(lexer);
 }
 
@@ -37,7 +37,7 @@ t_token *ft_set_token(t_lexer *lexer, char *value, t_types type) // we must add 
 
 	str = strdup(value);
 	token = token_init(type, str);
-//	ft_increment_lexer(lexer);
+	ft_increment_lexer(lexer);
 	printf("%s\n", token->value);
 	return (token);
 }
@@ -56,8 +56,8 @@ t_token	*ft_get_token(t_lexer *lexer)
 			return(ft_set_token(lexer, &lexer->c, TOKEN_PIPE));	
 		else if(lexer->c == '<')
 			return (ft_set_token(lexer, &lexer->c, TOKEN_RIGHT_ARROW));
-		printf("%c >>\n", lexer->c);
-		ft_increment_lexer(lexer);
+		else
+			ft_increment_lexer(lexer);
 	}
 	return (token);
 }
@@ -71,11 +71,9 @@ void    ft_parse_line(char *line)
     int i = 0;
 
     lexer = lexer_init(line);
-    while(lexer->i <= lexer->src_len)
+    while(lexer->i < lexer->src_len)
 	{
 		token = ft_get_token(lexer);
-		ft_lexer_skip_whitespace(lexer);
-		lexer->i += 1;
 	}
 }
 
