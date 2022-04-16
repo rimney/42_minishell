@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:06:09 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/15 05:05:35 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/15 06:30:03 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_lexer
 	char			*src;
 	int				src_len;
 	char			c;
+	char			next_c;
 	unsigned int	i;
 }	t_lexer;
 
