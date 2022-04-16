@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:10 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/16 01:00:25 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/16 01:48:52 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,9 @@ t_token *ft_set_andvanced_token(t_lexer *lexer, char *value, t_types type)
 	t_token *token;
 
 	str = strdup(value);
-	str = ft_strjoin(str, str);
 	token = token_init(type, str);
 	ft_increment_lexer(lexer);
-	printf("%d\n", lexer->i);
-	printf("%s\n", token->value);
+	printf("%s\n", str);
 	return (token);
 }
 
@@ -97,7 +95,7 @@ t_token	*ft_get_token(t_lexer *lexer)
 		if(lexer->c == '>' && lexer->next_c == '>')
 		{
 			ft_increment_lexer(lexer);
-			return(ft_set_andvanced_token(lexer, &lexer->c, TOKEN_DOUBLE_RIGHT_ARROW));
+			return(ft_set_andvanced_token(lexer, ">>", TOKEN_DOUBLE_RIGHT_ARROW));
 		}
 		else if(lexer->c == '>' && lexer->next_c != '>') // we must ust use substr to join the two "<<";
 			return(ft_set_token(lexer, &lexer->c, TOKEN_LEFT_ARROW));
