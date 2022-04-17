@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/15 05:05:29 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/17 00:40:49 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@
 # include <string.h>
 # include "parsing/lexer_tokanizer.h"
 
-
+int ft_cd(char *path);
 char    ft_strcmp(char *s1, char *s2);
 void    ft_pwd(void);
 void    ft_echo(char *str, int flag);
-
-
+char *ft_substr(char const *s, unsigned int start, int len);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	**ft_split(char const *s, char c);
+int     ft_strncmp(char *s1, char *s2, int n);
 # endif

@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/16 22:36:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/16 22:40:54 by rimney           ###   ########.fr       */
+/*   Created: 2022/04/17 00:28:45 by rimney            #+#    #+#             */
+/*   Updated: 2022/04/17 00:42:45 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ft_cd(char *path)
+int ft_strncmp(char *s1, char *s2, int n)
 {
-    if(chdir(path) == 0)
-    {
-        ft_pwd();
-        return (1);
-    }
-    else
-    {
-        printf("failed\n");
-        return (0);
-    }
+    int i;
+
+    i = 0;
+    while(s1[i] && s2[i] && s1[i] == s2[i] && i < n - 1)
+        i++;
+    return (s1[i] - s2[i]);
 }

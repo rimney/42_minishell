@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:06:09 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/15 06:30:03 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/16 21:03:44 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ typedef enum e_type
 	TOKEN_PIPE,
 	TOKEN_DOUBLE_LEFT_ARROW,
 	TOKEN_DOUBLE_RIGHT_ARROW,
+	TOKEN_DOUBLE_QUOTES,
+	TOKEN_SINGLE_QUOTE,
 	TOKEN_EOF,
+	TOKEN_ERROR,
 } t_types;
 
 typedef	struct	s_token

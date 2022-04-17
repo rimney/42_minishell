@@ -1,27 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/16 22:36:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/16 22:40:54 by rimney           ###   ########.fr       */
+/*   Created: 2022/04/17 01:41:29 by rimney            #+#    #+#             */
+/*   Updated: 2022/04/17 01:42:30 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ft_cd(char *path)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-    if(chdir(path) == 0)
-    {
-        ft_pwd();
-        return (1);
-    }
-    else
-    {
-        printf("failed\n");
-        return (0);
-    }
+	int		i;
+	int		len1;
+	int		len2;
+	char	*str;
+
+	if (s1 && s2)
+	{
+		len1 = strlen(s1);
+		len2 = strlen(s2);
+		str = (char*)malloc(sizeof(char) * (len1 + len2 + 1));
+		if (str == NULL)
+			return (NULL);
+		i = -1;
+		while (s1[++i])
+			str[i] = s1[i];
+		i = -1;
+		while (s2[++i])
+		{
+			str[len1] = s2[i];
+			len1++;
+		}
+		str[len1] = '\0';
+		return (str);
+	}
+	return (NULL);
 }
