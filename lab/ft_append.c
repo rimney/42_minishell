@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:30:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/17 02:29:13 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/17 21:18:39 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ int	ft_is_space(char *str)
 	return (1);
 }
 
-void	*ft_locate_env(char **env)
+char	*ft_locate_env(char **env)
 {
 	int		i;
-	char	**str;
 
 	i = 0;
 	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
+	{
 		i++;
-	str = ft_split(env[i] + 5, ':');
-	return (str);
+	}
+	return (env[i]);
 }
 
 
@@ -73,6 +73,7 @@ char	*ft_check_command(char **env, char *command)
 	cmd = ft_filter_command(command);
 	while (env[i])
 	{
+		free(env[i]);
 		env[i] = ft_strjoin(env[i], "/");
 		free(env[i]);
 		env[i] = ft_strjoin(env[i], cmd);
@@ -82,7 +83,6 @@ char	*ft_check_command(char **env, char *command)
 				free(cmd);
 			return (env[i]);
 		}
-		free(env[i]);
 		i++;
 	}
     return (0);
@@ -90,8 +90,8 @@ char	*ft_check_command(char **env, char *command)
 
 int main(int argc, char **argv, char **envp)
 {
-
-    printf("%s\n", ft_check_command(ft_locate_env(envp), argv[1]));
+	char **str = ft_split(ft_locate_env(envp), ':');
+    printf("%s\n", ft_check_command(str, argv[1]));
     system("leaks a.out");
     return (0);
 }
