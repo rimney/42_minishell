@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:30:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/17 21:18:39 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/21 03:00:23 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,43 @@ char	*ft_check_command(char **env, char *command)
     return (0);
 }
 
+void	ft_free(char **value)
+{
+	int i;
+
+	i = 0;
+	while (value[i])
+	{
+		free(value[i]);
+		i++;
+	}
+	free(value);
+}
+
+void	is_a_command(char *command, char **envp, char **argv)
+{
+	char **str;
+	int i;
+	char *helper;
+	helper = strdup("/usr/print");
+	char **cmd_parser = ft_split(command, ' ');
+	i = 0;
+	str = ft_split(ft_locate_env(envp), ':');
+//	printf("%s\n", ft_check_command(str, command));
+//	execve(helper, &helper, 0);
+	execve(ft_check_command(str, command), argv + 1, envp);
+	while(str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	ft_free(cmd_parser);
+	free(str);
+}
+
 int main(int argc, char **argv, char **envp)
 {
-	char **str = ft_split(ft_locate_env(envp), ':');
-    printf("%s\n", ft_check_command(str, argv[1]));
-    system("leaks a.out");
+	is_a_command(argv[1], envp, argv);
+  //  system("leaks a.out");
     return (0);
 }
