@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:30:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/24 17:09:52 by rimney           ###   ########.fr       */
+/*   Updated: 2022/04/28 19:56:59 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ char	*ft_is_a_command(char **env, char *command)
 	int		i;
 	char	*cmd;
 
-
 	i = 0;
 	cmd = ft_filter_command(command);
+	if(access(command, F_OK) == 0)
+		return (command);
 	while (env[i])
 	{
 		free(env[i]);
@@ -101,26 +102,25 @@ void	ft_free(char **value)
 	free(value);
 }
 
-void	ft_exec_command(char *command, char **envp, char **argv)
+char	*ft_exec_command(char *command, char **envp, char **argv)
 {
-	char **str;
 	int i;
-	char **cmd_parser = ft_split(command, ' ');
+	char **str;
+	char **cmd_parser;
+	char *ret;
+
 	i = 0;
+	cmd_parser = ft_split(command, ' ');
 	str = ft_split(ft_locate_env(envp), ':');
-	execve(ft_is_a_command(str, command), argv + 1, envp);
-	while(str[i])
-	{
-		free(str[i]);
-		i++;
-	}
+	ret = ft_is_a_command(str, command);
+	ft_free(str);
 	ft_free(cmd_parser);
-	free(str);
+	return (ret);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	ft_exec_command(argv[1], envp, argv);
-    system("leaks append");
+	printf("%s\n", ft_exec_command(argv[1], envp, argv));
+  //  system("leaks append");
     return (0);
 }
