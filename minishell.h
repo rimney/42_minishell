@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/17 00:40:49 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/06 00:06:11 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+#include <fcntl.h>
 # include "parsing/lexer_tokanizer.h"
 
 int ft_cd(char *path);
-char    ft_strcmp(char *s1, char *s2);
+int    ft_strcmp(char *s1, char *s2);
 void    ft_pwd(void);
 void    ft_echo(char *str, int flag);
 char *ft_substr(char const *s, unsigned int start, int len);
