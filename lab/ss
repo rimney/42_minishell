@@ -1,0 +1,16 @@
+total 128
+-rw-r--r--  1 rimney  2019   907 May  9 17:10 Makefile
+-rwxr-xr-x  1 rimney  2019  8824 May  9 17:31 a.out
+-rw-r--r--  1 rimney  2019  3310 May  9 17:10 executor.c
+-rw-r--r--  1 rimney  2019  1631 May  9 17:31 ft_append.c
+-rw-r--r--  1 rimney  2019  1448 May  9 17:10 ft_heredoc.c
+-rw-r--r--  1 rimney  2019  1949 May  9 17:10 ft_split.c
+-rw-r--r--  1 rimney  2019  1109 May  9 17:10 ft_strcmp.c
+-rw-r--r--  1 rimney  2019  1342 May  9 17:10 ft_strjoin.c
+-rw-r--r--  1 rimney  2019  1085 May  9 17:10 ft_strncmp.c
+-rw-r--r--  1 rimney  2019  1375 May  9 17:21 l
+-rw-r--r--  1 rimney  2019     8 May  9 17:19 ls
+-rw-r--r--  1 rimney  2019  1475 May  9 17:32 out
+-rw-r--r--  1 rimney  2019     0 May  9 17:36 ss
+-rw-r--r--  1 rimney  2019  1459 May  9 17:10 test.c
+-rw-r--r--  1 rimney  2019    12 May  9 17:31 ttt
