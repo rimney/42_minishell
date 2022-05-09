@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:23:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/06 00:59:31 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/08 19:19:02 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,27 @@
 
 int	main(int argc, char **argv)
 {
-	int fd = open(argv[1], O_RDWR | O_APPEND);
-	write(fd, "ggg1\n", 5);
+	int fd;
+	char *line;
+	if(argc == 3 && ft_strcmp(argv[1], ">>") == 0)
+	{
+		fd = open(argv[2], O_RDWR);
+		if(fd == -1)
+		{
+			fd = open(argv[2], O_CREAT, 0644);
+		}
+		while(1)
+		{
+			fd = open(argv[2], O_RDWR | O_APPEND, 0644);
+			line = readline("");
+			write(fd, line, strlen(line));
+			write(fd, "\n", 1);
+		}
+	}
+	else
+	{
+		fd = open(argv[1], O_RDWR | O_APPEND);
+		write(fd, "test\n", 5);
+	}
 	return (0);
 }
