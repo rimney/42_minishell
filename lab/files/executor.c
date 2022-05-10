@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_append.c                                        :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:30:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/04 20:53:24 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/10 01:49:50 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	ft_is_space(char *str)
 {
@@ -39,7 +39,6 @@ char	*ft_locate_env(char **env)
 	}
 	return (env[i]);
 }
-
 
 
 char	*ft_filter_command(char *command)
@@ -118,7 +117,7 @@ char	*ft_exec_command(char *command, char **envp, char **argv)
 	return (ret);
 }
 
-int ft_heredoc(char **argv, char **envp, int index, int flag)
+int ft_exec_heredoc(char **argv, char **envp, int index, int flag)
 {
     char *delimiter;
     char *line;
@@ -143,10 +142,11 @@ int ft_heredoc(char **argv, char **envp, int index, int flag)
     return(0); 
 }
 
-int main(int argc, char **argv, char **envp)
+int ft_heredoc(int argc, char **argv, char **envp)
 {
 	int i = 1;
-	int flag = 0;
+	int flag;
+
 	while(i < argc)
 	{
 		if(ft_exec_command(argv[i], envp, argv) && ft_exec_command(argv[i + 1], envp, argv))
@@ -156,9 +156,15 @@ int main(int argc, char **argv, char **envp)
 			i++;
 		}	
 		else if(ft_strcmp(argv[i],  "<<") == 0)
-			ft_heredoc(argv, envp, i, flag);
+			ft_exec_heredoc(argv, envp, i, 0);
 		i++;
 	}
 		
 	return (0);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	ft_append(argc, argv, envp);
+	//ft_heredoc(argc, argv, envp);
 }

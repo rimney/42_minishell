@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:27:41 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/17 01:57:57 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/09 23:55:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 static size_t	ft_strlen(const char *str)
 {

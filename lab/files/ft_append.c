@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:23:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/09 18:03:10 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/10 02:55:30 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	ft_single_append(int argc, char **argv)
 {
@@ -33,38 +33,42 @@ void	ft_single_append(int argc, char **argv)
 
 }
 
-void	ft_advanced_append(int argc, char **argv, char **envp)
+void	ft_advanced_append(int argc, char **argv, char **envp, int i)
 {
-	int i;
 	int	fd;
 	char **cmd_parser;
-	i = 1;
-	
-	while(i < argc)
-	{
-		if(ft_strcmp(argv[i], ">>") == 0)
-		{
-			cmd_parser = ft_split(argv[i - 1], ' ');
-			//printf("%s\n", cmd_parser[0]);
-			fd = open(argv[i + 1], O_CREAT | O_RDWR, 0644);
-			dup2(fd, STDOUT_FILENO);
-			execve("/bin/ls", cmd_parser, envp);
-		}
-		i++;
-	}
-	 
+
+	cmd_parser = ft_split(argv[i - 1], ' ');
+	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_APPEND , 0644);
+	dup2(fd, STDOUT_FILENO);
+	execve(ft_exec_command(argv[1], envp, argv), cmd_parser, envp);
+	//dup2(1, 1);
+	close(fd);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	ft_append(int argc, char **argv, char **envp)
 {
 	int fd;
 	char *line;
+	int i = 1;
+	int pid;
+
 	if(argc == 3 && ft_strcmp(argv[1], ">>") == 0)
 		ft_single_append(argc, argv);
 	else
 	{
-		ft_advanced_append(argc, argv, envp);
+			while(i < argc)
+			{
+				if(ft_strcmp(argv[i], ">>") == 0)
+				{
+					pid = fork();
+					if(pid == 0)
+						ft_advanced_append(argc, argv, envp, i);
+				}
+				i++;
+			printf("%d <<\n", i);
+			waitpid(pid, 0, 0);
+			}
 	}
-//	system("leaks a.out");
 	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 01:41:29 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/17 01:42:30 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/09 23:55:46 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

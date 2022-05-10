@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/02 23:07:12 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/06 00:08:10 by rimney           ###   ########.fr       */
+/*   Created: 2022/04/17 00:28:45 by rimney            #+#    #+#             */
+/*   Updated: 2022/05/09 23:55:51 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int ft_strcmp(char *s1, char *s2)
+int ft_strncmp(char *s1, char *s2, int n)
 {
     int i;
-                                            
+
     i = 0;
-    while (s1[i] && s2[i] && s1[i] == s2[i])
+    while(s1[i] && s2[i] && s1[i] == s2[i] && i < n - 1)
         i++;
     return (s1[i] - s2[i]);
 }
