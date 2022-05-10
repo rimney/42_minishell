@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:23:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/10 02:55:30 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/10 23:27:31 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void	ft_single_append(int argc, char **argv)
 	char *line;
 	if(argc == 3 && ft_strcmp(argv[1], ">>") == 0)
 	{
-		// fd = open(argv[2], O_RDWR);
-		// if(fd == -1)
-			fd = open(argv[2], O_CREAT | O_RDWR, 0644);
+		fd = open(argv[2], O_CREAT | O_RDWR, 0644);
 		while(1)
 		{
 			fd = open(argv[2], O_RDWR | O_APPEND, 0644);
@@ -38,11 +36,10 @@ void	ft_advanced_append(int argc, char **argv, char **envp, int i)
 	int	fd;
 	char **cmd_parser;
 
-	cmd_parser = ft_split(argv[i - 1], ' ');
+	cmd_parser = ft_split(argv[1], ' ');
 	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_APPEND , 0644);
 	dup2(fd, STDOUT_FILENO);
 	execve(ft_exec_command(argv[1], envp, argv), cmd_parser, envp);
-	//dup2(1, 1);
 	close(fd);
 }
 
