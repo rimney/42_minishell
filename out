@@ -10,3 +10,18 @@ zz
 fff
 ddd
 sss
+total 32
+drwxr-xr-x   7 rimney  2019   238 May  9 17:10 execution
+drwxr-xr-x  15 rimney  2019   510 May  9 17:21 lab
+-rw-r--r--   1 rimney  2019  4423 May  9 17:10 minishell.c
+-rw-r--r--   1 rimney  2019  1529 May  9 17:10 minishell.h
+-rw-r--r--   1 rimney  2019    39 May  9 17:10 out
+drwxr-xr-x   4 rimney  2019   136 May  9 17:10 parsing
+drwxr-xr-x   2 rimney  2019    68 May  9 17:10 push
+sss
+aaa
+www
+ddd
+eee
+www
+qqq

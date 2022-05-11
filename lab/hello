@@ -1,0 +1,65 @@
+total 72
+-rwxr-xr-x  1 rimney  2019  14016 May 11 02:17 Executor
+-rw-r--r--  1 rimney  2019    967 May  9 23:59 Makefile
+-rw-r--r--  1 rimney  2019      8 May 11 01:27 ff
+drwxr-xr-x  9 rimney  2019    306 May 10 23:32 files
+-rw-r--r--  1 rimney  2019   1451 May  9 23:55 ft_heredoc.c
+-rw-r--r--  1 rimney  2019      0 May 11 02:17 hello
+-rw-r--r--  1 rimney  2019   1459 May  9 17:10 test.c
+-rw-r--r--  1 rimney  2019     15 May 11 01:28 youssef
+total 80
+-rwxr-xr-x  1 rimney  2019  14016 May 11 02:17 Executor
+-rw-r--r--  1 rimney  2019    967 May  9 23:59 Makefile
+-rw-r--r--  1 rimney  2019      8 May 11 01:27 ff
+drwxr-xr-x  9 rimney  2019    306 May 10 23:32 files
+-rw-r--r--  1 rimney  2019   1451 May  9 23:55 ft_heredoc.c
+-rw-r--r--  1 rimney  2019    446 May 11 02:17 hello
+-rw-r--r--  1 rimney  2019   1459 May  9 17:10 test.c
+-rw-r--r--  1 rimney  2019     15 May 11 01:28 youssef
+total 80
+-rwxr-xr-x  1 rimney  2019  14016 May 11 02:17 Executor
+-rw-r--r--  1 rimney  2019    967 May  9 23:59 Makefile
+-rw-r--r--  1 rimney  2019      8 May 11 01:27 ff
+drwxr-xr-x  9 rimney  2019    306 May 10 23:32 files
+-rw-r--r--  1 rimney  2019   1451 May  9 23:55 ft_heredoc.c
+-rw-r--r--  1 rimney  2019    892 May 11 02:18 hello
+-rw-r--r--  1 rimney  2019   1459 May  9 17:10 test.c
+-rw-r--r--  1 rimney  2019     15 May 11 01:28 youssef
+total 80
+-rwxr-xr-x  1 rimney  2019  14016 May 11 02:17 Executor
+-rw-r--r--  1 rimney  2019    967 May  9 23:59 Makefile
+-rw-r--r--  1 rimney  2019      8 May 11 01:27 ff
+drwxr-xr-x  9 rimney  2019    306 May 10 23:32 files
+-rw-r--r--  1 rimney  2019   1451 May  9 23:55 ft_heredoc.c
+-rw-r--r--  1 rimney  2019   1338 May 11 02:18 hello
+-rw-r--r--  1 rimney  2019   1459 May  9 17:10 test.c
+-rw-r--r--  1 rimney  2019     15 May 11 01:28 youssef
+total 80
+-rwxr-xr-x  1 rimney  2019  14016 May 11 02:17 Executor
+-rw-r--r--  1 rimney  2019    967 May  9 23:59 Makefile
+-rw-r--r--  1 rimney  2019      8 May 11 01:27 ff
+drwxr-xr-x  9 rimney  2019    306 May 10 23:32 files
+-rw-r--r--  1 rimney  2019   1451 May  9 23:55 ft_heredoc.c
+-rw-r--r--  1 rimney  2019   1784 May 11 02:18 hello
+-rw-r--r--  1 rimney  2019   1459 May  9 17:10 test.c
+-rw-r--r--  1 rimney  2019     15 May 11 01:28 youssef
+total 80
+-rwxr-xr-x  1 rimney  2019  14016 May 11 02:17 Executor
+-rw-r--r--  1 rimney  2019    967 May  9 23:59 Makefile
+-rw-r--r--  1 rimney  2019      8 May 11 01:27 ff
+drwxr-xr-x  9 rimney  2019    306 May 10 23:32 files
+-rw-r--r--  1 rimney  2019   1451 May  9 23:55 ft_heredoc.c
+-rw-r--r--  1 rimney  2019   2230 May 11 02:18 hello
+-rw-r--r--  1 rimney  2019   1459 May  9 17:10 test.c
+-rw-r--r--  1 rimney  2019     15 May 11 01:28 youssef
+total 80
+-rwxr-xr-x  1 rimney  2019  14016 May 11 02:17 Executor
+-rw-r--r--  1 rimney  2019    967 May  9 23:59 Makefile
+-rw-r--r--  1 rimney  2019      8 May 11 01:27 ff
+drwxr-xr-x  9 rimney  2019    306 May 10 23:32 files
+-rw-r--r--  1 rimney  2019   1451 May  9 23:55 ft_heredoc.c
+-rw-r--r--  1 rimney  2019   2676 May 11 02:18 hello
+-rw-r--r--  1 rimney  2019   1459 May  9 17:10 test.c
+-rw-r--r--  1 rimney  2019     15 May 11 01:28 youssef
+ls
+ppp
