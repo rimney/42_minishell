@@ -3,85 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 21:31:21 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/13 20:43:56 by rimney           ###   ########.fr       */
+/*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
+/*   Updated: 2022/05/14 05:51:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-
-void    pipe_exec(char **argv, int index, int fd[2], char **envp)
+void ft_pipes(int in, int out, char *command, char **envp)
 {
-    // int pid;
-    // char **cmd1_parser;
-    // char **cmd2_parser;
+    int pid;
+    char **command_parser;
 
-    // cmd1_parser = ft_split(argv[index - 1], ' ');
-    // cmd2_parser = ft_split(argv[index + 1], ' ');
-    // pid = fork();
-    // if(pid == 0)
-    // {
-    //     dup2(fd[1], 1);
-    //     execve(ft_exec_command(argv[index - 1], envp, argv), cmd1_parser, envp);
-    // }
-    // close(fd[1]);
-    // dup2(fd[0], 0);   
-    // execve(ft_exec_command(argv[index + 1], envp, argv), cmd2_parser, envp);
-    // close(fd[0]);
-    //  waitpid(pid, 0, 0);
-    printf("DD\n");
-}
-
-void    ft_pipe(int argc, char **argv, char **envp, int pipes)
-{
-    int *fd[2];
-    int i;
-    int j;
-
-    j = 0;
-    *fd = malloc(sizeof(int *) * pipes);
-    while(j < pipes)
-        pipe(fd[j++]);
-    j  = 0;
-    i = 1;
-    while(i < argc)
+    command_parser = ft_split(command, ' ');
+  //  printf("%s<s\n", command);
+    pid = fork();
+    if(pid == 0)
     {
-        if(ft_strcmp(argv[i], "|") == 0)
+        if(in != 0)
         {
-            pipe_exec(argv, i, fd[j], envp);
-            j++;
+            dup2(in, 0);
+            close(in);
+        }
+        if(out != 1)
+        {
+            dup2(out, 1);
+            close(out);
+        }
+        execve(ft_exec_command(command, envp, 0), command_parser, envp);
+    }
+}
+void    ft_pipe(int argc, char **argv, char **envp)
+{
+    int i;
+    int pid;
+    int in;
+    int fd[2];
+    char **s = ft_split(argv[argc - 1], ' ');
+
+    in = 0;
+    i = 0;
+    while (i < argc - 1)
+    {
+        if(ft_strcmp(argv[i + 1], "|") == 0)
+        {
+                pipe(fd);
+                ft_pipes(in, fd[1], argv[i], envp);
+                close(fd[1]);
+                in = fd[0];
         }
         i++;
+        if(i + 1 == argc)
+        {
+            if(in != 0)
+            dup2(in, 0);
+            printf("%s\n", argv[argc - 1]);
+            printf("%s\n", ft_exec_command(argv[argc - 1], envp, argv));
+            execve(ft_exec_command(argv[argc - 1], envp, argv), ft_split(argv[argc - 1], ' '), envp);
+        }
     }
 }
 
-
-void    ft_pipes(int argc, char **argv, char **envp)
-{
-    int i = 1;
-    int pid;
-    int npipes;
-    int j = 1;
-
-    npipes = 0;
-    while(j < argc)
-    {
-        if(ft_strcmp(argv[j], "|") == 0)
-            npipes += 1;
-        j++;
-    }
-    if(npipes > 1)
-    {
-        ft_pipe(argc, argv, envp, npipes);
-    }
-    printf("%d P<\n", npipes);
-}
 
 int main(int argc, char **argv, char **envp)
 {
-    ft_pipes(argc, argv, envp);
+    ft_pipe(argc, argv, envp);
     return (0);
 }

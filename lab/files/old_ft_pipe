@@ -1,0 +1,96 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pipe.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/11 21:31:21 by rimney            #+#    #+#             */
+/*   Updated: 2022/05/14 04:44:14 by rimney           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../minishell.h"
+
+
+void    pipe_exec(char **argv, int index, char **envp, int fd[2])
+{
+    static int fd_save;
+    int pid;
+    char **cmd1_parser;
+    char **cmd2_parser;
+
+    cmd1_parser = ft_split(argv[index - 1], ' ');
+    cmd2_parser = ft_split(argv[index + 1], ' ');
+    fd_save = fd[0];
+    printf("%d<<\n", fd_save);
+    pid = fork();
+    if(pid == 0)
+    {
+        dup2(fd[1], 1);
+        execve(ft_exec_command(argv[index - 1], envp, argv), cmd1_parser, envp);
+    }
+    pid = fork();
+    if(pid == 0)
+    {
+        dup2(fd_save, 0);   
+        close(fd[1]);
+        close(fd_save);
+        execve(ft_exec_command(argv[index + 1], envp, argv), cmd2_parser, envp);
+    }
+    //printf("DD\n");
+}
+
+void    ft_pipe(int argc, char **argv, char **envp)
+{
+    int i;
+    int pid;
+    int j;
+    int *fd;
+
+    i = 1;
+    j = 0;
+    fd = malloc(sizeof(int) * 4);
+    while(i < argc)
+    {
+        if(ft_strcmp(argv[i], "|") == 0)
+        {
+            pid = fork();
+            pipe(fd);
+            if(pid == 0)
+            {
+                pipe_exec(argv, i, envp, fd);
+                j++;
+            }
+        }
+        i++;
+    }
+}
+
+
+// void    ft_pipes(int argc, char **argv, char **envp)
+// {
+//     int i = 1;
+//     int pid;
+//     int npipes;
+//     int j = 1;
+
+//     npipes = 0;
+//     while(j < argc)
+//     {
+//         if(ft_strcmp(argv[j], "|") == 0)
+//             npipes += 1;
+//         j++;
+//     }
+//     if(npipes > 1)
+//     {
+//         ft_pipe(argc, argv, envp, npipes);
+//     }
+//  //   printf("%d P<\n", npipes);
+// }
+
+int main(int argc, char **argv, char **envp)
+{
+    ft_pipe(argc, argv, envp);
+    return (0);
+}
