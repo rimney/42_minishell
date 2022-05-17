@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_redirect.c                                      :+:      :+:    :+:   */
+/*   ft_redirect_output.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/11 04:06:14 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/17 02:36:19 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	ft_advanced_redirect(int argc, char **argv, char **envp, int i)
 	int	fd;
 	char **cmd_parser;
 
-	cmd_parser = ft_split(argv[1], ' ');
-	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
+	cmd_parser = ft_split(argv[0], ' ');
+	fd = open(argv[i + 1 ], O_CREAT | O_RDWR | O_TRUNC , 0644);
 	dup2(fd, STDOUT_FILENO);
 	execve(ft_exec_command(argv[1], envp, argv), cmd_parser, envp);
 	close(fd);
