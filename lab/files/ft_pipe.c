@@ -6,11 +6,12 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/17 02:26:38 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/18 01:04:25 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
 char *history;
 
 void ft_pipes(int in, int out, char *command, char **envp)
@@ -32,7 +33,7 @@ void ft_pipes(int in, int out, char *command, char **envp)
             dup2(out, 1);
             close(out);
         }
-        execve(ft_exec_command(command, envp, 0), command_parser, envp);
+    execve(ft_exec_command(command, envp, 0), command_parser, envp);
     }
 }
 void    ft_pipe(int argc, char **argv, char **envp)
@@ -49,16 +50,20 @@ void    ft_pipe(int argc, char **argv, char **envp)
     {
         if(ft_strcmp(argv[i + 1], "|") == 0)
         {
-                pipe(fd);
-                ft_pipes(in, fd[1], argv[i], envp);
-                close(fd[1]);
-                in = fd[0];
+        	pipe(fd);
+              ft_pipes(in, fd[1], argv[i], envp);
+        	close(fd[1]);
+            in = fd[0];
         }
         i++;
     }
     if(in != 0)
-    dup2(in, 0);
-    execve(ft_exec_command(argv[argc - 1], envp, argv), ft_split(argv[argc - 1], ' '), envp);
+      dup2(in, 0);
+    if(execve(ft_exec_command(argv[argc - 1], envp, argv), ft_split(argv[argc - 1], ' '), envp) == -1)
+	{
+		printf("ddd\n");
+		return ;
+	}
 }
 
 int ft_count_elements(char **str)
@@ -71,27 +76,27 @@ int ft_count_elements(char **str)
   return (i);
 }
 
-int main(int argc, char **argv, char **envp)
-{
-  char *line;
-  char **line_parser;
-  int pid;
+// int main(int argc, char **argv, char **envp)
+// {
+//   char *line;
+//   char **line_parser;
+//   int pid;
 
-  while((line = readline("Minishell >> ")))
-  {
-    add_history(line);
-    line_parser = ft_split(line, ' ');
-    if(ft_strcmp(line, "history") == 0)
-      ft_print_history(history);
-    else
-    {
-      pid = fork();
-      if (pid == 0)
-        ft_pipe(ft_count_elements(line_parser), line_parser, envp);
-      ft_free(line_parser);
-      free(line);
-      waitpid(pid, 0, 0);
-    }
-  }
-  return (0);
-}
+//   while((line = readline("Minishell >> ")))
+//   {
+//     add_history(line);
+//     line_parser = ft_split(line, ' ');
+//     if(ft_strcmp(line, "history") == 0)
+//       ft_print_history(history);
+//     else
+//     {
+//       pid = fork();
+//       if (pid == 0)
+//         ft_pipe(ft_count_elements(line_parser), line_parser, envp);
+//       ft_free(line_parser);
+//       free(line);
+//       waitpid(pid, 0, 0);
+//     }
+//   }
+//   return (0);
+// }

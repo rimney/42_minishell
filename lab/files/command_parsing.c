@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 23:32:39 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/10 23:34:10 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/18 01:10:46 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,16 @@ char	*ft_is_a_command(char **env, char *command)
 		i++;
 	}
     return (0);
+}
+void	ft_free(char **value)
+{
+	int i = 0;
+	while(value[i])
+	{
+		free(value[i]);
+		i++;
+	}
+	free(value);
 }
 
 char	*ft_exec_command(char *command, char **envp, char **argv)

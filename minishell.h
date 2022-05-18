@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/17 02:27:37 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/18 01:57:56 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ void	ft_single_redirect(int argc, char **argv);
 void	ft_advanced_redirect(int argc, char **argv, char **envp, int i);
 int	ft_redirect(int argc, char **argv, char **envp);
 void    ft_print_history(char *history);
-
+int	ft_count_elements(char **str);
 # endif

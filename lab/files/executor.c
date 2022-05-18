@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:30:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/11 23:01:39 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/18 01:09:00 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,6 @@
 #include "../../minishell.h"
 
 
-void	ft_free(char **value)
-{
-	int i;
-
-	i = 0;
-	while (value[i])
-	{
-		free(value[i]);
-		i++;
-	}
-	free(value);
-}
 
 
 
