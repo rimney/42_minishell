@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:30:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/18 01:09:00 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/19 03:54:41 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,3 @@ void	ft_heredoc(int argc, char **argv, char **envp)
 		}
 	}
 }
-
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	//ft_heredoc(argc, argv, envp);
-// 	//ft_redirect(argc, argv, envp);
-// 	system("leaks Executor");
-// }

@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/18 01:57:56 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/19 04:21:39 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,18 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	**ft_split(char const *s, char c);
 int     ft_strncmp(char *s1, char *s2, int n);
 void	ft_single_append(int argc, char **argv);
-//  void	ft_advanced_append(int argc, char **argv, char **envp);
-// int ft_heredoc(int argc, char **argv, char **envp);
 void	ft_heredoc(int argc, char **argv, char **envp);
 int	ft_append(int argc, char **argv, char **envp);
 char	*ft_exec_command(char *command, char **envp, char **argv);
 void	ft_advanced_append(int argc, char **argv, char **envp, int i);
 int	ft_is_space(char *str);
-char	*ft_locate_env(char **env);
+char    **ft_locate_env(char **env);
 char	*ft_filter_command(char *command);
-char	*ft_is_a_command(char **env, char *command);
 char	*ft_exec_command(char *command, char **envp, char **argv);
 void	ft_free(char **value);
 void	ft_single_redirect(int argc, char **argv);
 void	ft_advanced_redirect(int argc, char **argv, char **envp, int i);
+char	*ft_is_a_command(char **env, char *command);
 int	ft_redirect(int argc, char **argv, char **envp);
 void    ft_print_history(char *history);
 int	ft_count_elements(char **str);

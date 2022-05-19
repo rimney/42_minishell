@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 23:32:39 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/18 01:10:46 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/19 04:28:06 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,32 @@ int	ft_is_space(char *str)
 	return (1);
 }
 
-char	*ft_locate_env(char **env)
+
+int	ft_check_path(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	**ft_locate_env(char **env)
 {
 	int		i;
+	char	**str;
 
 	i = 0;
 	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
-	{
 		i++;
-	}
-	return (env[i]);
+	str = ft_split(env[i] + 5, ':');
+	return (str);
 }
-
 
 char	*ft_filter_command(char *command)
 {
@@ -67,7 +81,7 @@ char	*ft_is_a_command(char **env, char *command)
 
 	i = 0;
 	cmd = ft_filter_command(command);
-	if(access(command, F_OK) == 0)
+	if (access(command, F_OK) == 0)
 		return (command);
 	while (env[i])
 	{
@@ -85,6 +99,8 @@ char	*ft_is_a_command(char **env, char *command)
 	}
     return (0);
 }
+
+
 void	ft_free(char **value)
 {
 	int i = 0;
@@ -100,14 +116,11 @@ char	*ft_exec_command(char *command, char **envp, char **argv)
 {
 	int i;
 	char **str;
-	char **cmd_parser;
 	char *ret;
 
 	i = 0;
-	cmd_parser = ft_split(command, ' ');
-	str = ft_split(ft_locate_env(envp), ':');
+	str = ft_locate_env(envp);
 	ret = ft_is_a_command(str, command);
 	ft_free(str);
-	ft_free(cmd_parser);
 	return (ret);
 }
