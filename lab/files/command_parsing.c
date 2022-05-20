@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 23:32:39 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 03:05:46 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 03:21:42 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,21 @@ char	*ft_exec_command(char **envp, char *command)
 		if (access(env[i], F_OK) == 0)
 		{
 			ret = strdup(env[i]);
-			ft_free(env);
+			//ft_free(env);
 			return (ret);
 		}
 		i++;
 	}
-	ft_free(env);
+//	ft_free(env);
 	return (0);
 }
 
-int main(int argc, char **argv, char **envp)
-{
-    char *str;
+// int main(int argc, char **argv, char **envp)
+// {
+//     char *str;
 
-    str = ft_check_command(envp, argv[1]);
-    printf("%s |\n", str);
-	system("leaks a.out");
-    return (0);
-}
+//     str = ft_check_command(envp, argv[1]);
+//     printf("%s |\n", str);
+// 	system("leaks a.out");
+//     return (0);
+// }

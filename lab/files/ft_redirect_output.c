@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/19 22:56:27 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 03:32:41 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ void	ft_advanced_redirect(int argc, char **argv, char **envp, int i)
 	char **cmd_parser;
 
 
-	command = ft_exec_command(argv[0], envp, argv);
 	cmd_parser = ft_split(argv[0], ' ');
+	command = ft_exec_command(envp, cmd_parser[0]);
 	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
-	close(0);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	if(execve(command, cmd_parser, envp) == -1)
@@ -63,6 +62,8 @@ void	ft_advanced_redirect(int argc, char **argv, char **envp, int i)
 		printf("%s <\n", argv[0]);
 		printf("wrong shit --> %s\n", command);
 	}
+	close(0);
+	ft_free(cmd_parser);
 }
 
 int	ft_redirect(int argc, char **argv, char **envp)
@@ -86,10 +87,11 @@ int	ft_redirect(int argc, char **argv, char **envp)
 					pid = fork();
 					if(pid == 0)
 						ft_advanced_redirect(argc, argv, envp, i);
+					else
+					waitpid(pid, 0, 0);
 				}
 				i++;
 			}
-		waitpid(pid, 0, 0);
 	}
 	return (0);
 }
@@ -114,7 +116,7 @@ int main(int argc, char **argv, char **envp)
 	while((line = readline("Minishell >> ")))
 	{
 		line_parser = ft_split(line, ' ');
-		add_history(line);
+	//	add_history(line);
 		if(ft_strcmp(line, "history") == 0)
 			printf("h\n");
 		else
@@ -122,11 +124,13 @@ int main(int argc, char **argv, char **envp)
       		pid = fork();
       		if (pid == 0)
       			ft_redirect(ft_count_elements(line_parser), line_parser, envp);
+			else
+			 waitpid(pid, 0, 0);
 	  		ft_free(line_parser);
      		free(line);
+			system("leaks a.out");
 			//  kill(pid, 0);
 		}
-     		waitpid(pid, 0, 0);
 	}	
 	return (0);
 }

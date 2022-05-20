@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/18 23:11:07 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 03:19:11 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void ft_pipes(int in, int out, char *command, char **envp)
             dup2(out, 1);
             close(out);
         }
-    execve(ft_exec_command(command, envp, 0), command_parser, envp);
+    execve(ft_exec_command(envp, command_parser[0]), command_parser, envp);
     }
 }
 void    ft_pipe(int argc, char **argv, char **envp)
@@ -42,7 +42,7 @@ void    ft_pipe(int argc, char **argv, char **envp)
     int pid;
     int in;
     int fd[2];
-    char **s = ft_split(argv[argc - 1], ' ');
+    char **cmd_parser = ft_split(argv[argc - 1], ' ');
 
     in = 0;
     i = 0;
@@ -59,7 +59,7 @@ void    ft_pipe(int argc, char **argv, char **envp)
     }
     if(in != 0)
       dup2(in, 0);
-    if(execve(ft_exec_command(argv[argc - 1], envp, argv), ft_split(argv[argc - 1], ' '), envp) == -1)
+    if(execve(ft_exec_command(envp, cmd_parser[0]), cmd_parser, envp) == -1)
 	{
 		printf("ddd\n");
 		return ;
