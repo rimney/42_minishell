@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 02:48:10 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/21 02:55:14 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 02:08:25 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,42 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *ft_test(char *str, char *src)
+
+char    *ft_strjoin(char *s1, char *s2, char *s3)
 {
     int i;
-    int j;
-    char *temp;
+    char *str;
+    int len;
 
-    temp = malloc(sizeof(char) * strlen(str) + strlen(src) + 1);
     i = 0;
-    j = 0;
-    while(src[i])
+    len = 0;
+    str = malloc(sizeof(char) * strlen(s1) + strlen(s2) + strlen(s3) + 1);
+    while(s1[i])
     {
-        temp[i] = src[i];
+        str[len] = s1[i];
         i++;
+        len++;
     }
-    while(str[j])
+    i = 0;
+    while(s2[i])
     {
-        temp[i] = str[j];
+        str[len] = s2[i];
         i++;
-        j++;
+        len++;
     }
-    temp[i] = '\0';
-    return (temp);
+    i = 0;
+    while(s3[i])
+    {
+        str[len] = s3[i];
+        i++;
+        len++;
+    }
+    str[len + 1] = '\0';
+    return (str);
 }
 
-int main(int argc, char **argv)
+int main()
 {
-    if(argc == 3)
-    {
-        printf("%s", ft_test(argv[1], argv[2]));
-    }
-    return (0);
+    char *str = ft_strjoin("/bin", "/", "ls");
+    printf("%s\n", str);
 }

@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 23:32:39 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 03:21:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 19:29:19 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ char	*ft_exec_command(char **envp, char *command)
 
 	i = 0;
 	temp = ft_split(ft_locate_env(envp) + 5, ':');
-	env = malloc(sizeof(char *) * 9);
+	env = malloc(sizeof(char *) * ft_count_elements(temp));
 	while(temp[i])
 	{
 		env[i] = ft_strjoin(temp[i], "/", command);
 		i++;
 	}
-	ft_free(temp);
+//	ft_free(temp);
 	i = 0;
 	while (env[i])
 	{
@@ -97,16 +97,12 @@ char	*ft_exec_command(char **envp, char *command)
 		}
 		i++;
 	}
-//	ft_free(env);
+	//ft_free(env);
 	return (0);
 }
 
 // int main(int argc, char **argv, char **envp)
 // {
-//     char *str;
-
-//     str = ft_check_command(envp, argv[1]);
-//     printf("%s |\n", str);
-// 	system("leaks a.out");
+// 	printf("%s\n", ft_exec_command(envp, argv[1]));
 //     return (0);
 // }

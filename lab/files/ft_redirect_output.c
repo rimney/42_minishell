@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 03:32:41 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 19:42:35 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,28 @@ void	ft_advanced_redirect(int argc, char **argv, char **envp, int i)
 	int	fd;
 	char *command;
 	char **cmd_parser;
+	int pid;
 
-
-	cmd_parser = ft_split(argv[0], ' ');
-	command = ft_exec_command(envp, cmd_parser[0]);
-	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	pid = fork();
+	if(pid == 0)
+	{
+		cmd_parser = ft_split(argv[0], ' ');
+		command = strdup(ft_exec_command(envp, cmd_parser[0])); //here !
+		printf("%s\n", command);
+		fd = open(argv[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
 	if(execve(command, cmd_parser, envp) == -1)
 	{
 		printf("%s <\n", argv[0]);
 		printf("wrong shit --> %s\n", command);
 	}
 	close(0);
+	}
+	else
+		waitpid(pid, 0, 0);
 	ft_free(cmd_parser);
+	free(command);
 }
 
 int	ft_redirect(int argc, char **argv, char **envp)
@@ -96,16 +104,6 @@ int	ft_redirect(int argc, char **argv, char **envp)
 	return (0);
 }
 
-// int	ft_count_elements(char **str)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (str[i])
-// 		i++;
-// 	return (i);
-// }
-
 int main(int argc, char **argv, char **envp)
 {
 	char *line;
@@ -116,7 +114,7 @@ int main(int argc, char **argv, char **envp)
 	while((line = readline("Minishell >> ")))
 	{
 		line_parser = ft_split(line, ' ');
-	//	add_history(line);
+		add_history(line);
 		if(ft_strcmp(line, "history") == 0)
 			printf("h\n");
 		else
@@ -128,14 +126,7 @@ int main(int argc, char **argv, char **envp)
 			 waitpid(pid, 0, 0);
 	  		ft_free(line_parser);
      		free(line);
-			system("leaks a.out");
-			//  kill(pid, 0);
 		}
 	}	
 	return (0);
 }
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	ft_redirect(argc, argv, envp);
-// 	return (0);
-// }

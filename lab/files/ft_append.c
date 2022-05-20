@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:23:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 03:15:34 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 19:34:42 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_advanced_append(int argc, char **argv, char **envp, int i)
 {
 	int	fd;
 	char **cmd_parser;
-
+	char *command;
 	cmd_parser = ft_split(argv[0], ' ');
 	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_APPEND , 0644);
 	dup2(fd, STDOUT_FILENO);
