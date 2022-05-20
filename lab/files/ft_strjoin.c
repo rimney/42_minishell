@@ -6,37 +6,41 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 01:41:29 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/09 23:55:46 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 02:08:45 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char    *ft_strjoin(char *s1, char *s2, char *s3)
 {
-	int		i;
-	int		len1;
-	int		len2;
-	char	*str;
+    int i;
+    char *str;
+    int len;
 
-	if (s1 && s2)
-	{
-		len1 = strlen(s1);
-		len2 = strlen(s2);
-		str = (char*)malloc(sizeof(char) * (len1 + len2 + 1));
-		if (str == NULL)
-			return (NULL);
-		i = -1;
-		while (s1[++i])
-			str[i] = s1[i];
-		i = -1;
-		while (s2[++i])
-		{
-			str[len1] = s2[i];
-			len1++;
-		}
-		str[len1] = '\0';
-		return (str);
-	}
-	return (NULL);
+    i = 0;
+    len = 0;
+    str = malloc(sizeof(char) * strlen(s1) + strlen(s2) + strlen(s3) + 1);
+    while(s1[i])
+    {
+        str[len] = s1[i];
+        i++;
+        len++;
+    }
+    i = 0;
+    while(s2[i])
+    {
+        str[len] = s2[i];
+        i++;
+        len++;
+    }
+    i = 0;
+    while(s3[i])
+    {
+        str[len] = s3[i];
+        i++;
+        len++;
+    }
+    str[len + 1] = '\0';
+    return (str);
 }

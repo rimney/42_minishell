@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 23:32:39 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/19 04:28:06 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 03:05:46 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,14 @@ int	ft_is_space(char *str)
 	return (1);
 }
 
-
-int	ft_check_path(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	**ft_locate_env(char **env)
+char	*ft_locate_env(char **env)
 {
 	int		i;
-	char	**str;
 
 	i = 0;
 	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
 		i++;
-	str = ft_split(env[i] + 5, ':');
-	return (str);
+	return (env[i]);
 }
 
 char	*ft_filter_command(char *command)
@@ -74,53 +57,56 @@ char	*ft_filter_command(char *command)
 	return (ret);
 }
 
-char	*ft_is_a_command(char **env, char *command)
+void	ft_free(char **str)
 {
-	int		i;
-	char	*cmd;
+	int i;
 
 	i = 0;
-	cmd = ft_filter_command(command);
-	if (access(command, F_OK) == 0)
-		return (command);
+	while(str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+char	*ft_exec_command(char **envp, char *command)
+{
+	int		i;
+	char	*ret;
+	char	**env;
+	char	**temp;
+
+	i = 0;
+	temp = ft_split(ft_locate_env(envp) + 5, ':');
+	env = malloc(sizeof(char *) * 9);
+	while(temp[i])
+	{
+		env[i] = ft_strjoin(temp[i], "/", command);
+		i++;
+	}
+	ft_free(temp);
+	i = 0;
 	while (env[i])
 	{
-		free(env[i]);
-		env[i] = ft_strjoin(env[i], "/");
-		free(env[i]);
-		env[i] = ft_strjoin(env[i], cmd);
 		if (access(env[i], F_OK) == 0)
 		{
-			if (!ft_is_space(command))
-				free(cmd);
-			return (env[i]);
+			ret = strdup(env[i]);
+			ft_free(env);
+			return (ret);
 		}
 		i++;
 	}
+	ft_free(env);
+	return (0);
+}
+
+int main(int argc, char **argv, char **envp)
+{
+    char *str;
+
+    str = ft_check_command(envp, argv[1]);
+    printf("%s |\n", str);
+	system("leaks a.out");
     return (0);
-}
-
-
-void	ft_free(char **value)
-{
-	int i = 0;
-	while(value[i])
-	{
-		free(value[i]);
-		i++;
-	}
-	free(value);
-}
-
-char	*ft_exec_command(char *command, char **envp, char **argv)
-{
-	int i;
-	char **str;
-	char *ret;
-
-	i = 0;
-	str = ft_locate_env(envp);
-	ret = ft_is_a_command(str, command);
-	ft_free(str);
-	return (ret);
 }

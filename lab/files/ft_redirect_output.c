@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/19 04:32:47 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/19 22:56:27 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,19 @@ void	ft_advanced_redirect(int argc, char **argv, char **envp, int i)
 	int	fd;
 	char *command;
 	char **cmd_parser;
-	
+
+
 	command = ft_exec_command(argv[0], envp, argv);
 	cmd_parser = ft_split(argv[0], ' ');
 	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
+	close(0);
 	dup2(fd, STDOUT_FILENO);
+	close(fd);
 	if(execve(command, cmd_parser, envp) == -1)
 	{
 		printf("%s <\n", argv[0]);
 		printf("wrong shit --> %s\n", command);
 	}
-	//close(fd);
-//	waitpid(pid, 0, 0);
 }
 
 int	ft_redirect(int argc, char **argv, char **envp)
@@ -82,14 +83,13 @@ int	ft_redirect(int argc, char **argv, char **envp)
 			{
 				if(ft_strcmp(argv[i], ">") == 0)
 				{
-					// pid = fork();
-					// if(pid == 0)
+					pid = fork();
+					if(pid == 0)
 						ft_advanced_redirect(argc, argv, envp, i);
-					waitpid(pid, 0, 0);
 				}
 				i++;
-		//	printf("%d <<\n", i);
 			}
+		waitpid(pid, 0, 0);
 	}
 	return (0);
 }
@@ -124,8 +124,9 @@ int main(int argc, char **argv, char **envp)
       			ft_redirect(ft_count_elements(line_parser), line_parser, envp);
 	  		ft_free(line_parser);
      		free(line);
-     		waitpid(pid, 0, 0);
+			//  kill(pid, 0);
 		}
+     		waitpid(pid, 0, 0);
 	}	
 	return (0);
 }
