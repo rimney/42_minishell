@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 19:42:35 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/20 19:47:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,6 @@ void	ft_single_redirect(int argc, char **argv)
 		}
 	}
 }
-
-// void	ft_free(char **value)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (value[i])
-// 	{
-// 		free(value[i]);
-// 		i++;
-// 	}
-// 	free(value);
-// }
-
 
 void	ft_advanced_redirect(int argc, char **argv, char **envp, int i)
 {
