@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 20:02:42 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 23:48:33 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/21 03:21:47 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void    redirect(int argc, char **argv, char **envp, int index)
     int fd;
     int fd2;
 
-    fd2 = open(argv[argc - 2], O_RDONLY);
     fd = open(argv[argc - 1], O_RDONLY);
      command_parser = argv + index + 1;
 
@@ -58,29 +57,29 @@ int    ft_redirect_input(int argc, char **argv, char **envp)
     return (0);
 }
 
-int main(int argc, char **argv, char **envp)
-{
-	char *line;
-	char **line_parser;
-	int pid;
-	char *history;
+// int main(int argc, char **argv, char **envp)
+// {
+// 	char *line;
+// 	char **line_parser;
+// 	int pid;
+// 	char *history;
 
-	while((line = readline("Minishell >> ")))
-	{
-		line_parser = ft_split(line, ' ');
-		add_history(line);
-		if(ft_strcmp(line, "history") == 0)
-			printf("h\n");
-		else
-    	{
-      		pid = fork();
-      		if (pid == 0)
-      			ft_redirect_input(ft_count_elements(line_parser), line_parser, envp);
-			else
-			 waitpid(pid, 0, 0);
-	  		ft_free(line_parser);
-     		free(line);
-		}
-	}	
-	return (0);
-}
+// 	while((line = readline("Minishell >> ")))
+// 	{
+// 		line_parser = ft_split(line, ' ');
+// 		add_history(line);
+// 		if(ft_strcmp(line, "history") == 0)
+// 			printf("h\n");
+// 		else
+//     	{
+//       		pid = fork();
+//       		if (pid == 0)
+//       			ft_redirect_input(ft_count_elements(line_parser), line_parser, envp);
+// 			else
+// 			 waitpid(pid, 0, 0);
+// 	  		ft_free(line_parser);
+//      		free(line);
+// 		}
+// 	}	
+// 	return (0);
+// }

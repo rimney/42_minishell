@@ -6,10 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:23:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 19:34:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/21 03:47:45 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <crtdbg.h>
 #include "../../minishell.h"
 
 void	ft_single_append(int argc, char **argv)
@@ -38,6 +39,7 @@ void	ft_advanced_append(int argc, char **argv, char **envp, int i)
 	cmd_parser = ft_split(argv[0], ' ');
 	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_APPEND , 0644);
 	dup2(fd, STDOUT_FILENO);
+	close(0);
 	execve(ft_exec_command(envp, cmd_parser[0]), cmd_parser, envp);
 	close(fd);
 }
@@ -45,11 +47,10 @@ void	ft_advanced_append(int argc, char **argv, char **envp, int i)
 int	ft_append(int argc, char **argv, char **envp)
 {
 	int fd;
-	char *line;
-	int i = 1;
+	int i = 0;
 	int pid;
 
-	if(argc == 3 && ft_strcmp(argv[1], ">>") == 0)
+	if(argc == 1 && ft_strcmp(argv[0], ">>") == 0)
 		ft_single_append(argc, argv);
 	else
 	{
@@ -62,9 +63,31 @@ int	ft_append(int argc, char **argv, char **envp)
 						ft_advanced_append(argc, argv, envp, i);
 				}
 				i++;
-			printf("%d <<\n", i);
-			waitpid(pid, 0, 0);
+				waitpid(pid, 0, 0);
 			}
 	}
+	return (0);
+}
+
+int main(int argc, char **argv, char **envp)
+{
+	char *line;
+	char **line_parser;
+	int pid;
+	char *history;
+
+	while((line = readline("Minishell >> ")))
+	{
+		line_parser = ft_split(line, ' ');
+		// add_history(line);
+		// if(ft_strcmp(line, "history") == 0)
+      	pid = fork();
+      	if (pid == 0)
+      		ft_append(ft_count_elements(line_parser), line_parser, envp);
+		else
+			waitpid(pid, 0, 0);
+	  	ft_free(line_parser);
+     	free(line);
+	}	
 	return (0);
 }
