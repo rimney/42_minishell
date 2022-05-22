@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/22 01:57:45 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/22 22:16:40 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,20 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-#include <fcntl.h>
-#include <signal.h>
+# include <fcntl.h>
+# include <signal.h>
 # include "parsing/lexer_tokanizer.h"
 
+typedef struct s_env
+{
+    char    **envp;
+    int     exit_value;
+    char    **set
+}
+
+
 int ft_cd(char *path);
-int    ft_strcmp(char *s1, char *s2);
+int ft_strcmp(char *s1, char *s2);
 void    ft_pwd(void);
 void    ft_echo(char *str, int flag);char *ft_substr(char const *s, unsigned int start, int len);
 char    *ft_strjoin(char *s1, char *s2, char *s3);
