@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 20:57:49 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/22 02:29:00 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/22 06:38:49 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "/Users/rimney/Desktop/Minishell/minishell.h"
+#include "../minishell.h"
 
 int ft_get_last_delimiter(int argc, char **argv, int index)
 {
@@ -44,7 +44,8 @@ int ft_exec_heredoc(char **argv, char **envp, int index, int fd[2])
         write(fd[1], "\n", 1);
         if(ft_strcmp(line, delimiter) == 0)
         {
-            close(fd[1]);
+            //close(fd[1]);
+            close(0);
             dup2(fd[0], 0);
            close(fd[0]);
 			command_2D = ft_split(argv[1], ' ');
@@ -74,9 +75,57 @@ void ft_heredoc(int argc, char **argv, char **envp, int index)
     close(fd[1]);
 }
 
+int ft_basic_heredoc(int argc, char **argv, int index)
+{
+    char *line;
+    char *delimiter;
+
+    delimiter = strdup(argv[index + 1]);
+    while((line = readline("heredoc_basic >")))
+    {
+        if(ft_strcmp(line, delimiter) == 0)
+        {
+            free(delimiter);
+            free(line);
+            return (1);
+        }
+    }
+    return (0);
+}
+
+void    ft_advanced_heredoc(int argc, char **argv, char **envp, int index)
+{
+    int i;
+    int pid;
+
+    i = 0;
+    while (i < ft_get_last_delimiter(argc, argv, 0))
+    {
+        if (ft_strcmp(argv[i], "<<") == 0)
+            ft_basic_heredoc(argc, argv, i);
+        if (i == ft_get_last_delimiter(argc, argv, 0))
+        {
+            pid = fork();
+            if (pid == 0)
+                ft_heredoc(argc, argv, envp, i);
+            else
+                waitpid(pid, 0, 0);
+            printf("ddd\n");
+            
+        }
+        i++;
+    }
+    
+}
+
+
+
 int main(int argc, char **argv, char **envp)
 {
-    if(ft_get_last_delimiter(argc, argv, ))
-    ft_heredoc(argc, argv, envp, 0);
+    if(ft_get_last_delimiter(argc, argv, 0) <= 3)
+        ft_heredoc(argc, argv, envp, 0);
+    else
+        ft_advanced_heredoc(argc, argv, envp, 1);
+    ft_basic_heredoc(argc, argv, 1);
     return (0);
 }
