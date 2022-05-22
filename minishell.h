@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 03:06:06 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/22 01:57:45 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,12 @@ char    *ft_strjoin(char *s1, char *s2, char *s3);
 char	**ft_split(char const *s, char c);
 int     ft_strncmp(char *s1, char *s2, int n);
 void	ft_single_append(int argc, char **argv);
-void	ft_heredoc(int argc, char **argv, char **envp);
 int	ft_append(int argc, char **argv, char **envp);
 char	*ft_exec_command(char **envp, char *command);
 void	ft_advanced_append(int argc, char **argv, char **envp, int i);
 int	ft_is_space(char *str);
 char	*ft_locate_env(char **env);
 char	*ft_filter_command(char *command);
-// char	*ft_exec_command(char *command, char **envp, char **argv);
 void	ft_free(char **value);
 void	ft_single_redirect(int argc, char **argv);
 void	ft_advanced_redirect(int argc, char **argv, char **envp, int i);
@@ -48,4 +46,7 @@ int	ft_redirect(int argc, char **argv, char **envp);
 void    ft_print_history(char *history);
 int	ft_count_elements(char **str);
 char	*ft_check_command(char **env, char *command);
+int ft_get_last_delimiter(int argc, char **argv, int index);
+int ft_exec_heredoc(char **argv, char **envp, int index, int fd[2]);
+void ft_heredoc(int argc, char **argv, char **envp, int index);
 # endif
