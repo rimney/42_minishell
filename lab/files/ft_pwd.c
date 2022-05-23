@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/16 22:36:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/16 22:40:54 by rimney           ###   ########.fr       */
+/*   Created: 2022/05/23 02:14:26 by rimney            #+#    #+#             */
+/*   Updated: 2022/05/23 02:14:40 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int ft_cd(char *path)
+void    ft_pwd(t_env *env)
 {
-    if(chdir(path) == 0)
-    {
-        ft_pwd();
-        return (1);
-    }
-    else
-    {
-        printf("failed\n");
-        return (0);
-    }
+    printf("%s\n", env->pwd + 4);
 }
