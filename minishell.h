@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/23 19:54:55 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/26 00:10:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ int ft_get_last_delimiter(int argc, char **argv, int index);
 int ft_exec_heredoc(char **argv, char **envp, int index, int fd[2]);
 void ft_heredoc(int argc, char **argv, char **envp, int index);
 int    ft_env(t_env *env);
+char    *ft_strdup(char *s1, int flag);
 
 # endif
