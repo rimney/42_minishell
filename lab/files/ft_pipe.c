@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 19:09:16 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/26 03:07:01 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,6 @@ void    ft_pipe(int argc, char **argv, char **envp)
 	}
 }
 
-int ft_count_elements(char **str)
-{
-  int i;
-
-  i = 0;
-  while(str[i])
-    i++;
-  return (i);
-}
 
 // int main(int argc, char **argv, char **envp)
 // {

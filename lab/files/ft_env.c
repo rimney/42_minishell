@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 17:56:15 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/23 17:56:43 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/26 03:44:44 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int    ft_env(t_env *env)
     {
         if(!env->envp[0])
         {
-            printf("Env not found\n");
+            printf("Path not found!!\n");
             return (0);
         }
         printf("%s\n", env->envp[i]);
