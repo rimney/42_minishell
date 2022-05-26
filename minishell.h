@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/26 03:45:36 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/26 21:38:08 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,5 @@ void ft_heredoc(int argc, char **argv, char **envp, int index);
 int    ft_env(t_env *env);
 char    *ft_strdup(char *s1, int flag);
 void    ft_get_env(t_env *env, char **envp);
-int ft_find_variable_index(char *str);
+int ft_find_variable_index(char *str, char c);
 # endif
