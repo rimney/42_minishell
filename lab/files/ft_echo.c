@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 04:34:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/28 18:10:04 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/29 02:55:50 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,17 @@ int    ft_expand(t_env *env, char *str)
 {
     int i;
     int skipper;
+    int len;
+
 
     i = 0;
     skipper = 0;
      while(str[skipper] != ' ' && str[skipper])
          skipper++;
+    printf("%s\n", str);
     while(env->envp[i])
     {
-       // printf("| %s |\n", str);
-        if(ft_strncmp(env->envp[i], str, strlen(str)) == 0)
+        if(ft_strncmp(env->envp[i], str, strlen(str) - 1) == 0)
         {
             printf("%s", env->envp[i] + ft_find_variable_index(env->envp[i], '=') + 1);
             return (1);
@@ -121,65 +123,163 @@ char    *ft_assign_echo(char *str)
     while(j < i)
     {
         temp[j] = str[j];
+        
         j++;
     }
     temp[j] = 0;
     return (temp);
 }
 
-int ft_echo_single_q(char *str)
-{
-	int i;
-	int flag;
-	int	j;
+// int ft_echo_single_q(char *str)
+// {
+// 	int i;
+// 	int flag;
+// 	int	j;
 
-	i = 0;
-	flag = 0;
-	while(str[i])
-	{
-		if(str[i] == '\'')
-		{
-			flag = 0;
-			i += 1;
-			j = i;
-			while(str[j])
-			{
-				if(str[j] == '\'')
-				{
-					flag = 1;
-					break;
-        		}
-				if(str[j + 1] == '\0' && flag == 0)
-					return (0);
-				j++;
-			}
-		}
-		printf("%c", str[i++]);
-	}
-    return (i);
+// 	i = 0;
+// 	flag = 0;
+// 	while(str[i] && flag == 0)
+// 	{
+// 		if(str[i] == '\'')
+// 		{
+// 			flag = 0;
+// 			i += 1;
+// 			j = i;
+// 			while(str[j])
+// 			{
+// 				if(str[j] == '\'')
+// 				{
+// 					flag = 1;
+// 					break;
+//         		}
+// 				if(str[j + 1] == '\0' && flag == 0)
+// 					return (0);
+// 				j++;
+// 			}
+// 		}
+//         // if(str[i] != '\'')
+//         //     printf("%c", str[i]);
+//         i++;
+// 		printf("%c", str[i++]);
+// 	}
+//         printf(" || %d || \n", i);
+//     return (i);
+// }
+
+// int	ft_echo_double_q(char *str)
+// {
+// 	int i;
+// 	int flag;
+
+//     i = 0;
+    
+	
+// }
+
+int ft_find_next_index(char *str, char c)
+{
+  int i;
+
+  i = 0;
+  while(str[i])
+  {
+    if(str[i] == c)
+      return (i);
+    i++;
+  }
+  return (0);
 }
+
+
+int ft_handle_single_quotes(char *str)
+{
+  int i;
+  int index;
+  
+  i = 0;
+  while(str[i])
+  {
+    if(str[i] == '\'')
+    {
+      i++;
+      index = ft_find_next_index(&str[i], '\'');
+      if(!index)
+        return 0;
+      while(i <= index)
+      {
+        printf("%c", str[i]);
+        i++;
+      }
+    }
+      else
+         printf("%c", str[i]);
+        if(str[i] == '\'')
+            return (i);
+      i++;
+  }
+  return i + 1;
+}
+
+int ft_handle_double_quotes(char *str, t_env *env)
+{
+  int i;
+  int index;
+
+  i = 0;
+  while(str[i])
+  {
+    if(str[i] == '\"')
+    {
+      i++;
+      index = ft_find_next_index(&str[i], '\"');
+
+      while(i <= index)
+      {
+        if(str[i] == '$')
+        {
+            ft_expand(env, &str[i]);
+        }
+        else
+          printf("%c", str[i]);
+      i++;   
+      }
+    }
+      else
+        printf("%c", str[i]);
+        i++;
+  }
+  return (i);
+}
+
+
 
 void    ft_echo(char *str, t_env *env)
 {
     int i;
     char *temp;
+    int flag;
+
     i = 0;
     while(str[i])
     {
-		if(str[i] == '\'')
-			i += ft_echo_single_q(&str[i]);
-        if(str[i] == '$')
+       if(str[i] == '$')
         {
             temp = ft_assign_echo(&str[i] + 1);
             ft_expand(env, temp);
             i += strlen(temp) + 1;
             free(temp);
         }
+        else if(str[i] == '\'')
+            i += ft_handle_single_quotes(str);
+        else if(str[i] == '\"')
+            i += ft_handle_double_quotes(str, env);
         printf("%c", str[i]);
         i++;
     }
     printf("\n");
 }
+
+
 
 int main(int argc, char **argv, char **envp)
 {

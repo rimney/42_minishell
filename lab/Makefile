@@ -6,7 +6,7 @@
 #    By: rimney <rimney@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/18 01:28:31 by rimney            #+#    #+#              #
-#    Updated: 2022/05/09 23:59:47 by rimney           ###   ########.fr        #
+#    Updated: 2022/05/28 18:50:05 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,4 +14,4 @@ NAME = Executor
 SRCS = files/*.c
 
 all :
-	gcc -lreadline -o $(NAME) $(SRCS) 
+	gcc -lreadline -o -L .brew/opt/readline/lib $(NAME) $(SRCS) 

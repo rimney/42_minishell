@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 02:59:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/26 04:08:32 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/28 20:44:34 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,7 @@ void	ft_sort_string_tab(char **tab)
 	}
 }
 
-int ft_count_elements(char **str)
-{
-  int i;
 
-  i = 0;
-  while(str[i])
-    i++;
-  return (i);
-}
 
 void    ft_export_no_args_case(t_env *env)
 {

@@ -3,16 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/26 03:07:01 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/28 20:44:39 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 char *history;
+
+int ft_count_elements(char **str)
+{
+  int i;
+
+  i = 0;
+  while(str[i])
+    i++;
+  return (i);
+}
 
 void ft_pipes(int in, int out, char *command, char **envp)
 {
@@ -67,27 +77,27 @@ void    ft_pipe(int argc, char **argv, char **envp)
 }
 
 
-// int main(int argc, char **argv, char **envp)
-// {
-//   char *line;
-//   char **line_parser;
-//   int pid;
+int main(int argc, char **argv, char **envp)
+{
+  char *line;
+  char **line_parser;
+  int pid;
 
-//   while((line = readline("Minishell >> ")))
-//   {
-//     add_history(line);
-//     line_parser = ft_split(line, ' ');
-//     if(ft_strcmp(line, "history") == 0)
-//       ft_print_history(history);
-//     else
-//     {
-//       pid = fork();
-//       if (pid == 0)
-//         ft_pipe(ft_count_elements(line_parser), line_parser, envp);
-//       ft_free(line_parser);
-//       free(line);
-//       waitpid(pid, 0, 0);
-//     }
-//   }
-//   return (0);
-// }
+  while((line = readline("Minishell >> ")))
+  {
+    add_history(line);
+    line_parser = ft_split(line, ' ');
+    if(ft_strcmp(line, "history") == 0)
+      ft_print_history(history);
+    else
+    {
+      pid = fork();
+      if (pid == 0)
+        ft_pipe(ft_count_elements(line_parser), line_parser, envp);
+      ft_free(line_parser);
+      free(line);
+      waitpid(pid, 0, 0);
+    }
+  }
+  return (0);
+}
