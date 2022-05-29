@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/28 20:44:39 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/29 18:31:37 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,27 @@ void    ft_pipe(int argc, char **argv, char **envp)
 }
 
 
-int main(int argc, char **argv, char **envp)
-{
-  char *line;
-  char **line_parser;
-  int pid;
+// int main(int argc, char **argv, char **envp)
+// {
+//   char *line;
+//   char **line_parser;
+//   int pid;
 
-  while((line = readline("Minishell >> ")))
-  {
-    add_history(line);
-    line_parser = ft_split(line, ' ');
-    if(ft_strcmp(line, "history") == 0)
-      ft_print_history(history);
-    else
-    {
-      pid = fork();
-      if (pid == 0)
-        ft_pipe(ft_count_elements(line_parser), line_parser, envp);
-      ft_free(line_parser);
-      free(line);
-      waitpid(pid, 0, 0);
-    }
-  }
-  return (0);
-}
+//   while((line = readline("Minishell >> ")))
+//   {
+//     add_history(line);
+//     line_parser = ft_split(line, ' ');
+//     if(ft_strcmp(line, "history") == 0)
+//       ft_print_history(history);
+//     else
+//     {
+//       pid = fork();
+//       if (pid == 0)
+//         ft_pipe(ft_count_elements(line_parser), line_parser, envp);
+//       ft_free(line_parser);
+//       free(line);
+//       waitpid(pid, 0, 0);
+//     }
+//   }
+//   return (0);
+// }

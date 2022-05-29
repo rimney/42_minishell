@@ -6,11 +6,10 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:23:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/21 03:47:45 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/29 19:04:34 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <crtdbg.h>
 #include "../../minishell.h"
 
 void	ft_single_append(int argc, char **argv)
@@ -31,24 +30,31 @@ void	ft_single_append(int argc, char **argv)
 	}
 }
 
-void	ft_advanced_append(int argc, char **argv, char **envp, int i)
-{
-	int	fd;
-	char **cmd_parser;
-	char *command;
-	cmd_parser = ft_split(argv[0], ' ');
-	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_APPEND , 0644);
-	dup2(fd, STDOUT_FILENO);
-	close(0);
-	execve(ft_exec_command(envp, cmd_parser[0]), cmd_parser, envp);
-	close(fd);
-}
+// void	ft_advanced_append(int argc, char **argv, char **envp, int i)
+// {
+// 	int	fd;
+// 	char **cmd_parser;
+// 	char *command;
+// 	int pid;
+
+// 	cmd_parser = ft_split(argv[0], ' ');
+// 	fd = open(argv[i + 1], O_CREAT | O_RDWR | O_APPEND , 0644);
+// 	dup2(fd, STDOUT_FILENO);
+// 	close(0);
+// 	execve(ft_exec_command(envp, cmd_parser[0]), cmd_parser, envp);
+// 	else
+// 	{
+// 		close(fd);
+// 		waitpid(pid, 0, 0);
+// 	}
+// }
 
 int	ft_append(int argc, char **argv, char **envp)
 {
-	int fd;
 	int i = 0;
 	int pid;
+	int fd;
+
 
 	if(argc == 1 && ft_strcmp(argv[0], ">>") == 0)
 		ft_single_append(argc, argv);
@@ -58,12 +64,21 @@ int	ft_append(int argc, char **argv, char **envp)
 			{
 				if(ft_strcmp(argv[i], ">>") == 0)
 				{
-					pid = fork();
-					if(pid == 0)
-						ft_advanced_append(argc, argv, envp, i);
+						pid = fork();
+						if(pid == 0)
+						{
+							fd = open(argv[i + 1], O_CREAT | O_RDWR | O_APPEND , 0644);
+							dup2(fd, STDOUT_FILENO);
+							close(0);
+							execve(ft_exec_command(envp, argv[0]), ft_split(argv[0], ' '), envp);
+							close(fd);
+						}
+						else
+						{
+							waitpid(pid, 0, 0);
+						}
 				}
 				i++;
-				waitpid(pid, 0, 0);
 			}
 	}
 	return (0);
@@ -81,11 +96,7 @@ int main(int argc, char **argv, char **envp)
 		line_parser = ft_split(line, ' ');
 		// add_history(line);
 		// if(ft_strcmp(line, "history") == 0)
-      	pid = fork();
-      	if (pid == 0)
       		ft_append(ft_count_elements(line_parser), line_parser, envp);
-		else
-			waitpid(pid, 0, 0);
 	  	ft_free(line_parser);
      	free(line);
 	}	
