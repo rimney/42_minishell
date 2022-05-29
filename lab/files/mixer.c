@@ -6,21 +6,13 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:24:48 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/26 03:43:38 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/29 04:43:19 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// int ft_count_elements(char **str)
-// {
-//   int i;
 
-//   i = 0;
-//   while(str[i])
-//     i++;
-//   return (i);
-// }
 
 
 void    ft_get_env(t_env *env, char **envp)
@@ -46,19 +38,7 @@ void    ft_get_env(t_env *env, char **envp)
 
 
 
-int ft_find_variable_index(char *str)
-{
-    int i;
 
-    i = 0;
-    while(str[i])
-    {
-        if(str[i] == '=')
-            return (i);
-        i++;
-    }
-    return (0);
-}
 
 
 void	ft_echo(char *str, t_env *env, int flag) // i have no idea how this works !! 

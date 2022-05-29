@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 04:34:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/29 02:55:50 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/29 04:42:58 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,13 +266,18 @@ void    ft_echo(char *str, t_env *env)
         {
             temp = ft_assign_echo(&str[i] + 1);
             ft_expand(env, temp);
+            printf("%s\n", str);
             i += strlen(temp) + 1;
             free(temp);
         }
-        else if(str[i] == '\'')
+        else if(str[i] == '\''){
             i += ft_handle_single_quotes(str);
-        else if(str[i] == '\"')
+            printf("%s\n", str);
+        }
+        else if(str[i] == '\"'){
             i += ft_handle_double_quotes(str, env);
+            printf("%s\n", str);
+        }
         printf("%c", str[i]);
         i++;
     }
@@ -281,17 +286,17 @@ void    ft_echo(char *str, t_env *env)
 
 
 
-int main(int argc, char **argv, char **envp)
-{
-    t_env env;
-    char *line;
+// int main(int argc, char **argv, char **envp)
+// {
+//     t_env env;
+//     char *line;
 
-    ft_get_env(&env, envp);
-    while((line = readline("echo > ")))
-    {
-            ft_echo(line, &env);
-        free(line);
-    }
+//     ft_get_env(&env, envp);
+//     while((line = readline("echo > ")))
+//     {
+//             ft_echo(line, &env);
+//         free(line);
+//     }
     
-    return (0);
-}
+//     return (0);
+// }
