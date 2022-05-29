@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 19:47:28 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/29 20:42:35 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,12 @@ void	ft_advanced_redirect(int argc, char **argv, char **envp, int i)
 int	ft_redirect(int argc, char **argv, char **envp)
 {
 	int fd;
-	char *line;
-	int i = 0;
+	int i;
 	int pid;
 
+	i = 0;
 	if(argc == 1 && ft_strcmp(argv[0], ">") == 0)
 	{
-		printf("ahahah\n");
 		ft_single_redirect(argc, argv);
 	}
 	else
@@ -80,9 +79,14 @@ int	ft_redirect(int argc, char **argv, char **envp)
 				{
 					pid = fork();
 					if(pid == 0)
-						ft_advanced_redirect(argc, argv, envp, i);
+					{
+						fd = open(argv[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+						dup2(fd, 1);
+						execve(ft_exec_command(envp, argv[0]), ft_split(argv[0], ' '), envp);
+						close(fd);
+					}
 					else
-					waitpid(pid, 0, 0);
+						waitpid(pid, 0, 0);
 				}
 				i++;
 			}
@@ -103,16 +107,9 @@ int main(int argc, char **argv, char **envp)
 		add_history(line);
 		if(ft_strcmp(line, "history") == 0)
 			printf("h\n");
-		else
-    	{
-      		pid = fork();
-      		if (pid == 0)
-      			ft_redirect(ft_count_elements(line_parser), line_parser, envp);
-			else
-			 waitpid(pid, 0, 0);
+      	ft_redirect(ft_count_elements(line_parser), line_parser, envp);
 	  		ft_free(line_parser);
      		free(line);
-		}
 	}	
 	return (0);
 }
