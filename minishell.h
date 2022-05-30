@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/26 21:38:08 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/30 05:23:44 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,5 @@ int    ft_env(t_env *env);
 char    *ft_strdup(char *s1, int flag);
 void    ft_get_env(t_env *env, char **envp);
 int ft_find_variable_index(char *str, char c);
+int ft_count_elements(char **str);
 # endif

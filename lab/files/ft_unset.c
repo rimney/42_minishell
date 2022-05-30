@@ -1,27 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mixer.c                                            :+:      :+:    :+:   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 01:24:48 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/30 05:19:02 by rimney           ###   ########.fr       */
+/*   Created: 2022/05/30 01:34:10 by rimney            #+#    #+#             */
+/*   Updated: 2022/05/30 05:58:52 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-// int ft_count_elements(char **str)
-// {
-//   int i;
-
-//   i = 0;
-//   while(str[i])
-//     i++;
-//   return (i);
-// }
-
 
 void    ft_get_env(t_env *env, char **envp)
 {
@@ -60,35 +49,77 @@ int ft_find_variable_index(char *str, char c)
     return (0);
 }
 
-
-void	ft_echo(char *str, t_env *env, int flag) // i have no idea how this works !! 
+int	ft_count_elements(char **str)
 {
 	int i;
 
 	i = 0;
-	// printf("%s\n", str);
 	while(str[i])
-	{
-		printf("%c", str[i++]);
-
-	}
-	if(flag)
-	{
-		printf("\n");
-	}
+		i++;
+	return (i);
 }
 
-int ft_mixer(int argc, char **argv, t_env *env, int flag)
+void	ft_free(char **str)
 {
-    // if(flag == 0)
-    // {
-	//     ft_export(env, argv[1]);
-    //     // ft_env(env);
-    // }
-    if(flag == 1)
-    ft_env(env);
+	int i;
 
-	return (0);
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+void	ft_unset(char *str, t_env *env)
+{
+	int i;
+	int unset;
+	char **temp;
+	int j;
+
+	unset = 0;
+	i = 0;
+	temp = NULL;	
+	while(env->envp[i])
+	{
+		if(ft_strncmp(str, env->envp[i], ft_find_variable_index(env->envp[i], '=')) == 0)
+			unset = i;
+		i++;
+	}
+	j = 0;
+	i = 0;
+	if(unset)
+	{
+		temp = malloc(sizeof(char *) * ft_count_elements(env->envp));
+		while(env->envp[i])
+		{
+			if(j == unset)
+				i++;
+			temp[j] = strdup(env->envp[i]);
+			i++;
+			j++;
+		}
+	}
+	temp[j] = 0;
+	ft_free(env->envp);
+	env->envp = temp;
 }
 
 
+int	main(int argc, char **argv, char **envp)
+{
+	char *line;
+	char **line_parser;
+	t_env env;
+
+	ft_get_env(&env, envp);
+	while((line = readline("unset > ")))
+	{
+		line_parser = ft_split(line, ' ');
+		if(ft_strcmp(line, "env") == 0)
+			ft_env(&env);
+		 if(ft_strcmp(line_parser[0], "unset") == 0)
+			ft_unset(line_parser[1], &env);
+	}
+}
