@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 04:34:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/31 01:36:44 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/31 06:32:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ int ft_find_variable_index(char *str, char c)
 
 
 
-int ft_count_elements(char **str)
-{
-  int i;
+// int ft_count_elements(char **str)
+// {
+//   int i;
 
-  i = 0;
-  while(str[i])
-    i++;
-  return (i);
-}
+//   i = 0;
+//   while(str[i])
+//     i++;
+//   return (i);
+// }
 
 void    ft_get_env(t_env *env, char **envp)
 {
