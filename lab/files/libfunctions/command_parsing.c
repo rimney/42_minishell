@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 23:32:39 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/20 19:29:19 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/30 20:40:19 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 int	ft_is_space(char *str)
 {

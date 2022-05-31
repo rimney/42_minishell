@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 23:07:12 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/09 23:55:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/30 20:41:01 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 int ft_strcmp(char *s1, char *s2)
 {

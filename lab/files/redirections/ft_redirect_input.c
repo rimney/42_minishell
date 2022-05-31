@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 20:02:42 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/21 03:21:47 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/31 01:28:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 void    redirect(int argc, char **argv, char **envp, int index)
 {
@@ -72,11 +72,7 @@ int    ft_redirect_input(int argc, char **argv, char **envp)
 // 			printf("h\n");
 // 		else
 //     	{
-//       		pid = fork();
-//       		if (pid == 0)
 //       			ft_redirect_input(ft_count_elements(line_parser), line_parser, envp);
-// 			else
-// 			 waitpid(pid, 0, 0);
 // 	  		ft_free(line_parser);
 //      		free(line);
 // 		}

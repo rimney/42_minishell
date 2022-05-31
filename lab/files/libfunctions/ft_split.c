@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:27:41 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/19 00:05:19 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/30 20:40:57 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 static int		unleah(char **str, int size)
 {

@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 23:43:32 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/26 00:11:20 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/30 20:41:04 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 char    *ft_strdup(char *s1,  int flag)
 {

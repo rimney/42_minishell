@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 02:59:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/28 20:44:34 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/30 20:40:37 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 void	ft_sort_string_tab(char **tab)
 {

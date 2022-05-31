@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 01:54:28 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/22 21:46:59 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/31 01:30:36 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 int ft_get_last_delimiter(int argc, char **argv, int index)
 {
@@ -121,7 +121,7 @@ void    ft_advanced_heredoc(int argc, char **argv, char **envp, int index)
     
 }
 
-int main(int argc, char **argv, char **envp)
+int ft_execute_heredoc(int argc, char **argv, char **envp)
 {
     if(ft_get_last_delimiter(argc, argv, 0) == 2)
         ft_heredoc(argc, argv, envp, 0);

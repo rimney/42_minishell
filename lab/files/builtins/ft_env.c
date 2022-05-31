@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 17:56:15 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/26 03:44:44 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/30 20:40:40 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 int    ft_env(t_env *env)
 {

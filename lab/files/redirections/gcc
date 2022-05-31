@@ -1,0 +1,1 @@
+gcc -lreadline  merge.c ft_redirect_output.c ft_redirect_input.c ft_append.c ft_heredoc.c ../libfunctions/command_parsing.c  ../libfunctions/ft_history.c ../libfunctions/ft_split.c ../libfunctions/ft_strcmp.c ../libfunctions/ft_strdup.c ../libfunctions/ft_strjoin.c ../libfunctions/ft_strncmp.c ft_pipe.c ../builtins/ft_echo.c 

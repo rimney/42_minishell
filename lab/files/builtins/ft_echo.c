@@ -6,11 +6,11 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 04:34:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/29 02:55:50 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/31 01:36:44 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 int ft_find_variable_index(char *str, char c)
 {
@@ -281,17 +281,17 @@ void    ft_echo(char *str, t_env *env)
 
 
 
-int main(int argc, char **argv, char **envp)
-{
-    t_env env;
-    char *line;
+// int main(int argc, char **argv, char **envp)
+// {
+//     t_env env;
+//     char *line;
 
-    ft_get_env(&env, envp);
-    while((line = readline("echo > ")))
-    {
-            ft_echo(line, &env);
-        free(line);
-    }
+//     ft_get_env(&env, envp);
+//     while((line = readline("echo > ")))
+//     {
+//             ft_echo(line, &env);
+//         free(line);
+//     }
     
-    return (0);
-}
+//     return (0);
+// }

@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_history.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 02:14:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/23 02:14:40 by rimney           ###   ########.fr       */
+/*   Created: 2022/05/17 02:24:29 by rimney            #+#    #+#             */
+/*   Updated: 2022/05/30 20:40:50 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
-void    ft_pwd(t_env *env)
+void    ft_print_history(char *history)
 {
-    printf("%s\n", env->pwd + 4);
+    int i;
+
+    i = 0;
+    while (history[i])
+        printf("%d\n", history[i++]);
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 01:34:10 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/30 05:58:52 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/30 20:40:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 void    ft_get_env(t_env *env, char **envp)
 {
