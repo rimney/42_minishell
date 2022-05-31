@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/31 01:31:49 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/31 03:49:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,5 @@ int ft_count_elements(char **str);
 int	ft_append(int argc, char **argv, char **envp);
 int    ft_redirect_input(int argc, char **argv, char **envp);
 int ft_execute_heredoc(int argc, char **argv, char **envp);
+int ft_count_elements(char **str);
 # endif

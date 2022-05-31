@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 23:32:39 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/30 20:40:19 by rimney           ###   ########.fr       */
+/*   Updated: 2022/05/31 03:50:52 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ char	*ft_locate_env(char **env)
 	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
 		i++;
 	return (env[i]);
+}
+
+int	ft_count_elements(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
 char	*ft_filter_command(char *command)
