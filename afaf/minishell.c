@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/01 16:52:47 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/02 00:28:31 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	ft_fill_exec(t_exec *exec, t_token *token)
 		}
 		token = token->next;
 	}
+	exec->command[i + 1] = 0;
 	
 }
 
@@ -107,7 +108,7 @@ int	is_token(char *str)
 		return (0);
 }
 
-int ft_count_till_last_pipe(t_exec *exec)
+int ft_count_till_last_token(t_exec *exec, char *token)
 {
 	int i;
 	int count;
@@ -116,46 +117,47 @@ int ft_count_till_last_pipe(t_exec *exec)
 	count = 0;
 	while (exec->command[i])
 	{
-		if(ft_strcmp(exec->command[i], "|") == 0)
+		if(ft_strcmp(exec->command[i], token) == 0)
 			count += 2;
 		i++;
 	}
-	if(ft_strcmp(exec->command[i - 1],  "|") == 0 || !exec->command[i - 1])
+	if(ft_strcmp(exec->command[i - 1], token) == 0 || !exec->command[i - 1])
 		return (printf("error\n"), 0);
 	return (count + 1);
 }
 
 
-void	ft_mini(t_exec *exec, char **envp, t_pipe *pipes)
+void	ft_mini_pipe(t_exec *exec, char **envp, t_pipe *pipes)
 {
-	int i;
-	//int pid;
-	//char **command_parser;
+	int pid;
+	char **command_parser;
 	int pipes_count;
-	i = 0;
-	while(exec->command[i])
+
+	pipes_count = ft_count_till_last_token(exec, "|");
+	if(pipes_count == 0)
 	{
-		if(is_token(exec->command[i]))
-		{
-			pipes_count = ft_count_till_last_pipe(exec);
-			if(pipes == 0)
-				return ;
-		//	printf("number of pipes are >> %d\n", pipes_count);
-		}
-		i++;
+		command_parser = ft_split(exec->command[0], ' ');
+		printf("%s\n", ft_exec_command(envp, exec->command[0]));
+		pid = fork();
+		if (pid == 0)
+			printf("%d\n", execve(ft_exec_command(envp, command_parser[0]), command_parser, envp));
 	}
-	ft_assign_tpipe(pipes, pipes_count , envp);
-	execute_pipe(exec, 0, -1, pipes);
-	printf("%d\n", pipes_count);
-	printf("%s\n", exec->command[pipes_count]);
-	if(ft_strcmp(exec->command[pipes_count], ">") == 0)
-		ft_advanced_redirect(exec, envp, pipes_count);
-	// command_parser = ft_split(exec->command[0], ' ');
-	// printf("%s\n", ft_exec_command(envp, exec->command[0]));
-	// pid = fork();
-	// if (pid == 0)
-	// 	printf("%d\n", execve(ft_exec_command(envp, command_parser[0]), command_parser, envp));
-	// wait(NULL);
+	else if(pipes_count > 0)
+	{
+		ft_assign_tpipe(pipes, pipes_count , envp);
+		execute_pipe(exec, 0, -1, pipes);
+	}
+}
+
+void	ft_mini_output_redirection(t_exec *exec, char **envp, t_pipe *pipes)
+{
+//	char **command_parser;
+	int redirection_count;
+
+	pipes->max = 0;
+	redirection_count = ft_count_till_last_token(exec, ">");
+	ft_redirect(redirection_count, exec, pipes, envp);
+	
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -165,7 +167,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*lst;
 	t_redir	*redir;
 	t_exec exec;
-	t_pipe pipes;
+	 t_pipe pipes;
 
 	i = 0;
 	redir = NULL;
@@ -184,13 +186,14 @@ int	main(int argc, char **argv, char **envp)
 			lst = token_split(line, ' ');
 			redir = parser(lst, line);
 			ft_fill_exec(&exec, lst);
-			ft_print_exec(&exec);
-			ft_mini(&exec, envp, &pipes);
+		//	ft_print_exec(&exec);
+			ft_mini_pipe(&exec, envp, &pipes);
 			wait(NULL);
 			// printf("\nTOKEN LIST\n\n");
-			// print_lst(lst);
+			//print_lst(lst);
 			// printf("\nREDIR LIST\n\n");
-			// print_redir(redir);
+			//print_redir(redir);
+			ft_free(exec.command);
 		}
 	}
 	return (0);

@@ -6,77 +6,84 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/01 16:55:58 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 21:21:08 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
 
-void	ft_single_redirect(int argc, char **argv)
+void	ft_single_redirect(char **argv)
 {
 	int fd;
 	char *line;
-	if(argc == 3 && ft_strcmp(argv[1], ">") == 0)
+
+	fd = open(argv[1], O_CREAT | O_RDWR, 0644);
+	while(1)
 	{
-		fd = open(argv[2], O_CREAT | O_RDWR, 0644);
-		while(1)
-		{
-			fd = open(argv[2], O_RDWR | O_APPEND, 0644);
-			line = readline("");
-			write(fd, line, strlen(line));
-			write(fd, "\n", 1);
-			free(line);
-		}
+		fd = open(argv[1], O_RDWR | O_APPEND, 0644);
+		line = readline("");
+		write(fd, line, strlen(line));
+		write(fd, "\n", 1);
+		free(line);
 	}
 }
 
-void	ft_advanced_redirect(t_exec *exec, char **envp, int i)
+void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe)
 {
 	int	fd;
 	char **cmd_parser;
 	int pid;
 
+	tpipe->max = 0;
 	cmd_parser = ft_split(exec->command[i - 1], ' ');
+	printf("%s >>\n", exec->command[i - 1]);
+	fd = open(exec->command[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
+	dup2(tpipe->in_save, 0);
+	close(tpipe->in_save);
+	dup2(fd, 1);
+	close(fd);
 	pid = fork();
 	if(pid == 0)
 	{
-		fd = open(exec->command[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
 		if(execve(ft_exec_command(envp, cmd_parser[0]), cmd_parser, envp) == -1)
 		{
 			printf("wrong shit --> %s\n", cmd_parser[0]);
 		}
-		close(0);
 	}
 	else
+	{
+		close(0);
 		waitpid(pid, 0, 0);
-	ft_free(cmd_parser);
+		ft_free(cmd_parser);
+	}
 //	free(command);
 }
 
-int	ft_redirect(int argc, char **argv, char **envp)
+int	ft_redirect(int argc, t_exec *exec, t_pipe *tpipe, char **envp)
 {
 	int fd;
 	int i;
 	int pid;
+	char **command_parser;
 
 	i = 0;
-	if(argc == 1 && ft_strcmp(argv[0], ">") == 0)
-		ft_single_redirect(argc, argv);
+	tpipe->max = 0;
+	command_parser = ft_split(exec->command[0], ' ');
+	if(argc == 1 && ft_strcmp(exec->command[0], ">") == 0)
+		ft_single_redirect(exec->command);
 	else
 	{
 		while(i < argc)
 		{
-			if(ft_strcmp(argv[i], ">") == 0)
+			if(ft_strcmp(exec->command[i], ">") == 0)
 			{
 				pid = fork();
 				if(pid == 0)
 				{
-					fd = open(argv[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+					fd = open(exec->command[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 					dup2(fd, 1);
-					execve(ft_exec_command(envp, argv[0]), ft_split(argv[0], ' '), envp);
+					execve(ft_exec_command(envp, command_parser[0]), command_parser, envp);
 					close(fd);
 				}
 				else

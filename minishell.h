@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/01 16:54:36 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 21:17:14 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ int ft_is_space(char *str);
 char	*ft_locate_env(char **env);
 char	*ft_filter_command(char *command);
 void	ft_free(char **value);
-void	ft_single_redirect(int argc, char **argv);
-void    ft_advanced_redirect(t_exec *exec, char **envp, int i);
+void	ft_single_redirect(char **argv);
+// void    ft_advanced_redirect(t_exec *exec, char **envp, int i);
 char	*ft_is_a_command(char **env, char *command);
-int	ft_redirect(int argc, char **argv, char **envp);
+int	ft_redirect(int argc, t_exec *exec, t_pipe *tpipe, char **envp);
 void    ft_print_history(char *history);
 int	ft_count_elements(char **str);
 char	*ft_check_command(char **env, char *command);
@@ -87,4 +87,5 @@ int ft_count_elements(char **str);
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe);
 void	ft_assign_tpipe(t_pipe *pipe, int argc, char **envp);
 void    ft_get_env(t_env *env, char **envp);
+void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe);
 # endif

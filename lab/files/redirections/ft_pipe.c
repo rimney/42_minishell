@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/01 16:18:21 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/02 00:55:14 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
 	int in_save;
 	int pid;
     char **command_parser;
+  //  int fd;
 
 	in_save = -1;
     if (index >= tpipe->max)
@@ -85,8 +86,19 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(tpipe->fd[1]);
   	execute_pipe(exec, index + 2, in_save , tpipe);
     waitpid(pid , 0 , 0);
+    // if(ft_strcmp(exec->command[index + 1], ">") == 0)
+    // {
+    //     fd = open(exec->command[index + 2], O_CREAT | O_TRUNC | O_RDWR,  0644);
+    //     if(fd == -1)
+    //         return (printf("file not found\n"), 0);
+    //     dup2(fd, 0);
+    //     close(fd);
+    //     dup2(tpipe->fd[1], 1);
+    //     close(tpipe->fd[1]);
+    //     close(in_save);
+    //    // printf("%s\n", exec->command[index + 1]);
+    // }
      return 0;
-
 }
 
 
