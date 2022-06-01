@@ -6,7 +6,7 @@
 #    By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/28 12:27:57 by atarchou          #+#    #+#              #
-#    Updated: 2022/06/01 02:05:47 by rimney           ###   ########.fr        #
+#    Updated: 2022/06/01 04:11:51 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SRCS = parse.c\
 		utils_2.c\
 		quotes.c\
 		minishell.c\
+		../lab/files/libfunctions/*.c \
+		
 
 
 $(NAME) : $(SRCS)

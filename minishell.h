@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/31 03:49:38 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 04:19:47 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/wait.h>
-# include "parsing/lexer_tokanizer.h"
+# include "afaf/parsing.h"
+//# include "parsing/lexer_tokanizer.h"
 
 typedef struct s_env
 {
@@ -34,10 +35,10 @@ typedef struct s_env
 } t_env;
 
 
-// int ft_cd(char *path);
+
 int ft_strcmp(char *s1, char *s2);
 void    ft_pwd(t_env *env);
-//void    ft_echo(char *str, int flag);
+
 char *ft_substr(char const *s, unsigned int start, int len);
 char    *ft_strjoin(char *s1, char *s2, char *s3);
 char	**ft_split(char const *s, char c);

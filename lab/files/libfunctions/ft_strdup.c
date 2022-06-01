@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 23:43:32 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/30 20:41:04 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 04:16:13 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char    *ft_strdup(char *s1,  int flag)
     if(flag)
     {
         str = malloc(sizeof(char) * strlen(s1) - 1);
-        while(i < strlen(s1) - 1)
+        while(i < ft_strlen(s1) - 1)
         {
             if(s1[i] == '\"')
             {

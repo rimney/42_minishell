@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atarchou <atarchou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 16:29:54 by atarchou          #+#    #+#             */
-/*   Updated: 2022/05/31 11:48:25 by atarchou         ###   ########.fr       */
+/*   Updated: 2022/06/01 04:16:58 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-size_t	ft_strlen(const char *str)
+int	ft_strlen(char *str)
 {
 	int	i;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atarchou <atarchou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 12:00:29 by atarchou          #+#    #+#             */
-/*   Updated: 2022/05/28 16:29:31 by atarchou         ###   ########.fr       */
+/*   Updated: 2022/06/01 04:21:03 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ char	*ft_strnew(size_t size)
 	return (str);
 }
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+char	*ft_strsub(char *s, int start, int len)
 {
-	size_t	i;
+	int	i;
 	char	*tmp;
-	size_t	j;
+	int	j;
 
 	if (!s)
 		return (NULL);
@@ -54,15 +54,15 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	return (tmp);
 }
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
+// int	ft_strcmp(char *s1, char *s2)
+// {
+// 	int	i;
 
-	i = 0;
-	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
-		i++;
-	return (s1[i] - s2[i]);
-}
+// 	i = 0;
+// 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
+// 		i++;
+// 	return (s1[i] - s2[i]);
+// }
 
 void	print_lst(t_token *lst)
 {

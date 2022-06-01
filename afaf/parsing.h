@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atarchou <atarchou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 11:57:55 by atarchou          #+#    #+#             */
-/*   Updated: 2022/05/31 16:27:19 by atarchou         ###   ########.fr       */
+/*   Updated: 2022/06/01 04:20:11 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <string.h>
 # include <ctype.h>
 # include <stdlib.h>
-
+# include "../minishell.h"
 typedef struct s_token
 {
 	struct s_token	*next;
@@ -47,15 +47,15 @@ typedef enum e_type
 
 /******** utils.c functions ********/
 
-int		ft_strcmp(char *s1, char *s2);
+// int		ft_strcmp(char *s1, char *s2);
 char	*ft_strnew(size_t size);
-char	*ft_strsub(char const *s, unsigned int start, size_t len);
+char	*ft_strsub(char *s, int start, int len);
 void	print_lst(t_token *lst);
 void	print_redir(t_redir *lst);
 
 /******* utils_2.c functions ********/
 
-size_t	ft_strlen(const char *str);
+int		ft_strlen(char *str);
 int		check_env_var(char *str);
 void	parse_env(t_token **lst_token);
 
@@ -90,4 +90,9 @@ int		contain(char *str, char c);
 /******** signals.c functions ********/
 
 void	handle_sigint(int sig);
+
+/********** counting element of token ******/
+
+int ft_count_pipes(t_token *token);
+
 #endif
