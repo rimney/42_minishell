@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/01 06:14:29 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 16:52:47 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-typedef struct s_exec
-{
-	char **command;
-	char **redirections;
-	char **files;
-} t_exec;
 
 char	*ft_simple_strjoin(char *s1, char *s2)
 {
@@ -114,27 +107,55 @@ int	is_token(char *str)
 		return (0);
 }
 
-void	ft_mini(t_exec *exec, char **envp)
+int ft_count_till_last_pipe(t_exec *exec)
 {
 	int i;
-	int pid;
-	char **command_parser;
-	i = 0;
+	int count;
 
-	
-	// while(exec->command[i])
-	// {
-	// 	if(is_token(exec->command[i]))
-	// 		printf("theres a token in there\n");
-	// 	return;
-	// 	i++;
-	// }
-	command_parser = ft_split(exec->command[0], ' ');
-	printf("%s\n", ft_exec_command(envp, exec->command[0]));
-	pid = fork();
-	if (pid == 0)
-		printf("%d\n", execve(ft_exec_command(envp, command_parser[0]), command_parser, envp));
-	wait(NULL);
+	i = 0;
+	count = 0;
+	while (exec->command[i])
+	{
+		if(ft_strcmp(exec->command[i], "|") == 0)
+			count += 2;
+		i++;
+	}
+	if(ft_strcmp(exec->command[i - 1],  "|") == 0 || !exec->command[i - 1])
+		return (printf("error\n"), 0);
+	return (count + 1);
+}
+
+
+void	ft_mini(t_exec *exec, char **envp, t_pipe *pipes)
+{
+	int i;
+	//int pid;
+	//char **command_parser;
+	int pipes_count;
+	i = 0;
+	while(exec->command[i])
+	{
+		if(is_token(exec->command[i]))
+		{
+			pipes_count = ft_count_till_last_pipe(exec);
+			if(pipes == 0)
+				return ;
+		//	printf("number of pipes are >> %d\n", pipes_count);
+		}
+		i++;
+	}
+	ft_assign_tpipe(pipes, pipes_count , envp);
+	execute_pipe(exec, 0, -1, pipes);
+	printf("%d\n", pipes_count);
+	printf("%s\n", exec->command[pipes_count]);
+	if(ft_strcmp(exec->command[pipes_count], ">") == 0)
+		ft_advanced_redirect(exec, envp, pipes_count);
+	// command_parser = ft_split(exec->command[0], ' ');
+	// printf("%s\n", ft_exec_command(envp, exec->command[0]));
+	// pid = fork();
+	// if (pid == 0)
+	// 	printf("%d\n", execve(ft_exec_command(envp, command_parser[0]), command_parser, envp));
+	// wait(NULL);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -144,6 +165,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*lst;
 	t_redir	*redir;
 	t_exec exec;
+	t_pipe pipes;
 
 	i = 0;
 	redir = NULL;
@@ -163,8 +185,8 @@ int	main(int argc, char **argv, char **envp)
 			redir = parser(lst, line);
 			ft_fill_exec(&exec, lst);
 			ft_print_exec(&exec);
-			ft_mini(&exec, envp);
-			//wait(NULL);
+			ft_mini(&exec, envp, &pipes);
+			wait(NULL);
 			// printf("\nTOKEN LIST\n\n");
 			// print_lst(lst);
 			// printf("\nREDIR LIST\n\n");

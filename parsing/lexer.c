@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 01:16:28 by rimney            #+#    #+#             */
-/*   Updated: 2022/04/16 00:45:57 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 13:41:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,9 @@ t_lexer *lexer_init(char *value)
     lexer->next_c = lexer->src[lexer-> i + 1];
     lexer->src_len = strlen(value);
     return lexer;
+}
+
+t_lexer l_advance(t_lexer *lexer)
+{
+    
 }

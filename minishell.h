@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/01 04:19:47 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 16:54:36 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,21 @@ typedef struct s_env
     char    **history; // not sure about this ??
 } t_env;
 
+typedef struct s_pipe
+{
+	int fd[2];
+	int in;
+	int max;
+	int in_save;
+	t_env *env;
+} t_pipe;
 
+typedef struct s_exec
+{
+	char **command;
+	char **redirections;
+	char **files;
+} t_exec;
 
 int ft_strcmp(char *s1, char *s2);
 void    ft_pwd(t_env *env);
@@ -52,7 +66,7 @@ char	*ft_locate_env(char **env);
 char	*ft_filter_command(char *command);
 void	ft_free(char **value);
 void	ft_single_redirect(int argc, char **argv);
-void	ft_advanced_redirect(int argc, char **argv, char **envp, int i);
+void    ft_advanced_redirect(t_exec *exec, char **envp, int i);
 char	*ft_is_a_command(char **env, char *command);
 int	ft_redirect(int argc, char **argv, char **envp);
 void    ft_print_history(char *history);
@@ -70,4 +84,7 @@ int	ft_append(int argc, char **argv, char **envp);
 int    ft_redirect_input(int argc, char **argv, char **envp);
 int ft_execute_heredoc(int argc, char **argv, char **envp);
 int ft_count_elements(char **str);
+int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe);
+void	ft_assign_tpipe(t_pipe *pipe, int argc, char **envp);
+void    ft_get_env(t_env *env, char **envp);
 # endif

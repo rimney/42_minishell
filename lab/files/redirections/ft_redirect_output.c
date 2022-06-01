@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/31 01:37:24 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 16:55:58 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,33 +31,29 @@ void	ft_single_redirect(int argc, char **argv)
 	}
 }
 
-void	ft_advanced_redirect(int argc, char **argv, char **envp, int i)
+void	ft_advanced_redirect(t_exec *exec, char **envp, int i)
 {
 	int	fd;
-	char *command;
 	char **cmd_parser;
 	int pid;
 
+	cmd_parser = ft_split(exec->command[i - 1], ' ');
 	pid = fork();
 	if(pid == 0)
 	{
-		cmd_parser = ft_split(argv[0], ' ');
-		command = strdup(ft_exec_command(envp, cmd_parser[0])); //here !
-		printf("%s\n", command);
-		fd = open(argv[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
+		fd = open(exec->command[i + 1], O_CREAT | O_RDWR | O_TRUNC , 0644);
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
-	if(execve(command, cmd_parser, envp) == -1)
-	{
-		printf("%s <\n", argv[0]);
-		printf("wrong shit --> %s\n", command);
-	}
-	close(0);
+		if(execve(ft_exec_command(envp, cmd_parser[0]), cmd_parser, envp) == -1)
+		{
+			printf("wrong shit --> %s\n", cmd_parser[0]);
+		}
+		close(0);
 	}
 	else
 		waitpid(pid, 0, 0);
 	ft_free(cmd_parser);
-	free(command);
+//	free(command);
 }
 
 int	ft_redirect(int argc, char **argv, char **envp)

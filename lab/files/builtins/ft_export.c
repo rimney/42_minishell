@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 02:59:30 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/30 20:40:37 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 14:20:20 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char    **ft_join_export(t_env *env, char *arg)
     i = 0;
     temp = env->envp;
     env->envp = (char **)malloc(sizeof(char *) * ft_count_elements(env->envp) + 1 + 1);
-    if(ft_find_variable_index(arg))
+    if(ft_find_variable_index(arg, '='))
 	{
 		while(temp[i])
 		{
@@ -89,7 +89,7 @@ void	ft_export_replace(t_env *env, char *arg, int index)
 
 
     flag = 0;
-    if(arg[ft_find_variable_index(arg) + 1]  == '\"')
+    if(arg[ft_find_variable_index(arg, '=') + 1]  == '\"')
         flag = 1;
 	temp = env->envp[index];
 	env->envp[index] = ft_strdup(arg, flag);
@@ -111,20 +111,20 @@ void    ft_export(t_env *env, char **argv, int index)
         ft_export_no_args_case(env);
         return ;
     }
-    if(!ft_find_variable_index(argv[index + 1]))
+    if(!ft_find_variable_index(argv[index + 1], '='))
         return ;
     while(env->envp[i])
     {
-		if(ft_strncmp(argv[index + 1], env->envp[i], ft_find_variable_index(argv[index + 1])) == 0)
+		if(ft_strncmp(argv[index + 1], env->envp[i], ft_find_variable_index(argv[index + 1], '=')) == 0)
 		{
-			printf("%d\n", ft_find_variable_index(argv[index + 1]));
+			printf("%d\n", ft_find_variable_index(argv[index + 1], '='));
 			ft_export_replace(env, argv[index + 1], i);
 			printf("%s <- new\n", env->envp[i]);
 			return ;
 		}
 		i++;
     }
-    if(ft_find_variable_index(argv[index + 1]))
+    if(ft_find_variable_index(argv[index + 1], '='))
     {
         temp = malloc(sizeof(char *) * ft_count_elements(env->envp) + 1);
         i = 0;
@@ -133,7 +133,7 @@ void    ft_export(t_env *env, char **argv, int index)
             temp[i] = strdup(env->envp[i]);
             i++;
         }
-        if(argv[index + 1][ft_find_variable_index(argv[index + 1]) + 1] == '\"')
+        if(argv[index + 1][ft_find_variable_index(argv[index + 1], '=') + 1] == '\"')
             flag = 1;
         temp[i] = ft_strdup(argv[index + 1], flag);
         temp[i + 1] = NULL;

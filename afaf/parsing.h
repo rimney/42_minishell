@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 11:57:55 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/01 04:20:11 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/01 13:50:08 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,15 @@
 # include <signal.h>
 # include <string.h>
 # include <ctype.h>
-# include <stdlib.h>
+#include <stdlib.h>
 # include "../minishell.h"
+
+typedef struct s_lexer {
+char *contents;
+char c;
+int i;
+}				t_lexer;
+
 typedef struct s_token
 {
 	struct s_token	*next;
