@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/04 03:00:48 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/04 04:33:44 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_assign_tpipe(t_pipe *pipe, int argc, char **envp)
 	ft_get_env(pipe->env, envp);
 }
 
-void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index, int fd)
+void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
 {
     char **command_parser;
     
@@ -54,14 +54,21 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index, int fd)
   
     
     command_parser = ft_split(exec->command[index], ' ');
-    if (index == tpipe->max - 1 && exec->pipe_flag == 1)
-    {
-       fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_TRUNC, 0644);
-        dup2(fd, 1);
-        close(fd);
-        close(tpipe->fd[0]);
-    }
     close(tpipe->fd[0]);
+//     if (index == tpipe->max - 1 && exec->pipe_flag == 1)
+//     {
+//         if (in != -1)
+//         {
+//             dup2(in, 1);
+//             close(in);
+//         }
+//    if (tpipe->fd[1] != -1)
+//     {
+//         dup2(tpipe->fd[1] , 1);
+//         close(tpipe->fd[1]);
+//     }
+//     }
+    
     if(execve(ft_exec_command(tpipe->env->envp, command_parser[0]), command_parser, tpipe->env->envp) == -1)
 	{
 		printf("command not found\n");
@@ -93,7 +100,7 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
     if (pid == 0)
     {
       //  printf("%d\n", exec->pipe_flag);
-		ft_pipe(in, tpipe, exec, index, fd);
+		ft_pipe(in, tpipe, exec, index);
 		exit(0);
     }
     if (in != -1)
@@ -102,8 +109,13 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(tpipe->fd[1]);
     if (index == tpipe->max - 1 && exec->pipe_flag == 1)
     {
-        ft_pipe(in, tpipe, exec, index, fd);
-        close(fd);
+        in_save = tpipe->fd[0];
+        fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_TRUNC, 0644);
+        tpipe->fd[1] = fd;
+        pid = fork();
+        if(pid == 0)
+         ft_pipe(in_save, tpipe, exec, index);
+        // printf("hhhhhhhhhhhhhhhhh\n");
     }  
     if(index < tpipe->max - 1)
   	    execute_pipe(exec, index + 2, in_save , tpipe);
