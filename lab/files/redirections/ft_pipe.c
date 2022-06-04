@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/04 04:33:44 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/04 05:36:09 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
 {
     char **command_parser;
     
-
     if  (in != -1)
     {
         dup2(in , 0);    
@@ -51,30 +50,38 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
         dup2(tpipe->fd[1] , 1);
         close(tpipe->fd[1]);
     }
-  
-    
     command_parser = ft_split(exec->command[index], ' ');
     close(tpipe->fd[0]);
-//     if (index == tpipe->max - 1 && exec->pipe_flag == 1)
-//     {
-//         if (in != -1)
-//         {
-//             dup2(in, 1);
-//             close(in);
-//         }
-//    if (tpipe->fd[1] != -1)
-//     {
-//         dup2(tpipe->fd[1] , 1);
-//         close(tpipe->fd[1]);
-//     }
-//     }
-    
     if(execve(ft_exec_command(tpipe->env->envp, command_parser[0]), command_parser, tpipe->env->envp) == -1)
 	{
 		printf("command not found\n");
 		exit(0);
 	}
 }
+
+ void    ft_apply_redirection_after_pipe(int in, int out, t_pipe *tpipe, t_exec *exec, int index)
+ {
+    char **command_parser;
+
+    
+    if (in != -1)
+    {
+        dup2(in, 0);
+        close(in);
+    }
+    if(out != 0)
+    {
+        dup2(out, 1);
+        close(out);
+    }
+    command_parser = ft_split(exec->command[index], ' ');
+    close(tpipe->fd[0]);
+    if(execve(ft_exec_command(tpipe->env->envp, command_parser[0]), command_parser, tpipe->env->envp) == -1)
+	{
+		printf("command not found\n");
+		exit(0);
+	}
+ }
 
 
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
@@ -85,21 +92,15 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
     int fd;
 
     fd = -1;
-
-    printf("%d\n", tpipe->max);
-
     if (exec->command[index + 1] != NULL)
     {
-       // printf("%s\n", exec->command[index + 1]);
         pipe(tpipe->fd);
         in_save =  tpipe->fd[0];
     }
-
     command_parser = ft_split(exec->command[index], ' ');
     pid = fork();
     if (pid == 0)
     {
-      //  printf("%d\n", exec->pipe_flag);
 		ft_pipe(in, tpipe, exec, index);
 		exit(0);
     }
@@ -109,13 +110,11 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(tpipe->fd[1]);
     if (index == tpipe->max - 1 && exec->pipe_flag == 1)
     {
+        fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_APPEND, 0644);
         in_save = tpipe->fd[0];
-        fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_TRUNC, 0644);
-        tpipe->fd[1] = fd;
         pid = fork();
         if(pid == 0)
-         ft_pipe(in_save, tpipe, exec, index);
-        // printf("hhhhhhhhhhhhhhhhh\n");
+         ft_apply_redirection_after_pipe(in_save, fd,  tpipe, exec, index);
     }  
     if(index < tpipe->max - 1)
   	    execute_pipe(exec, index + 2, in_save , tpipe);
