@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/02 00:55:14 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/04 03:00:48 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,38 @@ void	ft_assign_tpipe(t_pipe *pipe, int argc, char **envp)
 	ft_get_env(pipe->env, envp);
 }
 
-void	ft_pipe(int in, t_pipe *tpipe ,char **command)
+void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index, int fd)
 {
-        if  (in != -1)
-        {
-            dup2(in , 0);    
-            close(in);
-        }
-        if (tpipe->fd[1] != -1)
-        {
-            dup2(tpipe->fd[1] , 1);
-            close(tpipe->fd[1]);
-        }
-        close(tpipe->fd[0]);
-        if(execve(ft_exec_command(tpipe->env->envp, command[0]),command , tpipe->env->envp) == -1)
-		{
-			printf("command not found\n");
-			exit(0);
-		}
-}
+    char **command_parser;
+    
 
+    if  (in != -1)
+    {
+        dup2(in , 0);    
+        close(in);
+    }
+    if (tpipe->fd[1] != -1)
+    {
+        dup2(tpipe->fd[1] , 1);
+        close(tpipe->fd[1]);
+    }
+  
+    
+    command_parser = ft_split(exec->command[index], ' ');
+    if (index == tpipe->max - 1 && exec->pipe_flag == 1)
+    {
+       fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_TRUNC, 0644);
+        dup2(fd, 1);
+        close(fd);
+        close(tpipe->fd[0]);
+    }
+    close(tpipe->fd[0]);
+    if(execve(ft_exec_command(tpipe->env->envp, command_parser[0]), command_parser, tpipe->env->envp) == -1)
+	{
+		printf("command not found\n");
+		exit(0);
+	}
+}
 
 
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
@@ -63,41 +75,39 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
 	int in_save;
 	int pid;
     char **command_parser;
-  //  int fd;
+    int fd;
 
-	in_save = -1;
-    if (index >= tpipe->max)
-        return 0;       
+    fd = -1;
+
+    printf("%d\n", tpipe->max);
+
     if (exec->command[index + 1] != NULL)
     {
+       // printf("%s\n", exec->command[index + 1]);
         pipe(tpipe->fd);
         in_save =  tpipe->fd[0];
     }
+
     command_parser = ft_split(exec->command[index], ' ');
     pid = fork();
     if (pid == 0)
     {
-		ft_pipe(in, tpipe, command_parser);
+      //  printf("%d\n", exec->pipe_flag);
+		ft_pipe(in, tpipe, exec, index, fd);
 		exit(0);
     }
     if (in != -1)
         close(in);
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
-  	execute_pipe(exec, index + 2, in_save , tpipe);
+    if (index == tpipe->max - 1 && exec->pipe_flag == 1)
+    {
+        ft_pipe(in, tpipe, exec, index, fd);
+        close(fd);
+    }  
+    if(index < tpipe->max - 1)
+  	    execute_pipe(exec, index + 2, in_save , tpipe);
     waitpid(pid , 0 , 0);
-    // if(ft_strcmp(exec->command[index + 1], ">") == 0)
-    // {
-    //     fd = open(exec->command[index + 2], O_CREAT | O_TRUNC | O_RDWR,  0644);
-    //     if(fd == -1)
-    //         return (printf("file not found\n"), 0);
-    //     dup2(fd, 0);
-    //     close(fd);
-    //     dup2(tpipe->fd[1], 1);
-    //     close(tpipe->fd[1]);
-    //     close(in_save);
-    //    // printf("%s\n", exec->command[index + 1]);
-    // }
      return 0;
 }
 

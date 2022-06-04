@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/02 00:28:31 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/04 02:02:34 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	ft_fill_exec(t_exec *exec, t_token *token)
 {
 	int i = 0;
 	int head_flag = 0;
+	exec->pipe_flag = 0;
 	exec->command = malloc(sizeof(char *) * ft_count_tokens(token) + 1);
 	while(token)
 	{
@@ -74,7 +75,6 @@ void	ft_fill_exec(t_exec *exec, t_token *token)
 		token = token->next;
 	}
 	exec->command[i + 1] = 0;
-	
 }
 
 void	print_list(t_token *token)
@@ -119,6 +119,11 @@ int ft_count_till_last_token(t_exec *exec, char *token)
 	{
 		if(ft_strcmp(exec->command[i], token) == 0)
 			count += 2;
+		if (ft_strcmp(exec->command[i], ">") == 0)
+		{
+			exec->pipe_flag = 1;
+			//count += 2;
+		}
 		i++;
 	}
 	if(ft_strcmp(exec->command[i - 1], token) == 0 || !exec->command[i - 1])
@@ -140,11 +145,13 @@ void	ft_mini_pipe(t_exec *exec, char **envp, t_pipe *pipes)
 		printf("%s\n", ft_exec_command(envp, exec->command[0]));
 		pid = fork();
 		if (pid == 0)
-			printf("%d\n", execve(ft_exec_command(envp, command_parser[0]), command_parser, envp));
+			execve(ft_exec_command(envp, command_parser[0]), command_parser, envp);
 	}
 	else if(pipes_count > 0)
 	{
-		ft_assign_tpipe(pipes, pipes_count , envp);
+		// printf("%d pipe_flag <<\n", exec->pipe_flag);
+
+			ft_assign_tpipe(pipes, pipes_count, envp);
 		execute_pipe(exec, 0, -1, pipes);
 	}
 }
@@ -193,7 +200,7 @@ int	main(int argc, char **argv, char **envp)
 			//print_lst(lst);
 			// printf("\nREDIR LIST\n\n");
 			//print_redir(redir);
-			ft_free(exec.command);
+			//ft_free(exec.command);
 		}
 	}
 	return (0);

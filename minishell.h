@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/01 21:17:14 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/03 18:15:13 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ typedef struct s_pipe
 typedef struct s_exec
 {
 	char **command;
-	char **redirections;
-	char **files;
+	int pipe_flag;
 } t_exec;
 
 int ft_strcmp(char *s1, char *s2);
