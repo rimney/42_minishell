@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/04 05:36:09 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/04 21:35:31 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ void	ft_assign_tpipe(t_pipe *pipe, int argc, char **envp)
 
 void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
 {
-    char **command_parser;
-    
+
     if  (in != -1)
     {
         dup2(in , 0);    
@@ -50,19 +49,13 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
         dup2(tpipe->fd[1] , 1);
         close(tpipe->fd[1]);
     }
-    command_parser = ft_split(exec->command[index], ' ');
+
     close(tpipe->fd[0]);
-    if(execve(ft_exec_command(tpipe->env->envp, command_parser[0]), command_parser, tpipe->env->envp) == -1)
-	{
-		printf("command not found\n");
-		exit(0);
-	}
+    ft_execute_command(exec, index);
 }
 
  void    ft_apply_redirection_after_pipe(int in, int out, t_pipe *tpipe, t_exec *exec, int index)
  {
-    char **command_parser;
-
     
     if (in != -1)
     {
@@ -74,13 +67,9 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
         dup2(out, 1);
         close(out);
     }
-    command_parser = ft_split(exec->command[index], ' ');
     close(tpipe->fd[0]);
-    if(execve(ft_exec_command(tpipe->env->envp, command_parser[0]), command_parser, tpipe->env->envp) == -1)
-	{
-		printf("command not found\n");
-		exit(0);
-	}
+     ft_execute_command(exec, index);
+    exit(0);
  }
 
 
@@ -108,7 +97,7 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(in);
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
-    if (index == tpipe->max - 1 && exec->pipe_flag == 1)
+    if (index == tpipe->max - 1 && exec->input_flag == 1)
     {
         fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_APPEND, 0644);
         in_save = tpipe->fd[0];

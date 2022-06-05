@@ -1,7 +1,6 @@
 Makefile
 TERM_PROGRAM=vscode
 ft_count_tokens.c
-ls
 minishell
 minishell.c
 minishell.dSYM
@@ -11,9 +10,7 @@ ouy
 parse.c
 parse_token.c
 parsing.h
-pp
 ppp111
-qq
 quotes.c
 qwe
 redir.c

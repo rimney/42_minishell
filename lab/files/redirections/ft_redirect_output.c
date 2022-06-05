@@ -6,27 +6,19 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/01 21:21:08 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/05 04:37:13 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
 
-void	ft_single_redirect(char **argv)
+void	ft_single_redirect(char *argv)
 {
-	int fd;
-	char *line;
+	// int fd;
 
-	fd = open(argv[1], O_CREAT | O_RDWR, 0644);
-	while(1)
-	{
-		fd = open(argv[1], O_RDWR | O_APPEND, 0644);
-		line = readline("");
-		write(fd, line, strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-	}
+	// fd = open(argv, O_RDWR , 0644);
+	printf("%s\n", argv);
 }
 
 void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe)
@@ -60,39 +52,23 @@ void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe)
 //	free(command);
 }
 
-int	ft_redirect(int argc, t_exec *exec, t_pipe *tpipe, char **envp)
+int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe)
 {
 	int fd;
-	int i;
 	int pid;
-	char **command_parser;
 
-	i = 0;
 	tpipe->max = 0;
-	command_parser = ft_split(exec->command[0], ' ');
-	if(argc == 1 && ft_strcmp(exec->command[0], ">") == 0)
-		ft_single_redirect(exec->command);
-	else
+	pid = fork();
+	if(pid == 0)
 	{
-		while(i < argc)
-		{
-			if(ft_strcmp(exec->command[i], ">") == 0)
-			{
-				pid = fork();
-				if(pid == 0)
-				{
-					fd = open(exec->command[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-					dup2(fd, 1);
-					execve(ft_exec_command(envp, command_parser[0]), command_parser, envp);
-					close(fd);
-				}
-				else
-					waitpid(pid, 0, 0);
-			}
-			i++;
-		}
+		fd = open(exec->command[index + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		dup2(fd, 1);
+		ft_execute_command(exec, index - 1);
+		close(fd);
 	}
-	return (0);
+	else
+			waitpid(pid, 0, 0);
+	return (1);
 }
 
 // int main(int argc, char **argv, char **envp)

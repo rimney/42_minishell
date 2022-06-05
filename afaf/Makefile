@@ -6,14 +6,14 @@
 #    By: rimney <rimney@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/28 12:27:57 by atarchou          #+#    #+#              #
-#    Updated: 2022/06/01 16:54:04 by rimney           ###   ########.fr        #
+#    Updated: 2022/06/05 04:50:30 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -lreadline
-RL_FLAGS = -L /Users/atarchou/homebrew/opt/readline/lib -I /Users/atarchou/homebrew/opt/readline/include
+FLAGS = -Wall -Wextra -Werror -lreadline -g
+RL_FLAGS = -L /Users/atarchou/homebrew/opt/readline/lib -I /Users/atarchou/homebrew/opt/readline/include #-fsanitize=address -g
 SRCS = parse.c\
 		redir.c\
 		parse_token.c\
@@ -28,7 +28,7 @@ SRCS = parse.c\
 
 
 $(NAME) : $(SRCS)
-			$(CC) $(SRCS) $(RL_FLAGS) $(FLAGS) -o $(NAME) 
+			$(CC) $(SRCS) $(RL_FLAGS) $(FLAGS)  -o $(NAME) 
 
 all : $(NAME)
 

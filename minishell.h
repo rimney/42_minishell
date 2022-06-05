@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/03 18:15:13 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/05 04:38:31 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_env
 
 typedef struct s_pipe
 {
+	
 	int fd[2];
 	int in;
 	int max;
@@ -46,7 +47,18 @@ typedef struct s_pipe
 typedef struct s_exec
 {
 	char **command;
+	int input_count;
+	int input_flag;
+	int redirection_count;
+	int redirecion_flag;
+	int append_count;
+	int append_flag;
+	int heredoc_count;
+	int heredoc_flag;
+	int pipe_count;
 	int pipe_flag;
+	int args;
+	t_env env;
 } t_exec;
 
 int ft_strcmp(char *s1, char *s2);
@@ -64,10 +76,9 @@ int ft_is_space(char *str);
 char	*ft_locate_env(char **env);
 char	*ft_filter_command(char *command);
 void	ft_free(char **value);
-void	ft_single_redirect(char **argv);
-// void    ft_advanced_redirect(t_exec *exec, char **envp, int i);
+void	ft_single_redirect(char *argv);
 char	*ft_is_a_command(char **env, char *command);
-int	ft_redirect(int argc, t_exec *exec, t_pipe *tpipe, char **envp);
+int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe);
 void    ft_print_history(char *history);
 int	ft_count_elements(char **str);
 char	*ft_check_command(char **env, char *command);
@@ -87,4 +98,5 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe);
 void	ft_assign_tpipe(t_pipe *pipe, int argc, char **envp);
 void    ft_get_env(t_env *env, char **envp);
 void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe);
+void    ft_execute_command(t_exec *exec, int index);
 # endif

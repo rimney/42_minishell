@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/04 02:02:34 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/05 04:52:43 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,29 @@ int	ft_count_tokens(t_token *token)
 	return (i);
 }
 
-void	ft_fill_exec(t_exec *exec, t_token *token)
+void	ft_initialize_exec(t_exec *exec, char **envp, t_token *token, t_pipe *pipes)
+{
+	ft_get_env(&exec->env, envp);
+	exec->args = ft_count_tokens(token);
+	exec->append_count = 0;
+	exec->heredoc_count = 0;
+	exec->input_count = 0;
+	exec->redirection_count = 0;
+	exec->append_flag = 0;
+	exec->input_flag = 0;
+	exec->heredoc_flag = 0;
+	exec->redirecion_flag = 0;
+	exec->pipe_count = 0;
+	exec->pipe_flag = 0;
+	pipes->max = 1;
+}
+
+void	ft_fill_exec(t_exec *exec, t_token *token, char **envp, t_pipe *tpipe)
 {
 	int i = 0;
 	int head_flag = 0;
-	exec->pipe_flag = 0;
+
+	ft_initialize_exec(exec, envp, token, tpipe);
 	exec->command = malloc(sizeof(char *) * ft_count_tokens(token) + 1);
 	while(token)
 	{
@@ -108,63 +126,90 @@ int	is_token(char *str)
 		return (0);
 }
 
-int ft_count_till_last_token(t_exec *exec, char *token)
+
+
+void ft_count_till_last_token(t_exec *exec, t_pipe *pipes)
 {
 	int i;
 	int count;
 
 	i = 0;
 	count = 0;
-	while (exec->command[i])
+	while (i < exec->args)
 	{
-		if(ft_strcmp(exec->command[i], token) == 0)
-			count += 2;
-		if (ft_strcmp(exec->command[i], ">") == 0)
+		if(ft_strcmp(exec->command[i], "|") == 0)
 		{
-			exec->pipe_flag = 1;
-			//count += 2;
+			exec->pipe_count += 2;
+			pipes->max += 2;
 		}
+		else if(ft_strcmp(exec->command[i], ">") == 0)
+			exec->redirection_count += 2;
+		else if(ft_strcmp(exec->command[i], ">>") == 0)
+			exec->append_count += 2;
+		else if(ft_strcmp(exec->command[i], "<") == 0)
+			exec->input_count += 2;
+		else if(ft_strcmp(exec->command[i], "<<") == 0)
+			exec->heredoc_count += 2;
 		i++;
 	}
-	if(ft_strcmp(exec->command[i - 1], token) == 0 || !exec->command[i - 1])
-		return (printf("error\n"), 0);
-	return (count + 1);
+	// if(exec->command[i + 1] || !exec->command[i - 1])
+	// 	return (printf("error\n"), 0);
 }
 
 
-void	ft_mini_pipe(t_exec *exec, char **envp, t_pipe *pipes)
+// void	ft_mini_pipe(t_exec *exec, t_pipe *pipes)
+// {
+// //	int pid;
+// //	char **command_parser;
+// 	int pipes_count;
+
+// 	pipes_count = 0;
+// 	if(pipes_count == 0)
+// 	{
+// 		printf("%s\n", exec->command[0]);
+// 		ft_execute_command(exec, 0);
+
+// 	}
+// 	else if(pipes_count > 0)
+// 	{
+// 		// printf("%d pipe_flag <<\n", exec->pipe_flag);
+
+// 		ft_assign_tpipe(pipes, pipes_count, exec->env.envp);
+// 		execute_pipe(exec, 0, -1, pipes);
+// 	}
+// }
+
+// void	ft_mini_output_redirection(t_exec *exec, t_pipe *pipes)
+// {
+// //	char **command_parser;
+// 	int redirection_count;
+
+// 	pipes->max = 0;
+// 	redirection_count = ft_count_till_last_token(exec, ">");
+// 	ft_redirect(redirection_count, exec, pipes);
+// }
+
+
+void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 {
-	int pid;
-	char **command_parser;
-	int pipes_count;
+	int i;
+	//int fd;
 
-	pipes_count = ft_count_till_last_token(exec, "|");
-	if(pipes_count == 0)
-	{
-		command_parser = ft_split(exec->command[0], ' ');
-		printf("%s\n", ft_exec_command(envp, exec->command[0]));
-		pid = fork();
-		if (pid == 0)
-			execve(ft_exec_command(envp, command_parser[0]), command_parser, envp);
-	}
-	else if(pipes_count > 0)
-	{
-		// printf("%d pipe_flag <<\n", exec->pipe_flag);
-
-			ft_assign_tpipe(pipes, pipes_count, envp);
-		execute_pipe(exec, 0, -1, pipes);
-	}
-}
-
-void	ft_mini_output_redirection(t_exec *exec, char **envp, t_pipe *pipes)
-{
-//	char **command_parser;
-	int redirection_count;
-
-	pipes->max = 0;
-	redirection_count = ft_count_till_last_token(exec, ">");
-	ft_redirect(redirection_count, exec, pipes, envp);
-	
+	i = 0;
+	ft_count_till_last_token(exec, tpipe);
+	// while(exec->command[i])
+	// {
+	// 	printf("%s\n", exec->command[i]);
+	// 	// if(ft_strcmp(exec->command[i], ">") == 0)
+	// 	// {
+	// 	// 	//printf("%d <<\n", exec->redirection_count);
+	// 	// 	printf("%s\n", exec->command[0]);
+	// 	// //	ft_redirect(i,  exec, tpipe);
+	// 	// }
+	// 	i++;
+	// }
+	printf("%s\n", exec->command[0]);
+	tpipe->fd[0] = 0;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -175,7 +220,6 @@ int	main(int argc, char **argv, char **envp)
 	t_redir	*redir;
 	t_exec exec;
 	 t_pipe pipes;
-
 	i = 0;
 	redir = NULL;
 	(void)argv;
@@ -192,9 +236,13 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 			lst = token_split(line, ' ');
 			redir = parser(lst, line);
-			ft_fill_exec(&exec, lst);
+			//printf("here\n");
+			ft_fill_exec(&exec, lst, envp, &pipes);
+			
 		//	ft_print_exec(&exec);
-			ft_mini_pipe(&exec, envp, &pipes);
+		//ft_mini_pipe(&exec, &pipes);
+			ft_minishell(&exec, &pipes);
+			ft_initialize_exec(&exec,envp, lst, &pipes);
 			wait(NULL);
 			// printf("\nTOKEN LIST\n\n");
 			//print_lst(lst);
