@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/05 04:52:43 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/05 19:50:27 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void ft_count_till_last_token(t_exec *exec, t_pipe *pipes)
 
 	i = 0;
 	count = 0;
-	while (i < exec->args)
+	while (exec->command[i])
 	{
 		if(ft_strcmp(exec->command[i], "|") == 0)
 		{
@@ -150,6 +150,7 @@ void ft_count_till_last_token(t_exec *exec, t_pipe *pipes)
 			exec->input_count += 2;
 		else if(ft_strcmp(exec->command[i], "<<") == 0)
 			exec->heredoc_count += 2;
+	//	printf("%s\n", exec->command[i]);
 		i++;
 	}
 	// if(exec->command[i + 1] || !exec->command[i - 1])
@@ -193,22 +194,22 @@ void ft_count_till_last_token(t_exec *exec, t_pipe *pipes)
 void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 {
 	int i;
-	//int fd;
+	int command_location;
 
 	i = 0;
 	ft_count_till_last_token(exec, tpipe);
-	// while(exec->command[i])
-	// {
-	// 	printf("%s\n", exec->command[i]);
-	// 	// if(ft_strcmp(exec->command[i], ">") == 0)
-	// 	// {
-	// 	// 	//printf("%d <<\n", exec->redirection_count);
-	// 	// 	printf("%s\n", exec->command[0]);
-	// 	// //	ft_redirect(i,  exec, tpipe);
-	// 	// }
-	// 	i++;
-	// }
-	printf("%s\n", exec->command[0]);
+	while(exec->command[i])
+	{
+	//	printf("%s\n", exec->command[i]);
+		if(ft_strcmp(exec->command[i], ">") == 0)
+		{
+			command_location = i - 1;
+			//printf("%d\n", exec->redirection_count);
+			i += ft_redirect(i, exec, tpipe, command_location);
+		}
+		i++;
+	}
+	//printf("%s\n", exec->command[0]);
 	tpipe->fd[0] = 0;
 }
 

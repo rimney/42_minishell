@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/05 04:38:31 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/05 19:18:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*ft_filter_command(char *command);
 void	ft_free(char **value);
 void	ft_single_redirect(char *argv);
 char	*ft_is_a_command(char **env, char *command);
-int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe);
+int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe, int command_location);
 void    ft_print_history(char *history);
 int	ft_count_elements(char **str);
 char	*ft_check_command(char **env, char *command);

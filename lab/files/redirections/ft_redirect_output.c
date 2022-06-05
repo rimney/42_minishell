@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/05 04:37:13 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/05 20:09:24 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,32 @@ void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe)
 //	free(command);
 }
 
-int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe)
+int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe, int command_location)
 {
 	int fd;
 	int pid;
 
 	tpipe->max = 0;
-	pid = fork();
-	if(pid == 0)
+	while(index < exec->redirection_count)
 	{
 		fd = open(exec->command[index + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-		dup2(fd, 1);
-		ft_execute_command(exec, index - 1);
-		close(fd);
+		if(index + 1 == exec->redirection_count)
+		{
+			printf("here\n");
+			pid = fork();
+			if(pid == 0)
+			{
+				dup2(fd, 1);
+				ft_execute_command(exec, command_location);
+				close(fd);
+			}
+		}
+		index += 2;
 	}
-	else
-			waitpid(pid, 0, 0);
-	return (1);
+	wait(NULL);
+	printf("%d < index\n", index);
+	printf("%d < redi \n", exec->redirection_count);
+	return (index);
 }
 
 // int main(int argc, char **argv, char **envp)
