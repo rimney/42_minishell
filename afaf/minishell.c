@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/05 19:50:27 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/06 03:52:50 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,20 +197,29 @@ void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 	int command_location;
 
 	i = 0;
+	//tpipe->fd[0] = -1;
+	//tpipe->fd[1]=  -1;
 	ft_count_till_last_token(exec, tpipe);
+	//ft_assign_tpipe(tpipe, exec->pipe_count, envp);
 	while(exec->command[i])
 	{
-	//	printf("%s\n", exec->command[i]);
 		if(ft_strcmp(exec->command[i], ">") == 0)
 		{
 			command_location = i - 1;
-			//printf("%d\n", exec->redirection_count);
 			i += ft_redirect(i, exec, tpipe, command_location);
+			i--;
+		}
+		if(ft_strcmp(exec->command[i], "|") == 0)
+		{
+			tpipe->max = exec->pipe_count;
+			tpipe->in_save = 0;
+
+			execute_pipe(exec, i + 1, -1, tpipe);
 		}
 		i++;
 	}
 	//printf("%s\n", exec->command[0]);
-	tpipe->fd[0] = 0;
+	//tpipe->fd[0] = 0;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -220,7 +229,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*lst;
 	t_redir	*redir;
 	t_exec exec;
-	 t_pipe pipes;
+	t_pipe pipes;
 	i = 0;
 	redir = NULL;
 	(void)argv;

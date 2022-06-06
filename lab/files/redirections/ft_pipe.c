@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/04 21:35:31 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/06 03:52:27 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(in);
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
-    if (index == tpipe->max - 1 && exec->input_flag == 1)
+    if (index == tpipe->max - 1)
     {
         fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_APPEND, 0644);
         in_save = tpipe->fd[0];
@@ -105,10 +105,10 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         if(pid == 0)
          ft_apply_redirection_after_pipe(in_save, fd,  tpipe, exec, index);
     }  
-    if(index < tpipe->max - 1)
+    if(index < tpipe->max)
   	    execute_pipe(exec, index + 2, in_save , tpipe);
     waitpid(pid , 0 , 0);
-     return 0;
+     return index;
 }
 
 

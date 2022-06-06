@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/05 20:09:24 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/05 22:40:15 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe, int command_location)
 		index += 2;
 	}
 	wait(NULL);
-	printf("%d < index\n", index);
-	printf("%d < redi \n", exec->redirection_count);
 	return (index);
 }
 

@@ -1,0 +1,31 @@
+1
+22
+3
+Makefile
+TERM_PROGRAM=vscode
+cat
+ft_count_tokens.c
+in
+minishell
+minishell.c
+minishell.dSYM
+o33
+oit
+ot
+out
+out f ls
+out2
+out23
+out2| ls
+out| ls
+parse.c
+parse_token.c
+parsing.h
+pit
+quotes.c
+redir.c
+ryad
+s
+signals.c
+utils.c
+utils_2.c
