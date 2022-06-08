@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/08 04:25:49 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/09 00:02:16 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
     // printf("%d << index \n", index);
     // printf("%d << max \n", tpipe->max);
     //close(tpipe->fd[0]);
-  
     if (index < tpipe->max)
   	    execute_pipe(exec, index + 2, in_save , tpipe);
     waitpid(pid , 0 , 0);

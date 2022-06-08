@@ -1,6 +1,7 @@
 Makefile
 ft_count_tokens.c
 in
+inin
 ls
 minishell
 minishell.c
@@ -11,6 +12,7 @@ out2
 parse.c
 parse_token.c
 parsing.h
+put
 quotes.c
 redir.c
 signals.c
