@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/05 19:18:28 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/08 00:46:06 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,9 @@ int    ft_redirect_input(int argc, char **argv, char **envp);
 int ft_execute_heredoc(int argc, char **argv, char **envp);
 int ft_count_elements(char **str);
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe);
-void	ft_assign_tpipe(t_pipe *pipe, int argc, char **envp);
+void	ft_assign_tpipe(t_pipe *pipe, int argc);
 void    ft_get_env(t_env *env, char **envp);
 void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe);
 void    ft_execute_command(t_exec *exec, int index);
+int only_pipe_flag(t_exec *exec);
 # endif

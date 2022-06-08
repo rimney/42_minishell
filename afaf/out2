@@ -5,10 +5,9 @@ ls
 minishell
 minishell.c
 minishell.dSYM
-ot
+ou2
 out
 out2
-ouy
 parse.c
 parse_token.c
 parsing.h
@@ -17,3 +16,4 @@ redir.c
 signals.c
 utils.c
 utils_2.c
+wc
