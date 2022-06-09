@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/09 04:39:56 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/09 21:47:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char    *ft_strjoin(char *s1, char *s2, char *s3);
 char	**ft_split(char const *s, char c);
 int     ft_strncmp(char *s1, char *s2, int n);
 void	ft_single_append(int argc, char **argv);
-int	ft_append(int argc, char **argv, char **envp);
+int	ft_append(int index, t_exec *exec, t_pipe *tpipe, int command_location);;
 char	*ft_exec_command(char **envp, char *command);
 void	ft_advanced_append(int argc, char **argv, char **envp, int i);
 int ft_is_space(char *str);
@@ -92,7 +92,6 @@ char    *ft_strdup(char *s1, int flag);
 void    ft_get_env(t_env *env, char **envp);
 int ft_find_variable_index(char *str, char c);
 int ft_count_elements(char **str);
-int	ft_append(int argc, char **argv, char **envp);
 int    ft_redirect_input(int argc, char **argv, char **envp);
 int ft_count_elements(char **str);
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe);

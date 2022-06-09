@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/09 00:02:16 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/09 21:35:40 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,15 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(in);
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
-    // if (index == tpipe->max - 1 && exec->redirection_count > 0)
-    // {
-    //     fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_APPEND, 0644);
-    //     in_save = tpipe->fd[0];
-    //     pid = fork();
-    //     if(pid == 0)
-    //      ft_apply_redirection_after_pipe(in_save, fd,  tpipe, exec, index);
-    // } 
+    if (index + 1 == tpipe->max&& exec->redirection_count > 0)
+    {
+        printf("%d <<\n", exec->redirection_count);
+        fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_APPEND, 0644);
+        in_save = tpipe->fd[0];
+        pid = fork();
+        if(pid == 0)
+         ft_apply_redirection_after_pipe(in_save, fd,  tpipe, exec, index);
+    } 
     // printf("%d << index \n", index);
     // printf("%d << max \n", tpipe->max);
     //close(tpipe->fd[0]);

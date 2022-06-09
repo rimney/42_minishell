@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/09 04:36:48 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/09 22:15:39 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,13 @@ int only_heredoc_flag(t_exec *exec)
 	return (-1);
 }
 
+int only_append_flag(t_exec *exec)
+{
+	if(exec->pipe_count == 0 && exec->input_count == 0 && exec->append_count > 0
+		&& exec->heredoc_count == 0 && exec->redirection_count == 0 && exec->args > 0)
+			return (1);
+	return (-1);
+}
 
 int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int index)
 {
@@ -248,6 +255,33 @@ int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int index)
 	{
 		//printf("%d << redirections count \n", exec->redirection_count);
 		ft_assign_tpipe(tpipe, exec->pipe_count + (exec->redirection_count - 1));
+		execute_pipe(exec, i + 1, -1, tpipe);
+		//printf("%d << \n", exec->pipe_count);
+		i += exec->pipe_count;
+		//printf("%d\n", i);
+	}
+	return(i);
+}
+
+int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
+{
+	int i;
+	int command_location;
+
+	command_location = 0;
+	i = index;
+	if(ft_strcmp(exec->command[i], ">>") == 0)
+	{
+			printf("append\n");
+			command_location = i - 1;
+			ft_append(i, exec, tpipe, command_location);
+			i += exec->append_count;
+		//	i--;
+	}
+	if(exec->command[i] && ft_strcmp(exec->command[i], "|") == 0)
+	{
+		//printf("%d << redirections count \n", exec->redirection_count);
+		ft_assign_tpipe(tpipe, exec->pipe_count + (exec->append_count - 1));
 		execute_pipe(exec, i + 1, -1, tpipe);
 		//printf("%d << \n", exec->pipe_count);
 		i += exec->pipe_count;
@@ -287,15 +321,27 @@ void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 		ft_execute_heredoc(exec, tpipe);
 		return ;
 	}
-
+	else if(only_append_flag(exec) > 0)
+	{
+		ft_mini_append(exec, tpipe, 1);
+		return ;
+	}
 	else
 	{
 		while(exec->command[i + 1] != NULL)
 		{
-				if(ft_strcmp(exec->command[i], ">") == 0)
+			if(ft_strcmp(exec->command[i], ">") == 0 || ft_strcmp(exec->command[i], ">>") == 0)
 			{
-				ft_mini_redirect_output(exec, tpipe, i);
-				i += exec->redirection_count;
+				if(ft_strcmp(exec->command[i], ">") == 0)
+				{
+					ft_mini_redirect_output(exec, tpipe, i);
+					i += exec->redirection_count;
+				}
+				else if(ft_strcmp(exec->command[i], ">>") == 0)
+				{
+					ft_mini_append(exec, tpipe, i);
+					i += exec->append_count;
+				}
 			}
 		// else
 		// 	printf("dodo\n");
