@@ -24,6 +24,7 @@ SRCS = parse.c\
 		../lab/files/libfunctions/*.c \
 		../lab/files/redirections/ft_pipe.c \
 		../lab/files/redirections/ft_redirect_output.c \
+		../lab/files/redirections/ft_heredoc.c
 		
 
 

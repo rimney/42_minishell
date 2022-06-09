@@ -1,0 +1,16 @@
+Makefile
+cat
+ft_count_tokens.c
+minishell
+minishell.c
+minishell.dSYM
+out
+out >>> out2
+parse.c
+parse_token.c
+parsing.h
+quotes.c
+redir.c
+signals.c
+utils.c
+utils_2.c

@@ -6,13 +6,13 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 01:54:28 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/31 01:30:36 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/09 04:39:01 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-int ft_get_last_delimiter(int argc, char **argv, int index)
+int ft_get_last_delimiter(t_exec *exec, int index)
 {
     int i;
     int delimiter;
@@ -20,22 +20,21 @@ int ft_get_last_delimiter(int argc, char **argv, int index)
 
     i = index;
     delimiter = 0;
-    while(i < argc)
+    while(i < exec->args)
     {
-        if(ft_strcmp(argv[i], "<<") == 0)
+        if(ft_strcmp(exec->command[i], "<<") == 0)
             delimiter = i;
         i++;
     }
     return (delimiter);
 }
 
-int ft_exec_heredoc(char **argv, char **envp, int index, int fd[2])
+int ft_exec_heredoc(t_exec *exec, int index, int fd[2])
 {
     char *delimiter;
     char *line;
-	char **command_2D;
 
-    delimiter = strdup(argv[index + 1]);
+    delimiter = strdup(exec->command[index + 1]);
     while((line = readline("heredoc > ")))
     {
         if (ft_strcmp(line, delimiter) != 0)
@@ -48,8 +47,7 @@ int ft_exec_heredoc(char **argv, char **envp, int index, int fd[2])
             close(fd[1]);
             dup2(fd[0], 0);
            close(fd[0]);
-			command_2D = ft_split(argv[1], ' ');
-          	  execve(ft_exec_command(envp, argv[1]), command_2D, envp);
+            ft_execute_command(exec, 0);
             return (1);
         }
         free(line);
@@ -58,7 +56,7 @@ int ft_exec_heredoc(char **argv, char **envp, int index, int fd[2])
     return(0); 
 }
 
-void ft_heredoc(int argc, char **argv, char **envp, int index)
+void ft_heredoc(t_exec *exec)
 {
     int i;
     int pid;
@@ -68,7 +66,7 @@ void ft_heredoc(int argc, char **argv, char **envp, int index)
     pipe(fd);
     pid = fork();
     if(pid == 0)
-        ft_exec_heredoc(argv, envp, ft_get_last_delimiter(argc, argv, 0), fd);
+        ft_exec_heredoc(exec, ft_get_last_delimiter(exec, 0), fd);
     else
     {
         close(fd[0]);
@@ -78,12 +76,12 @@ void ft_heredoc(int argc, char **argv, char **envp, int index)
  
 }
 
-int ft_basic_heredoc(int argc, char **argv, int index)
+int ft_basic_heredoc(t_exec *exec, int index)
 {
     char *line;
     char *delimiter;
 
-    delimiter = strdup(argv[index + 1]);
+    delimiter = strdup(exec->command[index + 1]);
     while((line = readline("heredoc_basic >")))
     {
         if(ft_strcmp(line, delimiter) == 0)
@@ -97,23 +95,23 @@ int ft_basic_heredoc(int argc, char **argv, int index)
     return (0);
 }
 
-void    ft_advanced_heredoc(int argc, char **argv, char **envp, int index)
+void    ft_advanced_heredoc(t_exec *exec)
 {
     int i;
     int pid;
 
     i = 0;
-    while (i < ft_get_last_delimiter(argc, argv, 0))
+    while (i < ft_get_last_delimiter(exec,  0))
     {
-        if (ft_strcmp(argv[i], "<<") == 0)
-            ft_basic_heredoc(argc, argv, i);
+        if (ft_strcmp(exec->command[i], "<<") == 0)
+            ft_basic_heredoc(exec, i);
         i++;
     }
-    if (i == ft_get_last_delimiter(argc, argv, 0))
+    if (i == ft_get_last_delimiter(exec, 0))
     {
         pid = fork();
         if (pid == 0)
-            ft_heredoc(argc, argv, envp, i);
+            ft_heredoc(exec);
         else
             waitpid(pid, 0, 0);
     }
@@ -121,11 +119,12 @@ void    ft_advanced_heredoc(int argc, char **argv, char **envp, int index)
     
 }
 
-int ft_execute_heredoc(int argc, char **argv, char **envp)
+int ft_execute_heredoc(t_exec *exec, t_pipe *pipes)
 {
-    if(ft_get_last_delimiter(argc, argv, 0) == 2)
-        ft_heredoc(argc, argv, envp, 0);
+    pipes->fd[0] = 0;
+    if(ft_get_last_delimiter(exec, 0) == 1)
+        ft_heredoc(exec);
     else
-        ft_advanced_heredoc(argc, argv, envp, 1);
+        ft_advanced_heredoc(exec);
     return (0);
 }
