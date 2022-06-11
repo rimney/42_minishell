@@ -1,0 +1,24 @@
+Makefile
+a.c
+a.out
+ff
+ft_count_tokens.c
+git
+ls
+minishell
+minishell.c
+minishell.dSYM
+out
+out2
+outn
+parse.c
+parse_token.c
+parsing.h
+quotes.c
+redir.c
+signals.c
+ut
+utils.c
+utils_2.c
+wc
+wc -l
