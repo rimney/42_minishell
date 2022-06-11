@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 01:54:28 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/09 04:39:01 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/11 02:44:25 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ int ft_get_last_delimiter(t_exec *exec, int index)
     return (delimiter);
 }
 
-int ft_exec_heredoc(t_exec *exec, int index, int fd[2])
+int ft_exec_heredoc(t_exec *exec, int index, int fd[2], int command_loaction)
 {
     char *delimiter;
     char *line;
+
 
     delimiter = strdup(exec->command[index + 1]);
     while((line = readline("heredoc > ")))
@@ -47,7 +48,7 @@ int ft_exec_heredoc(t_exec *exec, int index, int fd[2])
             close(fd[1]);
             dup2(fd[0], 0);
            close(fd[0]);
-            ft_execute_command(exec, 0);
+            ft_execute_command(exec, command_loaction);
             return (1);
         }
         free(line);
@@ -56,7 +57,7 @@ int ft_exec_heredoc(t_exec *exec, int index, int fd[2])
     return(0); 
 }
 
-void ft_heredoc(t_exec *exec)
+void ft_heredoc(t_exec *exec, int command_location)
 {
     int i;
     int pid;
@@ -66,7 +67,7 @@ void ft_heredoc(t_exec *exec)
     pipe(fd);
     pid = fork();
     if(pid == 0)
-        ft_exec_heredoc(exec, ft_get_last_delimiter(exec, 0), fd);
+        ft_exec_heredoc(exec, ft_get_last_delimiter(exec, 0), fd, command_location);
     else
     {
         close(fd[0]);
@@ -95,12 +96,12 @@ int ft_basic_heredoc(t_exec *exec, int index)
     return (0);
 }
 
-void    ft_advanced_heredoc(t_exec *exec)
+void    ft_advanced_heredoc(t_exec *exec, int index, int command_location)
 {
     int i;
     int pid;
 
-    i = 0;
+    i = index;
     while (i < ft_get_last_delimiter(exec,  0))
     {
         if (ft_strcmp(exec->command[i], "<<") == 0)
@@ -111,7 +112,7 @@ void    ft_advanced_heredoc(t_exec *exec)
     {
         pid = fork();
         if (pid == 0)
-            ft_heredoc(exec);
+            ft_heredoc(exec, command_location);
         else
             waitpid(pid, 0, 0);
     }
@@ -119,12 +120,15 @@ void    ft_advanced_heredoc(t_exec *exec)
     
 }
 
-int ft_execute_heredoc(t_exec *exec, t_pipe *pipes)
+int ft_execute_heredoc(t_exec *exec, t_pipe *pipes, int index)
 {
+    int command_location;
+
+    command_location = index - 1;
     pipes->fd[0] = 0;
     if(ft_get_last_delimiter(exec, 0) == 1)
-        ft_heredoc(exec);
+        ft_heredoc(exec, command_location);
     else
-        ft_advanced_heredoc(exec);
+        ft_advanced_heredoc(exec, index, command_location);
     return (0);
 }

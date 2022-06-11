@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/09 21:47:29 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/11 02:43:11 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,15 @@ int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe, int command_location);
 void    ft_print_history(char *history);
 int	ft_count_elements(char **str);
 char	*ft_check_command(char **env, char *command);
-int ft_exec_heredoc(t_exec *exec, int index, int fd[2]);
+int ft_exec_heredoc(t_exec *exec, int index, int fd[2], int command_location);
 int ft_basic_heredoc(t_exec *exec, int index);
 int ft_get_last_delimiter(t_exec *exec,  int index);
-int ft_execute_heredoc(t_exec *exec, t_pipe *pipes);
-void ft_heredoc(t_exec *exec);
+int ft_execute_heredoc(t_exec *exec, t_pipe *pipes, int index);
+void ft_heredoc(t_exec *exec, int command_location);
 int    ft_env(t_env *env);
 char    *ft_strdup(char *s1, int flag);
 void    ft_get_env(t_env *env, char **envp);
 int ft_find_variable_index(char *str, char c);
-int ft_count_elements(char **str);
-int    ft_redirect_input(int argc, char **argv, char **envp);
 int ft_count_elements(char **str);
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe);
 void	ft_assign_tpipe(t_pipe *pipe, int argc);
@@ -100,4 +98,5 @@ void    ft_get_env(t_env *env, char **envp);
 void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe);
 void    ft_execute_command(t_exec *exec, int index);
 int only_pipe_flag(t_exec *exec);
+int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index);
 # endif

@@ -6,55 +6,53 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 20:02:42 by rimney            #+#    #+#             */
-/*   Updated: 2022/05/31 01:28:29 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/10 03:11:42 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-void    redirect(int argc, char **argv, char **envp, int index)
+void    redirect(t_exec *exec)
 {
-    char *command;
-    char **command_parser;
     int fd;
-    int fd2;
 
-    fd = open(argv[argc - 1], O_RDONLY);
-     command_parser = argv + index + 1;
-
-    command = ft_exec_command(envp, argv[0]);
+    fd = open(exec->command[exec->input_count], O_RDONLY);
     dup2(fd, 0);
     close(fd);
-    execve(command, command_parser, envp);
+    ft_execute_command(exec, 0);
     
 }
 
-int    ft_redirect_input(int argc, char **argv, char **envp)
+int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index)
 {
     int i;
     int input_file;
     int pid;
 
-    i = 0;
-    while(i < argc)
+    i = index;
+    tpipe->fd[0] = 0;
+    while(i < exec->input_count)
     {
-        input_file = open(argv[argc - 1], O_RDONLY);
+       // printf("%s <<\n", exec->command[exec->input_count]);
+        input_file = open(exec->command[exec->input_count], O_RDONLY);
+       // printf("%d << input file\n", input_file);
         if(input_file == -1)
         {
-            perror("minishell ");
+            perror("minishell error");
             return 0;
         }
-        if(ft_strcmp(argv[i], "<") == 0)
+        if(ft_strcmp(exec->command[i], "<") == 0)
         {
+            //printf("dd\n");
             pid = fork();
             if (pid == 0)
-                redirect(argc, argv, envp, i);
+                redirect(exec);
             else
                 waitpid(pid, 0, 0);
         }
         i++;
     }
-    return (0);
+    return (i);
 }
 
 // int main(int argc, char **argv, char **envp)
