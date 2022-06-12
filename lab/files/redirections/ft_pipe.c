@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/10 21:57:43 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/12 05:20:44 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,20 +87,21 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(in);
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
-    // if (index + 1 == tpipe->max && exec->redirection_count > 0)
-    // {
-    //     printf("%d <<\n", exec->redirection_count);
-    //     fd = open(exec->command[index + 2], O_CREAT | O_RDWR | O_APPEND, 0644);
-    //     in_save = tpipe->fd[0];
-    //     pid = fork();
-    //     if(pid == 0)
-    //      ft_apply_redirection_after_pipe(in_save, fd,  tpipe, exec, index);
-    // } 
-    // printf("%d << index \n", index);
-    // printf("%d << max \n", tpipe->max);
-    //close(tpipe->fd[0]);
-    if (index < tpipe->max)
+   //     printf("HERE\n");
+     if (index < tpipe->max)
+     {
+        printf("%d < index %d > max\n", index, tpipe->max);
+        if(index + 1 == tpipe->max && exec->redirecion_flag == 1)
+        {
+            fd = open(exec->command[exec->redirection_count + exec->pipe_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
+            in_save = tpipe->fd[0];
+            printf("%s << index + 1\n", exec->command[tpipe->max + exec->redirection_count]);
+           ft_apply_redirection_after_pipe(in_save, fd, tpipe, exec, index + 2);
+            printf("%d << redirection count\n", exec->redirection_count);
+            printf("%s <<\n", exec->command[exec->redirection_count + exec->pipe_count + 2]);
+        }
   	    execute_pipe(exec, index + 2, in_save , tpipe);
+     }
     waitpid(pid , 0 , 0);
      return index;
 }

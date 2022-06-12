@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:04:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/07 21:02:01 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/12 01:21:23 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,14 @@ int	ft_redirect(int index, t_exec *exec, t_pipe *tpipe, int command_location)
 	int pid;
 
 	tpipe->max = 0;
+	printf("%d << index\n", index);
 	while(index < exec->redirection_count)
 	{
 		fd = open(exec->command[index + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		printf("%s <<\n", exec->command[index + 1]);
 		if(index + 1 == exec->redirection_count)
 		{
+			printf("dd\n");
 			pid = fork();
 			if(pid == 0)
 			{

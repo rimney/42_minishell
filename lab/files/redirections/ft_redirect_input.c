@@ -6,47 +6,53 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 20:02:42 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/10 03:11:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/11 21:55:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-void    redirect(t_exec *exec)
+void    redirect(t_exec *exec, int command_location)
 {
     int fd;
 
     fd = open(exec->command[exec->input_count], O_RDONLY);
     dup2(fd, 0);
     close(fd);
-    ft_execute_command(exec, 0);
+    ft_execute_command(exec, command_location);
     
 }
 
-int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index)
+int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index, int location_flag)
 {
     int i;
     int input_file;
     int pid;
+    int command_location;
 
     i = index;
     tpipe->fd[0] = 0;
+
+    if(location_flag == 0)
+         command_location = 0;
+    else
+        command_location = index - 1;
+    printf("%s << \n", exec->command[command_location]);
     while(i < exec->input_count)
     {
-       // printf("%s <<\n", exec->command[exec->input_count]);
+        //printf("%s <<\n", exec->command[exec->input_count]);
         input_file = open(exec->command[exec->input_count], O_RDONLY);
-       // printf("%d << input file\n", input_file);
         if(input_file == -1)
         {
             perror("minishell error");
             return 0;
         }
-        if(ft_strcmp(exec->command[i], "<") == 0)
+        if(ft_strcmp(exec->command[i], "<") == 0 && i == exec->input_count - 1)
         {
-            //printf("dd\n");
+         //   printf("dd\n");
             pid = fork();
             if (pid == 0)
-                redirect(exec);
+                redirect(exec, command_location);
             else
                 waitpid(pid, 0, 0);
         }

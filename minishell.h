@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/11 02:43:11 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/11 21:37:35 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,5 @@ void    ft_get_env(t_env *env, char **envp);
 void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe);
 void    ft_execute_command(t_exec *exec, int index);
 int only_pipe_flag(t_exec *exec);
-int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index);
+int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index, int location_flag);
 # endif

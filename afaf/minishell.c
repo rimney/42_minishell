@@ -6,12 +6,12 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/11 02:30:30 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/12 05:13:43 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
+int ft_is_another_flag(t_exec *exec, int index);
 char	*ft_simple_strjoin(char *s1, char *s2)
 {
 	int i;
@@ -158,19 +158,16 @@ void ft_count_till_last_token(t_exec *exec, t_pipe *pipes)
 }
 
 
-void	ft_mini_pipe(t_exec *exec, t_pipe *pipes)
+void	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 {
-//	int pid;
-//	char **command_parser;
-	int pipes_count = 0;
 
-	ft_count_till_last_token(exec, pipes);
-	printf("%d\n", exec->pipe_count);
-		// printf("%d pipe_flag <<\n", exec->pipe_flag);
+	int i;
 
-		ft_assign_tpipe(pipes, exec->pipe_count);
-		execute_pipe(exec, 0, -1, pipes);
-	printf("%d\n", pipes_count);
+	i = index;
+	in = open(exec->command[count], O_RDONLY);
+	ft_assign_tpipe(pipes, exec->pipe_count + (count - 1));
+	execute_pipe(exec, index + 1, in, pipes);
+	i += exec->pipe_count;
 }
 
 // void	ft_mini_output_redirection(t_exec *exec, t_pipe *pipes)
@@ -247,31 +244,43 @@ int only_input_flag(t_exec *exec)
 
 // int	after_
 
+int	ft_apply_pipe_after_redirection(int fd, t_exec *exec, t_pipe *tpipe, int index, int count)
+{
+	fd = open(exec->command[count], O_RDONLY);
+	ft_assign_tpipe(tpipe, exec->pipe_count + (count - 1));
+	execute_pipe(exec, index + 1, fd, tpipe);
+	return (1);
+}
+
+
 int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int index)
 {
 	int i;
 	int command_location;
-	int in;
+	int fd;
 
 	command_location = 0;
 	i = index;
+	fd = -1;
+	//printf("%s << index", exec->command[index]);
 	if(ft_strcmp(exec->command[i], ">") == 0)
 	{
-			command_location = i - 1;
-			ft_redirect(i, exec, tpipe, command_location);
+		exec->redirecion_flag = 1;
+		ft_redirect(i, exec, tpipe, 0);
 			i += exec->redirection_count;
-		//	i--;
 	}
-	if(exec->command[i] && ft_strcmp(exec->command[i], "|") == 0)
+	if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
 	{
-		in = open(exec->command[exec->redirection_count], O_RDONLY);
-		printf("%d << redirection count\n", exec->redirection_count);
-		ft_assign_tpipe(tpipe, exec->pipe_count + (exec->redirection_count - 1));
-		execute_pipe(exec, i + 1, in, tpipe);
-		//printf("%d << \n", exec->pipe_count);
+		ft_apply_pipe_after_redirection(fd, exec, tpipe, i, exec->redirection_count);
 		i += exec->pipe_count;
-		//printf("%d\n", i);
 	}
+	if(exec->command[i] && ft_is_another_flag(exec, i) == HEREDOC)
+	{
+		ft_execute_heredoc(exec, tpipe, i);
+		 i += exec->heredoc_count;
+	}
+	
+	
 	return(i);
 }
 
@@ -290,13 +299,8 @@ int ft_is_another_flag(t_exec *exec, int index)
 	return (0);
 }
 
-int	ft_apply_pipe_after_redirection(int fd, t_exec *exec, t_pipe *tpipe, int index)
-{
-	fd = open(exec->command[exec->append_count], O_RDONLY);
-	ft_assign_tpipe(tpipe, exec->pipe_count + (exec->append_count - 1));
-	execute_pipe(exec, index + 1, fd, tpipe);
-	return (1);
-}
+
+// int	ft_apply_output_redirection_after_pipe(inr )
 
 int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
 {
@@ -316,20 +320,26 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
 	}
 	if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
 	{
-		ft_apply_pipe_after_redirection(fd, exec, tpipe, i);
+		ft_mini_pipe(exec, tpipe, fd, exec->append_count, i);
 		i += exec->pipe_count;
 	}
-	if(exec->command[i] && ft_strcmp(exec->command[i], ">") == 0)
-	{
-		dup2(tpipe->in_save ,0);
-		close(tpipe->in_save);
-		ft_mini_redirect_output(exec, tpipe, i);
-		// i += exec->redirection_count;
-	}
-	if(exec->command[i] && ft_strcmp(exec->command[i], "<<") == 0)
+	// if(exec->command[i] && ft_strcmp(exec->command[i], ">") == 0)
+	// {
+	// 	// dup2(tpipe->in ,0);
+	// 	// close(tpipe->in);
+	// 	printf("here<< - \n");
+	// 	ft_mini_redirect_output(exec, tpipe, i);
+	// 	i += exec->redirection_count;
+	// }
+	if(exec->command[i] && ft_is_another_flag(exec, i) == HEREDOC)
 	{
 		ft_execute_heredoc(exec, tpipe, i);
 		 i += exec->heredoc_count;
+	}
+	if(exec->command[i] && ft_is_another_flag(exec, i) == REDIRIN)
+	{
+		ft_redirect_input(exec, tpipe, i, 1);
+		 i += exec->redirection_count;
 	}
 	return(i);
 }
@@ -348,6 +358,7 @@ int	ft_execute_only_flag(t_exec *exec, t_pipe *tpipe)
 	{
 		ft_assign_tpipe(tpipe, exec->pipe_count);
 		execute_pipe(exec, 0, -1, tpipe);
+		wait(NULL);
 	}
 	else if(only_output_redirection_flag(exec) > 0)
 		ft_mini_redirect_output(exec, tpipe, 1);
@@ -356,7 +367,7 @@ int	ft_execute_only_flag(t_exec *exec, t_pipe *tpipe)
 	else if(only_append_flag(exec) > 0)
 		ft_mini_append(exec, tpipe, 1);
 	else if(only_input_flag(exec) > 0)
-		ft_redirect_input(exec, tpipe, 0);
+		ft_redirect_input(exec, tpipe, 0, 0);
 	else
 		return (0);
 	return(1);
@@ -378,20 +389,17 @@ void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 	{
 		while(exec->command[i + 1] != NULL)
 		{
-			if(ft_strcmp(exec->command[i], ">") == 0 || ft_strcmp(exec->command[i], ">>") == 0)
+			// if(ft_strcmp(exec->command[i], ">") == 0)
+			// {
+			// 	printf("no\n");
+			// 		ft_mini_redirect_output(exec, tpipe, i);
+			// 		i += exec->redirection_count;
+			// }
+			if(ft_strcmp(exec->command[i], ">>") == 0)
 			{
-				if(ft_strcmp(exec->command[i], ">") == 0)
-				{
-					ft_mini_redirect_output(exec, tpipe, i);
-					i += exec->redirection_count;
-				}
-				else if(ft_strcmp(exec->command[i], ">>") == 0)
-				{
-					printf("%d << mini_append\n", ft_mini_append(exec, tpipe, i));
-					i += exec->append_count;
-					printf("%d << i\n", i);
-				}
-				
+				exec->redirecion_flag = 1;
+				ft_mini_append(exec, tpipe, i);
+				i += exec->append_count;
 			}
 		// else
 		// 	printf("dodo\n");
@@ -408,6 +416,7 @@ void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 		// 	 	i += exec->pipe_count;
 		// 		//printf("%d << \n", i);
 		// 	}
+		wait(NULL);
 		i++;
 		}
 	}
