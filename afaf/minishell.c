@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/13 03:49:05 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/13 06:40:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ void	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 	int i;
 
 	i = index;
+	printf("%s << from mini pipe\n", exec->command[i + exec->pipe_count]);
 	in = open(exec->command[count], O_RDONLY);
 	ft_assign_tpipe(pipes, exec->pipe_count + (count - 1));
 	execute_pipe(exec, index + 1, in, pipes);
@@ -300,27 +301,44 @@ int ft_is_another_flag(t_exec *exec, int index)
 }
 
 
-// int	ft_apply_output_redirection_after_pipe(inr )
+int	ft_count_till_other_token(t_exec *exec, int index, char *token)
+{
+	int i;
+	int count;
 
+	count = 0;
+	i = index;
+	while(exec->command[i])
+	{
+		if(ft_strcmp(exec->command[i], token) == 0)
+			count += 2;
+		else
+			return count;
+		i += 2;
+	}
+	return (count);
+}
 int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
 {
 	int i;
 	int command_location;
 	int fd;
+//	int temp_save;
 
 	command_location = 0;
 	i = index;
 	fd = -1;
+	exec->append_count = ft_count_till_other_token(exec, 1, ">>");
 	if(ft_strcmp(exec->command[i], ">>") == 0)
 	{
 			command_location = i - 1;
 			ft_append(i, exec, tpipe, command_location);
 			i += exec->append_count;
-		//	i--;
 	}
 	if(exec->command[i + exec->pipe_count])
 	{
-		if(ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0)
+		printf("%s <<\n", exec->command[i + exec->pipe_count]); // should start from here !!
+		if(ft_strcmp(exec->command[i + exec->pipe_count], ">>") == 0)
 		{
 			printf("%s <<\n", exec->command[i + exec->pipe_count + 1]);
 			exec->redirecion_flag = 1;

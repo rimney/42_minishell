@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/13 04:43:06 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/13 06:25:46 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,32 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
         close(out);
     }
     close(tpipe->fd[0]);
-    ft_execute_command(exec, index);
+        ft_execute_command(exec, index);
  }
 
+int ft_flag_after_pipe(t_exec *exec)
+{
+    if(exec->redirecion_flag == 1 || exec->append_flag == 1 || exec->input_flag == 1)
+        return (1);
+    return (0);
+}
+
+void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int index, int in_save)
+{
+    int pid;    
+
+    if(exec->redirecion_flag == 1)
+        fd = open(exec->command[index + exec->redirection_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
+    else if(exec->append_flag == 1)
+    {
+        printf("here\n");
+        fd = open(exec->command[index + exec->append_count + 2], O_RDWR | O_CREAT | O_APPEND, 0644);
+    }
+
+    pid = fork();
+        if(pid == 0)
+    ft_apply_redirection_after_pipe(in_save, fd, tpipe, exec, index + 2);
+}
 
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
 {
@@ -89,22 +112,14 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
    //     printf("HERE\n");
      if (index < tpipe->max)
      {
-     //   printf("%d << inin \n", index);
-        if(index + 1 == tpipe->max && exec->redirecion_flag == 1)
+        if(index + 1 == tpipe->max && ft_flag_after_pipe(exec))
         {
-           // printf("%s << index 1\n", exec->command[index + 2]);
-           // printf("%s << index 2\n", exec->command[index + exec->redirection_count + 1]);
-             fd = open(exec->command[index + exec->redirection_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
-            pid = fork();
-            if(pid == 0)
-                ft_apply_redirection_after_pipe(in_save, fd, tpipe, exec, index + 2);
-            else
-             waitpid(pid, 0, 0);
-           return 1;
+            printf("%d <<", exec->append_flag);
+            // ft_redirect_after_pipe_flag(exec, tpipe, fd,  index, in_save);
         }
   	    execute_pipe(exec, index + 2, in_save , tpipe);
      }
-    //waitpid(NULL);
+     wait(NULL);
      return index;
 }
 

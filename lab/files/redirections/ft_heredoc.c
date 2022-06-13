@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 01:54:28 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/11 02:44:25 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/13 05:47:19 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ int ft_basic_heredoc(t_exec *exec, int index)
 void    ft_advanced_heredoc(t_exec *exec, int index, int command_location)
 {
     int i;
-    int pid;
 
     i = index;
     while (i < ft_get_last_delimiter(exec,  0))
@@ -110,11 +109,7 @@ void    ft_advanced_heredoc(t_exec *exec, int index, int command_location)
     }
     if (i == ft_get_last_delimiter(exec, 0))
     {
-        pid = fork();
-        if (pid == 0)
-            ft_heredoc(exec, command_location);
-        else
-            waitpid(pid, 0, 0);
+        ft_heredoc(exec, command_location);
     }
         
     
