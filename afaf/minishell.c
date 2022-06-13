@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/13 06:40:28 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/13 09:29:27 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,20 @@ void	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 	int i;
 
 	i = index;
-	printf("%s << from mini pipe\n", exec->command[i + exec->pipe_count]);
+	if(exec->command[i + exec->pipe_count])
+	{
+		printf("%s dd<<\n", exec->command[i + exec->pipe_count]); // should start from here !!
+		if(ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0)
+		{
+			printf("%s <<\n", exec->command[i + exec->pipe_count + 1]);
+			exec->redirecion_flag = 1;
+		}
+			if(ft_strcmp(exec->command[i + exec->pipe_count], ">>") == 0)
+		{
+			printf("%s <<\n", exec->command[i + exec->pipe_count + 1]);
+			exec->append_flag = 1;
+		}
+	}
 	in = open(exec->command[count], O_RDONLY);
 	ft_assign_tpipe(pipes, exec->pipe_count + (count - 1));
 	execute_pipe(exec, index + 1, in, pipes);
@@ -196,6 +209,7 @@ int only_pipe_flag(t_exec *exec)
 
 	i = 0;
 	//ft_count_till_last_token(exec, pipes);
+	
 	if(exec->pipe_count > 0 && exec->input_count == 0 && exec->append_count == 0
 		&& exec->heredoc_count == 0 && exec->redirection_count == 0 && exec->args > 0)
 			return (1);

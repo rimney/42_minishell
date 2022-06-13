@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/13 06:25:46 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/13 09:30:53 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int ind
 
     if(exec->redirecion_flag == 1)
         fd = open(exec->command[index + exec->redirection_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
-    else if(exec->append_flag == 1)
+    if(exec->append_flag == 1)
     {
         printf("here\n");
         fd = open(exec->command[index + exec->append_count + 2], O_RDWR | O_CREAT | O_APPEND, 0644);
@@ -114,8 +114,8 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
      {
         if(index + 1 == tpipe->max && ft_flag_after_pipe(exec))
         {
-            printf("%d <<", exec->append_flag);
-            // ft_redirect_after_pipe_flag(exec, tpipe, fd,  index, in_save);
+            printf("%d flag<<", exec->append_flag);
+             ft_redirect_after_pipe_flag(exec, tpipe, fd,  index, in_save);
         }
   	    execute_pipe(exec, index + 2, in_save , tpipe);
      }
