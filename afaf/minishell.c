@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/12 05:13:43 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/13 03:49:05 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,6 +318,14 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
 			i += exec->append_count;
 		//	i--;
 	}
+	if(exec->command[i + exec->pipe_count])
+	{
+		if(ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0)
+		{
+			printf("%s <<\n", exec->command[i + exec->pipe_count + 1]);
+			exec->redirecion_flag = 1;
+		}
+	}
 	if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
 	{
 		ft_mini_pipe(exec, tpipe, fd, exec->append_count, i);
@@ -341,6 +349,8 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
 		ft_redirect_input(exec, tpipe, i, 1);
 		 i += exec->redirection_count;
 	}
+	else 
+		printf("dd\n");
 	return(i);
 }
 
@@ -397,7 +407,7 @@ void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 			// }
 			if(ft_strcmp(exec->command[i], ">>") == 0)
 			{
-				exec->redirecion_flag = 1;
+				//exec->redirecion_flag = 1;
 				ft_mini_append(exec, tpipe, i);
 				i += exec->append_count;
 			}
