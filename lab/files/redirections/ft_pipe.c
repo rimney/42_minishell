@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/14 04:46:51 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/14 05:29:21 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,10 @@ void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int ind
     int pid;    
 
     if(exec->redirecion_flag == 1)
-    {
-        printf("gege\n");
         fd = open(exec->command[index + exec->redirection_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
-    }
-     if(exec->append_flag == 1)
-    {
+    if(exec->append_flag == 1)
         fd = open(exec->command[index + exec->append_count + 2], O_RDWR | O_CREAT | O_APPEND, 0644);
-    }
-     if(exec->input_flag == 1)
+    if(exec->input_flag == 1)
     {
         fd = open(exec->command[index + exec->input_count + 2], O_RDWR);
         pid = fork();
@@ -107,8 +102,8 @@ void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int ind
             ft_apply_input_redirection_after_pipe(fd, -1, tpipe, exec, index + 2);
     }
     pid = fork();
-        if(pid == 0)
-            ft_apply_redirection_after_pipe(in_save, fd, tpipe, exec, index + 2);
+    if(pid == 0)
+        ft_apply_redirection_after_pipe(in_save, fd, tpipe, exec, index + 2);
     wait(NULL);
 }
 
@@ -136,6 +131,7 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(tpipe->fd[1]);
      if (index < tpipe->max)
      {
+        printf("%d <<\n", tpipe->max);
         if(index + 1 == tpipe->max && ft_flag_after_pipe(exec))
             ft_redirect_after_pipe_flag(exec, tpipe, fd,  index, in_save);
   	    execute_pipe(exec, index + 2, in_save , tpipe);
