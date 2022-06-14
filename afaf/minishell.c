@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/13 09:29:27 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/14 02:54:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,16 +166,20 @@ void	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 	i = index;
 	if(exec->command[i + exec->pipe_count])
 	{
-		printf("%s dd<<\n", exec->command[i + exec->pipe_count]); // should start from here !!
+		printf("%s <<<<<<<<<<<<<<\n", exec->command[i + exec->pipe_count]);
 		if(ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0)
 		{
-			printf("%s <<\n", exec->command[i + exec->pipe_count + 1]);
+			printf("founded\n");
 			exec->redirecion_flag = 1;
 		}
-			if(ft_strcmp(exec->command[i + exec->pipe_count], ">>") == 0)
+		if(ft_strcmp(exec->command[i + exec->pipe_count], ">>") == 0)
 		{
-			printf("%s <<\n", exec->command[i + exec->pipe_count + 1]);
+			//printf("%s <<\n", exec->command[i + exec->pipe_count + 1]);
 			exec->append_flag = 1;
+		}
+		if(ft_strcmp(exec->command[i + exec->pipe_count], "<") == 0)
+		{
+			exec->input_flag = 1;
 		}
 	}
 	in = open(exec->command[count], O_RDONLY);
@@ -259,14 +263,32 @@ int only_input_flag(t_exec *exec)
 
 // int	after_
 
-int	ft_apply_pipe_after_redirection(int fd, t_exec *exec, t_pipe *tpipe, int index, int count)
-{
-	fd = open(exec->command[count], O_RDONLY);
-	ft_assign_tpipe(tpipe, exec->pipe_count + (count - 1));
-	execute_pipe(exec, index + 1, fd, tpipe);
-	return (1);
-}
+// int	ft_apply_pipe_after_redirection(int fd, t_exec *exec, t_pipe *tpipe, int index, int count)
+// {
+// 	fd = open(exec->command[count], O_RDONLY);
+// 	ft_assign_tpipe(tpipe, exec->pipe_count + (count - 1));
+// 	execute_pipe(exec, index + 1, fd, tpipe);
+// 	return (1);
+// }
 
+
+int	ft_count_till_other_token(t_exec *exec, int index, char *token)
+{
+	int i;
+	int count;
+
+	count = 0;
+	i = index;
+	while(exec->command[i])
+	{
+		if(ft_strcmp(exec->command[i], token) == 0)
+			count += 2;
+		else
+			return count;
+		i += 2;
+	}
+	return (count);
+}
 
 int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int index)
 {
@@ -277,16 +299,17 @@ int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int index)
 	command_location = 0;
 	i = index;
 	fd = -1;
-	//printf("%s << index", exec->command[index]);
+	exec->redirection_count = ft_count_till_other_token(exec, 1, ">");
 	if(ft_strcmp(exec->command[i], ">") == 0)
 	{
-		exec->redirecion_flag = 1;
-		ft_redirect(i, exec, tpipe, 0);
+		command_location = i - 1;
+		ft_redirect(i, exec, tpipe, command_location);
 			i += exec->redirection_count;
 	}
 	if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
 	{
-		ft_apply_pipe_after_redirection(fd, exec, tpipe, i, exec->redirection_count);
+
+		ft_mini_pipe(exec, tpipe, fd, exec->redirection_count, i);
 		i += exec->pipe_count;
 	}
 	if(exec->command[i] && ft_is_another_flag(exec, i) == HEREDOC)
@@ -294,7 +317,16 @@ int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int index)
 		ft_execute_heredoc(exec, tpipe, i);
 		 i += exec->heredoc_count;
 	}
-	
+	if(exec->command[i] && ft_is_another_flag(exec, i) == HEREDOC)
+	{
+		ft_execute_heredoc(exec, tpipe, i);
+		 i += exec->heredoc_count;
+	}
+	if(exec->command[i] && ft_is_another_flag(exec, i) == REDIRIN)
+	{
+		ft_redirect_input(exec, tpipe, i, 1);
+		 i += exec->redirection_count;
+	}
 	
 	return(i);
 }
@@ -315,23 +347,7 @@ int ft_is_another_flag(t_exec *exec, int index)
 }
 
 
-int	ft_count_till_other_token(t_exec *exec, int index, char *token)
-{
-	int i;
-	int count;
 
-	count = 0;
-	i = index;
-	while(exec->command[i])
-	{
-		if(ft_strcmp(exec->command[i], token) == 0)
-			count += 2;
-		else
-			return count;
-		i += 2;
-	}
-	return (count);
-}
 int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
 {
 	int i;
@@ -348,15 +364,6 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
 			command_location = i - 1;
 			ft_append(i, exec, tpipe, command_location);
 			i += exec->append_count;
-	}
-	if(exec->command[i + exec->pipe_count])
-	{
-		printf("%s <<\n", exec->command[i + exec->pipe_count]); // should start from here !!
-		if(ft_strcmp(exec->command[i + exec->pipe_count], ">>") == 0)
-		{
-			printf("%s <<\n", exec->command[i + exec->pipe_count + 1]);
-			exec->redirecion_flag = 1;
-		}
 	}
 	if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
 	{
@@ -381,8 +388,6 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int index)
 		ft_redirect_input(exec, tpipe, i, 1);
 		 i += exec->redirection_count;
 	}
-	else 
-		printf("dd\n");
 	return(i);
 }
 
@@ -431,18 +436,17 @@ void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 	{
 		while(exec->command[i + 1] != NULL)
 		{
-			// if(ft_strcmp(exec->command[i], ">") == 0)
-			// {
-			// 	printf("no\n");
-			// 		ft_mini_redirect_output(exec, tpipe, i);
-			// 		i += exec->redirection_count;
-			// }
-			if(ft_strcmp(exec->command[i], ">>") == 0)
+			if(ft_strcmp(exec->command[i], ">") == 0 && exec->redirecion_flag == 0)
 			{
-				//exec->redirecion_flag = 1;
-				ft_mini_append(exec, tpipe, i);
-				i += exec->append_count;
+					ft_mini_redirect_output(exec, tpipe, i);
+					i += exec->redirection_count;
 			}
+			// if(ft_strcmp(exec->command[i], ">>") == 0)
+			// {
+			// 	//exec->redirecion_flag = 1;
+			// 	ft_mini_append(exec, tpipe, i);
+			// 	i += exec->append_count;
+			// }
 		// else
 		// 	printf("dodo\n");
 		//printf("%s\n", exec->command[i - 1]);
