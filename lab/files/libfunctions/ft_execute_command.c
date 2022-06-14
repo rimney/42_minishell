@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 17:56:38 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/13 06:04:58 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/14 02:07:35 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void    ft_execute_command(t_exec *exec, int index)
     char **command_parser;
 
     command_parser = ft_split(exec->command[index], ' ');
-   // printf("%s command << \n", command_parser[0]);
         if(execve(ft_exec_command(exec->env.envp, command_parser[0]), command_parser, exec->env.envp) == -1)
         {
             printf(">>>| %s |<<<\n", command_parser[0]);
