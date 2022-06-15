@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/14 05:29:21 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/15 00:46:07 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(tpipe->fd[1]);
      if (index < tpipe->max)
      {
-        printf("%d <<\n", tpipe->max);
+        // printf("%d <<\n", tpipe->max);
         if(index + 1 == tpipe->max && ft_flag_after_pipe(exec))
             ft_redirect_after_pipe_flag(exec, tpipe, fd,  index, in_save);
   	    execute_pipe(exec, index + 2, in_save , tpipe);
