@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/15 07:23:00 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/15 22:20:04 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,6 @@ int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 	exec->redirecion_flag = 0;
 	exec->append_flag = 0;
 	exec->redirection_count = 0;
-	exec->pipe_count += count - 1;
 	printf("%d << pipe_count\n", exec->pipe_count);
 	printf("%d << i\n", i);
 	return i;
@@ -382,7 +381,7 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 	//		printf("%d >> redirection_count\n", exec->redirection_count);
 
 			ft_mini_pipe(exec, tpipe, fd, i - 1, i);
-			i += exec->pipe_count - 1;
+			i += exec->pipe_count;
 	//		printf("%d <<\n", exec->redirection_count);
 
 		}
