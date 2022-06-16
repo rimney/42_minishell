@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/15 06:51:56 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/16 07:25:21 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
 
 int ft_flag_after_pipe(t_exec *exec)
 {
+    //printf("%d >> hfhfhf\n", exec->redirecion_flag);
     if(exec->redirecion_flag == 1 || exec->append_flag == 1 || exec->input_flag == 1)
         return (1);
     return (0);
@@ -90,8 +91,15 @@ void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int ind
 {
     int pid;    
 
-    if(exec->redirecion_flag == 1)
+    if(exec->sev_flag)
+    {
+        fd = open(exec->command[index], O_RDWR | O_CREAT | O_TRUNC, 0644);
+    }
+    if(exec->redirecion_flag == 1 && exec->sev_flag == 0)
+    {
+        printf("ddddd\n");
         fd = open(exec->command[index + exec->redirection_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
+    }
     if(exec->append_flag == 1)
         fd = open(exec->command[index + exec->append_count + 2], O_RDWR | O_CREAT | O_APPEND, 0644);
     if(exec->input_flag == 1)
@@ -129,8 +137,15 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(in);
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
-     if (index < tpipe->max)
+    // printf("%d in\n", in)
+     if (index <= tpipe->max || exec->sev_flag == 1)
      {
+        if(exec->sev_flag && exec->args == 7)
+        {
+           ft_redirect_after_pipe_flag(exec, tpipe, fd,  index - 2, in_save);
+            
+           return index;
+        }
         if(index + 1 == tpipe->max && ft_flag_after_pipe(exec))
             ft_redirect_after_pipe_flag(exec, tpipe, fd,  index, in_save);
   	    execute_pipe(exec, index + 2, in_save , tpipe);

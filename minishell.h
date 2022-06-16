@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/15 07:20:39 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/16 06:22:54 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_exec
 	int pipe_flag;
 	int args;
 	int initial_flag;
+	int sev_flag;
 	t_env env;
 } t_exec;
 
