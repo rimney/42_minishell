@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/17 05:59:23 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/17 19:43:52 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
     }
     close(tpipe->fd[0]);
         ft_execute_command(exec, index);
+    exec->redirecion_flag = 0;
  }
 
  void   ft_apply_input_redirection_after_pipe(int in, int out, t_pipe *tpipe, t_exec *exec, int index)
@@ -91,14 +92,15 @@ void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int ind
 {
     int pid;    
 
-    if(exec->sev_flag)
+    // if(exec->sev_flag)
+    // {
+    //     printf("seg\n");
+    //     fd = open(exec->command[index + 2] , O_RDWR | O_CREAT | O_TRUNC, 0644);
+    //     exec->sev_flag = 0;
+    // }
+    if(exec->redirecion_flag == 1)
     {
-        fd = open(exec->command[index + 2] , O_RDWR | O_CREAT | O_TRUNC, 0644);
-        exec->sev_flag = 0;
-    }
-    if(exec->redirecion_flag == 1 && exec->sev_flag == 0)
-    {
-        printf("ddddd\n");
+        printf("%s << \n", exec->command[index + exec->redirection_count + 2]);
         fd = open(exec->command[index + exec->redirection_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
     }
     if(exec->append_flag == 1)
@@ -139,20 +141,18 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
     // printf("%d in\n", in)
-    if(exec->command[index + 1])
-    {
-        if(ft_strcmp(exec->command[index + 1], ">") == 0)
-        {
-            exec->sev_flag = 1;
-            ft_redirect_after_pipe_flag(exec, tpipe, fd,  index - 2, in_save);
-            return index;
-        }
-    }
-     if (index <= exec->pipe_count + 1)
+    // if(exec->command[index + 1])
+    // {
+    //     if(ft_strcmp(exec->command[index + 1], ">") == 0)
+    //     {
+    //         exec->redirecion_flag = 1;
+    //         ft_redirect_after_pipe_flag(exec, tpipe, fd,  index - 2, in_save);
+    //         return index;
+    //     }
+    // }
+     if (index < tpipe->max)
      {
-
-        if(index + 1 == tpipe->max && ft_flag_after_pipe(exec))
-            ft_redirect_after_pipe_flag(exec, tpipe, fd,  index, in_save);
+        printf("%s <<<<<< here\n", exec->command[index]);
   	    execute_pipe(exec, index + 2, in_save , tpipe);
      }
      wait(NULL);
