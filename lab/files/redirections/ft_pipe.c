@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/17 19:43:52 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/18 02:29:48 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
     }
     close(tpipe->fd[0]);
         ft_execute_command(exec, index);
-    exec->redirecion_flag = 0;
+    //exec->redirecion_flag = 0;
  }
 
  void   ft_apply_input_redirection_after_pipe(int in, int out, t_pipe *tpipe, t_exec *exec, int index)
@@ -150,13 +150,20 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
     //         return index;
     //     }
     // }
-     if (index < tpipe->max)
-     {
-        printf("%s <<<<<< here\n", exec->command[index]);
-  	    execute_pipe(exec, index + 2, in_save , tpipe);
-     }
-     wait(NULL);
-     return index;
+    if(exec->command[index + 1] && ft_strcmp(exec->command[index + 1], ">") == 0)
+    {
+    //    printf("%s << here \n", exec->command[index + 1]);
+        exec->redirecion_flag = 1;
+        ft_redirect_after_pipe_flag(exec, tpipe, fd, index - 2, in_save);
+        printf("passed\n");
+        return (index);
+    }
+    if (index < tpipe->max)
+    {
+        execute_pipe(exec, index + 2, in_save , tpipe);
+    }
+    wait(NULL);
+    return index;
 }
 
 
