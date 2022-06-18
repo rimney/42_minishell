@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/18 02:34:04 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/18 02:38:33 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,6 +396,7 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 			exec->redirection_count = ft_count_till_other_token(exec, i + exec->pipe_count, ">");
 			if(exec->command[i + 2] && ft_is_another_flag(exec, i + 2) == REDIROUT)
 			{
+				printf("DDDDDD\n");
 			//	printf("%d >> exec->\n", exec->redirection_count);
 				i += 4;
 				//printf("%s <<<<<\n", exec->command[i]);
