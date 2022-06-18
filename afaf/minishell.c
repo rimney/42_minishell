@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/18 02:38:33 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/18 03:34:11 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,8 +370,8 @@ int ft_is_another_flag(t_exec *exec, int index)
 int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 {
 	int fd;
-//	int pid;
-
+	int pid;
+	int fd2;
 	fd = -1;
 	
 	exec->append_count = ft_count_till_other_token(exec, 1, ">>");
@@ -397,6 +397,14 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 			if(exec->command[i + 2] && ft_is_another_flag(exec, i + 2) == REDIROUT)
 			{
 				printf("DDDDDD\n");
+				fd = open(exec->command[i - 1], O_RDWR);
+				fd2 = open(exec->command[i + 3], O_CREAT | O_TRUNC | O_RDWR, 0644);
+				printf("%d << fd\n", fd);
+				printf("%d << fd2\n", fd2);
+				
+				pid = fork();
+				if(pid == 0)
+				ft_apply_input_redirection_after_pipe(fd, fd2, tpipe, exec, i + 1);
 			//	printf("%d >> exec->\n", exec->redirection_count);
 				i += 4;
 				//printf("%s <<<<<\n", exec->command[i]);
@@ -415,12 +423,12 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 		if(exec->command[i] && ft_is_another_flag(exec, i) == HEREDOC)
 		{
 			ft_execute_heredoc(exec, tpipe, i);
-			 i += exec->heredoc_count - 1;
+			 i += exec->heredoc_count;
 		}
 		if(exec->command[i] && ft_is_another_flag(exec, i) == REDIRIN)
 		{
 			ft_redirect_input(exec, tpipe, i, 1);
-			 i += exec->redirection_count;
+			 i += exec->heredoc_count;
 		}
 		
 			i++;
