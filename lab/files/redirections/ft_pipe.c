@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/18 23:02:37 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/19 12:37:45 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
     //         return index;
     //     }
     // }
+  //  close(tpipe->fd[0]);
     if(exec->command[index + 1] && ft_strcmp(exec->command[index + 1], ">") == 0)
     {
     //    printf("%s << here \n", exec->command[index + 1]);
