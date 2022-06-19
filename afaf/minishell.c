@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/18 03:34:11 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/19 11:29:03 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 
 	i = index;
 	count++;
+	printf("ddd\n");
 	// if(exec->command[i + exec->pipe_count])
 	// {
 	// //	printf("%s <<<<<<<<<heere\n", exec->command[i + exec->pipe_count]);
@@ -376,49 +377,37 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 	
 	exec->append_count = ft_count_till_other_token(exec, 1, ">>");
 	exec->pipe_count = 0;
+	exec->input_flag = 0;
 	while(exec->command[i + 1] != NULL)
 	{
 		if(ft_strcmp(exec->command[i], ">>") == 0)
 		{
-		//	printf("bbb\n");
 			ft_append(i, exec, tpipe, 0);
 			i += exec->append_count;
 		}
-		// if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE && exec->command[i + 2] && ft_is_another_flag(exec, i + 2) == REDIROUT) 
-		// {
-		// 	printf("rediout\n");
-		// 	i += 2;
-		// 	printf("%s << exec\n", exec->command[i]);
-		// }
 		if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
 		{
+			printf("passed\n");
 			exec->pipe_count = ft_count_till_other_token(exec, i, "|");
 			exec->redirection_count = ft_count_till_other_token(exec, i + exec->pipe_count, ">");
 			if(exec->command[i + 2] && ft_is_another_flag(exec, i + 2) == REDIROUT)
 			{
-				printf("DDDDDD\n");
 				fd = open(exec->command[i - 1], O_RDWR);
-				fd2 = open(exec->command[i + 3], O_CREAT | O_TRUNC | O_RDWR, 0644);
-				printf("%d << fd\n", fd);
-				printf("%d << fd2\n", fd2);
-				
+			//	printf("%s << \n", exec->command[i - 1]);
+				fd2 = open(exec->command[i + 3], O_CREAT |  O_RDWR, 0644);	
 				pid = fork();
 				if(pid == 0)
 				ft_apply_input_redirection_after_pipe(fd, fd2, tpipe, exec, i + 1);
-			//	printf("%d >> exec->\n", exec->redirection_count);
 				i += 4;
-				//printf("%s <<<<<\n", exec->command[i]);
 				exec->pipe_count = ft_count_till_other_token(exec, i, "|");
 			}
 			if((exec->command[i + 2] && ft_is_another_flag(exec, i + 2) != REDIROUT) || exec->command[i + 2] == NULL)
 			{
-				printf("%d >>>> pipe coumt\n", exec->pipe_count);
+			//	printf("%d >>>> pipe coumt\n", exec->pipe_count);
 				ft_mini_pipe(exec, tpipe, fd, i - 1, i);
 				i += exec->pipe_count;
 			}
-			//printf("%s <<<< \n", exec->command[i]);
-	//		printf("%d >> index\n", i);
-			
+	
 		}
 		if(exec->command[i] && ft_is_another_flag(exec, i) == HEREDOC)
 		{
@@ -427,10 +416,28 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 		}
 		if(exec->command[i] && ft_is_another_flag(exec, i) == REDIRIN)
 		{
-			ft_redirect_input(exec, tpipe, i, 1);
-			 i += exec->heredoc_count;
-		}
-		
+			if(exec->command[i + 2])
+			{
+				if(ft_strcmp(exec->command[i + 2], "|") == 0)
+					printf("thres a pipe\n");
+				i += 2;
+			}
+			else
+			{
+				exec->input_count = ft_count_till_other_token(exec, i, "<");
+				ft_redirect_input(exec, tpipe, i, i - 1);
+				i += exec->input_count;
+			}
+			printf("here\n");
+			//i += 4;
+			// exec->input_count = ft_count_till_other_token(exec, i, "<");
+			// exec->input_flag = 0;
+			// ft_redirect_input(exec, tpipe, i, i - 1);
+			// i += exec->input_count - 1;
+			// printf("%d <<<<<\n", i);
+			
+
+		}		//i = exec->input_count;
 			i++;
 	}
 	return(i);

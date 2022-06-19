@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:23:26 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/15 06:28:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/19 05:39:11 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	ft_append(int index, t_exec *exec, t_pipe *tpipe, int command_location)
 			if(pid == 0)
 			{
 				dup2(fd, 1);
-				ft_execute_command(exec, command_location);
 				close(fd);
+				ft_execute_command(exec, command_location);
 			}
 		}
 		index += 2;
