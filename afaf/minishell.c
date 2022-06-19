@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/19 13:50:22 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/19 15:07:51 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,9 +385,9 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 			ft_append(i, exec, tpipe, 0);
 			i += exec->append_count;
 		}
-		if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE && ft_is_another_flag(exec, i + 2) != REDIRIN)
+		if((exec->command[i] && ft_is_another_flag(exec, i) == PIPE && ft_is_another_flag(exec, i + 2) != REDIRIN))
 		{
-			printf("passed\n");
+			printf("passeffffffd\n");
 			exec->pipe_count = ft_count_till_other_token(exec, i, "|");
 			exec->redirection_count = ft_count_till_other_token(exec, i + exec->pipe_count, ">");
 			if(exec->command[i + 2] && ft_is_another_flag(exec, i + 2) == REDIROUT)
@@ -416,23 +416,30 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 		}
 		if(exec->command[i] && ft_is_another_flag(exec, i) == REDIRIN)
 		{
-			if(exec->command[i + 2] && ft_strcmp(exec->command[i + 2], "|"))
+			if(exec->command[i + 2] && exec->append_flag == 0)
 			{
-				while(ft_strcmp(exec->command[i + 2], "|") == 0)
+				printf("append flag %d <<\n", exec->append_flag);
+				printf("HEHE\n");
+				if(ft_strcmp(exec->command[i + 2], "|"))
 				{
-					printf("thres a pipe\n");
-					i += 4;
+					//printf("%s << \n", exec->command[i + 2]);
+					while(ft_strcmp(exec->command[i], "<") == 0)
+					{
+						//exec->input_count += 2;
+						i += 4;
+					}
+					exec->append_flag = 1;
 				}
-				printf("%s <<<<<<<<<here\n", exec->command[i]);
-		//		exec->input_flag = 1;
+			
 			}
-			if(ft_strcmp(exec->command[i], "<") == 0)
+			else
 			{
-				printf("passed\n");
 				exec->input_count = ft_count_till_other_token(exec, i, "<");
+				printf("passed\n");
 				ft_redirect_input(exec, tpipe, i, i - 1);
 				i += exec->input_count;
 			}
+		//	printf("%s <<<\n", exec->command[i]);
 			//i += 4;
 			// exec->input_count = ft_count_till_other_token(exec, i, "<");
 			// exec->input_flag = 0;

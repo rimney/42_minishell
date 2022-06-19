@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redirect_input.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 20:02:42 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/19 12:36:04 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/19 14:38:39 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    redirect(t_exec *exec, int command_location, int index)
 {
-    printf("%s <<\n", exec->command[index]);
+   // printf("%s <<\n", exec->command[index]);
     index = open(exec->command[index], O_RDWR);
     dup2(index, 0);
     close(index);
@@ -38,13 +38,15 @@ int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index, int command_loc
     }
     if(ft_strcmp(exec->command[i], "<") == 0)
     {
-        printf("%s << here\n", exec->command[index + 1]);
+  //      printf("%s << here\n", exec->command[index + 1]);
         input_file = exec->input_count + i - 1;
             pid = fork();
             if (pid == 0)
                 redirect(exec, command_location, index + 1);
-           // close(input_file);
+           
     }
+
+    printf("%d << i\n", i);
     return (i - 1);
 }
 
