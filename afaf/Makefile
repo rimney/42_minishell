@@ -6,7 +6,7 @@
 #    By: rimney <rimney@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/28 12:27:57 by atarchou          #+#    #+#              #
-#    Updated: 2022/06/14 02:39:01 by rimney           ###   ########.fr        #
+#    Updated: 2022/06/20 19:49:57 by rimney           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS = parse.c\
 		utils.c\
 		utils_2.c\
 		quotes.c\
+		ft_middle_operations.c \
 		minishell.c\
 		../lab/files/libfunctions/*.c \
 		../lab/files/redirections/ft_pipe.c \

@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/19 07:02:46 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/20 19:52:06 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,8 @@ int only_pipe_flag(t_exec *exec);
 int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index, int command_location);
  void   ft_apply_input_redirection_after_pipe(int in, int out, t_pipe *tpipe, t_exec *exec, int index);
 int	ft_count_till_other_token(t_exec *exec, int index, char *token);
+int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i);
+int	ft_dup_and_redirect(int fd_in, t_exec *exec, int index);
+int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index);
+int ft_is_another_flag(t_exec *exec, int index);
 # endif
