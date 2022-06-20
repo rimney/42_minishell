@@ -1,16 +1,1 @@
-Makefile
-ft_count_tokens.c
-in
-minishell
-minishell.c
-minishell.dSYM
-out
-parse.c
-parse_token.c
-parsing.h
-quotes.c
-redir.c
-signals.c
-utils.c
-utils_2.c
-yasiin
+    3006    3008   28425
