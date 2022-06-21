@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 20:02:42 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/19 14:38:39 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/21 11:36:07 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void    redirect(t_exec *exec, int command_location, int index)
 {
-   // printf("%s <<\n", exec->command[index]);
-    index = open(exec->command[index], O_RDWR);
+    printf("%s <DDD<\n", exec->command[index]);
+    index = open(exec->command[index], O_RDONLY);
+    //printf()
     dup2(index, 0);
     close(index);
     ft_execute_command(exec, command_location);
@@ -30,7 +31,7 @@ int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index, int command_loc
 
 
     i = index;
-    tpipe->fd[0] = 100;
+    tpipe->fd[0] = 0;
     if(input_file == -1)
     {
         perror("minishell error");

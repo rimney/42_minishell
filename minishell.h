@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/20 19:52:06 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/21 11:54:07 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,6 @@ int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i);
 int	ft_dup_and_redirect(int fd_in, t_exec *exec, int index);
 int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index);
 int ft_is_another_flag(t_exec *exec, int index);
+int ft_apply_redin_middle(t_exec *exec, t_pipe *tpipe,  int i);
+int	ft_middle_rediout(t_exec *exec, t_pipe *tpipe, int i);
 # endif
