@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/20 20:43:54 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/21 13:50:38 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,31 +90,31 @@ int ft_flag_after_pipe(t_exec *exec)
     return (0);
 }
 
-// void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int index, int in_save)
-// {
-//     int pid;    
+void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int index, int in_save)
+{
+    int pid;    
 
-//     printf("%d << redi flag\n", exec->redirecion_flag);
-//     if(exec->redirecion_flag == 1)
-//     {
-//         printf("dddd\n");
-//         fd = open(exec->command[index + exec->redirection_count + 4], O_RDWR | O_CREAT | O_TRUNC, 0644);
-//         printf("%d << fd \n", fd);
-//     }
-//     if(exec->append_flag == 1)
-//         fd = open(exec->command[index + exec->append_count + 2], O_RDWR | O_CREAT | O_APPEND, 0644);
-//     if(exec->input_flag == 1)
-//     {
-//         fd = open(exec->command[index + exec->input_count + 2], O_RDWR);
-//         pid = fork();
-//         if(pid == 0)
-//             ft_apply_input_redirection_after_pipe(fd, -1, tpipe, exec, index + 2);
-//     }
-//     pid = fork();
-//     if(pid == 0)
-//         ft_apply_redirection_after_pipe(in_save, fd, tpipe, exec, index + 2);
-//     wait(NULL);
-// }
+    printf("%d << redi flag\n", exec->redirecion_flag);
+    if(exec->redirecion_flag == 1)
+    {
+        printf("dddd\n");
+        fd = open(exec->command[index + exec->redirection_count + 4], O_RDWR | O_CREAT | O_TRUNC, 0644);
+        printf("%d << fd \n", fd);
+    }
+    if(exec->append_flag == 1)
+        fd = open(exec->command[index + exec->append_count + 2], O_RDWR | O_CREAT | O_APPEND, 0644);
+    if(exec->input_flag == 1)
+    {
+        fd = open(exec->command[index + exec->input_count + 2], O_RDWR);
+        pid = fork();
+        if(pid == 0)
+            ft_apply_input_redirection_after_pipe(fd, -1, tpipe, exec, index + 2);
+    }
+    pid = fork();
+    if(pid == 0)
+        ft_apply_redirection_after_pipe(in_save, fd, tpipe, exec, index + 2);
+    wait(NULL);
+}
 
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
 {
@@ -148,14 +148,13 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
     //         return index;
     //     }
     // }
-   //close(tpipe->fd[0]);
-    // if(exec->command[index + 1] && ft_strcmp(exec->command[index + 1], ">") == 0 && exec->pipe_count > 2)
-    // {
-    //     exec->redirecion_flag = 1;
-    //     ft_redirect_after_pipe_flag(exec, tpipe, fd, index - 2, in_save);
-    //     printf("passZZZZed\n");
-    //     return (index);
-    // }
+  // close(tpipe->fd[0]);
+    if(exec->command[index + 1] && ft_strcmp(exec->command[index + 1], ">") == 0 && exec->pipe_count > 2)
+    {
+        exec->redirecion_flag = 1;
+        ft_redirect_after_pipe_flag(exec, tpipe, fd, index - 2, in_save);
+        return (index);
+    }
     if (index < tpipe->max)
     {
         execute_pipe(exec, index + 2, in_save , tpipe);

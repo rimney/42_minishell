@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/21 11:55:59 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/21 13:51:22 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,10 +184,13 @@ int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 
 	i = index;
 	count++;
-	printf("ddd\n");
+	if(exec->command[i + exec->pipe_count] && ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0 && exec->pipe_count > 2)
+	{
+		exec->redirecion_flag = 1;
+	}
 	ft_assign_tpipe(pipes, exec->pipe_count + i - 1);
 	execute_pipe(exec, i + 1, in, pipes);
-	exec->append_flag = 0;
+	exec->redirecion_flag = 0;
 	return i;
 }
 
@@ -385,10 +388,13 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 		}
 		if(exec->command[i] && ft_is_another_flag(exec, i) == REDIROUT)
 		{
-			exec->redirection_count = ft_count_till_other_token(exec, i, ">");
+			// printf("DDD\n");
+			//  fd = open(exec->command[i - 2], O_RDWR);
+
+			 printf("%s <<< here\n", exec->command[i - exec->redirection_count - 1]);
+			 exec->redirection_count = ft_count_till_other_token(exec, i, ">");
 			i = ft_middle_rediout(exec, tpipe, i);
-			// tpipe->fd[0] = 0;
-			//  fd = open(exec->command[i - exec->pipe_count - 1], O_RDWR);
+			//tpipe->fd[0] = 0;
 			// 	ft_dup_and_redirect(fd, exec, i);
 			// if(exec->command[i + 2])
 			// 	i += exec->redirection_count - 1;
