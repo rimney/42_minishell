@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/21 13:50:38 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/21 14:38:57 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int ind
     printf("%d << redi flag\n", exec->redirecion_flag);
     if(exec->redirecion_flag == 1)
     {
-        printf("dddd\n");
-        fd = open(exec->command[index + exec->redirection_count + 4], O_RDWR | O_CREAT | O_TRUNC, 0644);
-        printf("%d << fd \n", fd);
+        printf("dddd %s <<\n", exec->command[index + exec->redirection_count + 2]);
+        fd = open(exec->command[index + exec->redirection_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
+       // printf("%d << fd \n", fd);
     }
     if(exec->append_flag == 1)
         fd = open(exec->command[index + exec->append_count + 2], O_RDWR | O_CREAT | O_APPEND, 0644);
@@ -138,16 +138,6 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(in);
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
-    // printf("%d in\n", in)
-    // if(exec->command[index + 1])
-    // {
-    //     if(ft_strcmp(exec->command[index + 1], ">") == 0)
-    //     {
-    //         exec->redirecion_flag = 1;
-    //         ft_redirect_after_pipe_flag(exec, tpipe, fd,  index - 2, in_save);
-    //         return index;
-    //     }
-    // }
   // close(tpipe->fd[0]);
     if(exec->command[index + 1] && ft_strcmp(exec->command[index + 1], ">") == 0 && exec->pipe_count > 2)
     {

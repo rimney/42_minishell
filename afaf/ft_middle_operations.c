@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_middle_operations.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 19:44:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/21 14:04:24 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/21 17:28:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,17 @@ int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i)
 		i += 4;
 	}
 	if((exec->command[i + 2] && ft_is_another_flag(exec, i + 2) != HEREDOC
-		&& ft_is_another_flag(exec, i + 1) != REDIROUT && ft_is_another_flag(exec, i + 1) != REDIRIN)
+		&& ft_is_another_flag(exec, i + 1) != REDIRIN && ft_is_another_flag(exec, i + 2) != REDIROUT)
 			|| exec->command[i + 2] == NULL)
 	{
-		ft_mini_pipe(exec, tpipe, fd, i - 1, i);
+		if(exec->command[i + 2] && ft_strcmp(exec->command[i + 2], ">") == 0)
+			printf("SIKE\n");
+		else
+		{
+			printf("sss\n");
+			ft_mini_pipe(exec, tpipe, fd, i - 1, i);
+		}
 			
-				printf("%d <<\n", exec->redirecion_flag);
 		i += exec->pipe_count;
 	}
     return (i);
@@ -66,12 +71,16 @@ int	ft_middle_rediout(t_exec *exec, t_pipe *tpipe, int i)
 {
 	int fd;
 
-	tpipe->fd[0] = 0;
-	fd = open(exec->command[i - exec->pipe_count - 1], O_RDWR);
-	ft_dup_and_redirect(fd, exec, i);
-	if(exec->command[i + 2])
-		i += exec->redirection_count - 1;
-	else
-		i += exec->redirection_count;
+	if(exec->command[i] && ft_is_another_flag(exec, i) == REDIROUT && exec->pipe_count == 2)
+	{
+		tpipe->fd[0] = 0;
+	//	printf("%s <<<<<<< herehre\n", exec->command[i - exec->pipe_count - 1]);
+		fd = open(exec->command[i - exec->pipe_count - 1], O_RDWR);
+		ft_dup_and_redirect(fd, exec, i);
+		if(exec->command[i + 2])
+			i += exec->redirection_count - 1;
+		else
+		 i += exec->redirection_count - 1;
+	}
 	return (i);
 }
