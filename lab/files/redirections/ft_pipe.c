@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/21 14:38:57 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/22 16:38:01 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int ind
        // printf("%d << fd \n", fd);
     }
     if(exec->append_flag == 1)
+    {
+        printf("%d << peend count\n", exec->append_count);
         fd = open(exec->command[index + exec->append_count + 2], O_RDWR | O_CREAT | O_APPEND, 0644);
+    }
     if(exec->input_flag == 1)
     {
         fd = open(exec->command[index + exec->input_count + 2], O_RDWR);
@@ -138,11 +141,11 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
         close(in);
     if (tpipe->fd[1] !=  -1)
         close(tpipe->fd[1]);
-  // close(tpipe->fd[0]);
-    if(exec->command[index + 1] && ft_strcmp(exec->command[index + 1], ">") == 0 && exec->pipe_count > 2)
+    if(exec->command[index + 1] && (ft_strcmp(exec->command[index + 1], ">") == 0 || ft_strcmp(exec->command[index + 1], ">>") == 0 )&& exec->pipe_count > 2)
     {
         exec->redirecion_flag = 1;
         ft_redirect_after_pipe_flag(exec, tpipe, fd, index - 2, in_save);
+        exec->redirecion_flag = 0;
         return (index);
     }
     if (index < tpipe->max)
