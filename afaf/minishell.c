@@ -6,7 +6,7 @@
 /*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/22 16:54:52 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/22 17:05:18 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,14 +176,8 @@ int	ft_count_till_other_token(t_exec *exec, int index, char *token)
 	return (count);
 }
 
-
-int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
+int	ft_check_after_pipe_flags(t_exec *exec, int i)
 {
-
-	int i;
-
-	i = index;
-	count++;
 	if(exec->command[i + exec->pipe_count] && ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0 && exec->pipe_count > 2)
 	{
 		printf("REDIFFF\n");
@@ -205,6 +199,17 @@ int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 		exec->input_count = ft_count_till_other_token(exec, i + exec->pipe_count, ">>");
 		printf("%d << \n", exec->input_count);
 	}
+	return (1);
+}
+
+int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
+{
+
+	int i;
+
+	i = index;
+	count++;
+	ft_check_after_pipe_flags(exec, i);
 	ft_assign_tpipe(pipes, exec->pipe_count + i - 1);
 	execute_pipe(exec, i + 1, in, pipes);
 	exec->input_count = 0;
@@ -536,7 +541,6 @@ void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 				printf("minimini\n");
 				i += exec->append_count;
 			}
-			if(ft_strcmp())
 
 		wait(NULL);
 		i++;
