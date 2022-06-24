@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redirect_input.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 20:02:42 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/23 01:09:12 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/21 11:36:07 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    redirect(t_exec *exec, int command_location, int index)
 {
-    //printf("%s <DDD<\n", exec->command[index]);
+    printf("%s <DDD<\n", exec->command[index]);
     index = open(exec->command[index], O_RDONLY);
     //printf()
     dup2(index, 0);
@@ -37,9 +37,8 @@ int    ft_redirect_input(t_exec *exec, t_pipe *tpipe, int index, int command_loc
         perror("minishell error");
         return 0;
     }
-    if(ft_strcmp(exec->command[i], "<") == 0 && exec->command[i + 2] == NULL)
+    if(ft_strcmp(exec->command[i], "<") == 0)
     {
-        printf("PASS\n");
   //      printf("%s << here\n", exec->command[index + 1]);
         input_file = exec->input_count + i - 1;
             pid = fork();
