@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/23 22:31:59 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/24 15:23:09 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 	{
 		printf("REDDDIIIIN\n");
 		exec->input_flag = 1;
-		exec->input_count = ft_count_till_other_token(exec, i + exec->pipe_count, ">>");
+		exec->input_count = ft_count_till_other_token(exec, i + exec->pipe_count, "<");
 		printf("%d << \n", exec->input_count);
 	}
 	ft_assign_tpipe(pipes, exec->pipe_count + i - 1);
@@ -438,6 +438,7 @@ int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int i)
 	{
 		if(ft_strcmp(exec->command[i], ">") == 0 && i == 1)
 		{
+			printf("passsed\n");
 			exec->redirection_count = ft_count_till_other_token(exec, i, ">");
 			ft_redirect(i, exec, i - 1);
 			i += exec->redirection_count;
