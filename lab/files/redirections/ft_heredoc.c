@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 01:54:28 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/20 05:59:25 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/24 23:04:49 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,17 @@ int ft_exec_heredoc(t_exec *exec, int index, int fd[2], int command_loaction)
 {
     char *delimiter;
     char *line;
-
-
+    int out;
+    
+    out  = -1;
     delimiter = strdup(exec->command[index + 1]);
+    if(exec->command[index + 2] && ft_is_another_flag(exec, index + 2) == REDIROUT)
+    {
+        exec->redirection_count = ft_count_till_other_token(exec, index + 2, ">");
+         out = open(exec->command[index + exec->redirection_count + 1], O_CREAT | O_TRUNC | O_RDWR, 0644);
+       //  exec->heredoc_count;
+    }
+        
     while((line = readline("heredoc > ")))
     {
         if (ft_strcmp(line, delimiter) != 0)
@@ -45,6 +53,11 @@ int ft_exec_heredoc(t_exec *exec, int index, int fd[2], int command_loaction)
         }
         if (ft_strcmp(line, delimiter) == 0)
         {
+            if(out != -1)
+            {
+                dup2(out, 1);
+                close(out);
+            }
             close(fd[1]);
             dup2(fd[0], 0);
            close(fd[0]);
@@ -101,16 +114,14 @@ void    ft_advanced_heredoc(t_exec *exec, int index, int command_location)
     int i;
 
     i = index;
-    while (i < ft_get_last_delimiter(exec,  0))
-    {
-        if (ft_strcmp(exec->command[i], "<<") == 0)
-            ft_basic_heredoc(exec, i);
-        i++;
-    }
-    if (i == ft_get_last_delimiter(exec, 0))
-    {
-        ft_heredoc(exec, command_location);
-    }
+    printf("%s << index\n", exec->command[index]);
+    // while (i < ft_get_last_delimiter(exec, index) && exec->heredoc_count > 2)
+    // {
+    //     if (ft_strcmp(exec->command[i], "<<") == 0)
+    //         ft_basic_heredoc(exec, i);
+    //     i++;
+    // }
+    ft_heredoc(exec, command_location);
         
     
 }
@@ -121,9 +132,23 @@ int ft_execute_heredoc(t_exec *exec, t_pipe *pipes, int index)
 
     command_location = index - 1;
     pipes->fd[0] = 0;
-    if(ft_get_last_delimiter(exec, 0) == 1)
+
+    if(exec->command[index + 2] && ft_is_another_flag(exec, index + 2) == PIPE)
+    {
+        printf("FLAAAAGGG\n");
+        ft_basic_heredoc(exec, index);
+        return (1);
+    }
+    else if(ft_get_last_delimiter(exec, index) == 1)
+    { 
+        printf("FLAAAAAAGGGGG\n");
         ft_heredoc(exec, command_location);
+        return (1);
+    }
     else
+    {
         ft_advanced_heredoc(exec, index, command_location);
+        return (1);
+    }
     return (0);
 }
