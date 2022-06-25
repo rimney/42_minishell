@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 01:24:48 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/04 18:23:15 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/25 02:09:32 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,6 @@ void    ft_get_env(t_env *env, char **envp)
         i++;
     }
     env->envp[i] = 0;
-    i = 0;
-    while(i < ft_count_elements(envp))
-    {
-        if(ft_strncmp(envp[i], "PWD=", 4) == 0)
-            env->pwd = strdup(envp[i]);
-        i++;
-    }
 } 
 
 

@@ -6,29 +6,23 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 15:32:58 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/01 15:33:42 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/25 01:51:04 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-void    ft_get_env(t_env *env, char **envp)
+void    ft_get_env(t_exec *exec, char **env)
 {
-    int i;
+    int     i;
 
     i = 0;
-    env->envp = malloc(sizeof(char *) * ft_count_elements(envp) + 1);
-    while(i < ft_count_elements(envp))
+    exec->envp = malloc(sizeof(char *) * ft_count_elements(env) + 1);
+    while(i < ft_count_elements(env))
     {
-        env->envp[i] = strdup(envp[i]);
+        exec->envp[i] = strdup(env[i]);
         i++;
     }
-    env->envp[i] = 0;
-    i = 0;
-    while(i < ft_count_elements(envp))
-    {
-        if(ft_strncmp(envp[i], "PWD=", 4) == 0)
-           env->pwd = strdup(envp[i]);
-        i++;
-    }
+    exec->envp[i] = 0;
+   // return (envp);
 } 

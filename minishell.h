@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 20:41:22 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/25 01:12:17 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/25 01:52:14 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@
 typedef struct s_env
 {
     char    **envp;
+	char	**export;
     int     exit_value;
-    char    *pwd;
-    char    **history; // not sure about this ??
 } t_env;
 
 typedef struct s_pipe
@@ -60,6 +59,8 @@ typedef struct s_exec
 	int args;
 	int initial_flag;
 	int sev_flag;
+    char    **envp;
+	char	**export;
 	t_env env;
 } t_exec;
 
@@ -91,12 +92,12 @@ int ft_execute_heredoc(t_exec *exec, t_pipe *pipes, int index);
 int ft_execute_heredoc(t_exec *exec, t_pipe *pipes, int index);
 int    ft_env(t_env *env);
 char    *ft_strdup(char *s1, int flag);
-void    ft_get_env(t_env *env, char **envp);
+void    ft_get_env(t_exec *exec, char **env);
 int ft_find_variable_index(char *str, char c);
 int ft_count_elements(char **str);
 int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe);
 void	ft_assign_tpipe(t_pipe *pipe, int argc);
-void    ft_get_env(t_env *env, char **envp);
+void    ft_get_env(t_exec *exec, char **env);
 void	ft_advanced_redirect(t_exec *exec, char **envp, int i, t_pipe *tpipe);
 void    ft_execute_command(t_exec *exec, int index);
 int only_pipe_flag(t_exec *exec);

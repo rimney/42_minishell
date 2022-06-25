@@ -1,14 +1,17 @@
 Makefile
 ft_count_tokens.c
 ft_middle_operations.c
+in
 minishell
 minishell.c
 minishell.dSYM
+ot
 out
 ouy
 parse.c
 parse_token.c
 parsing.h
+ppp
 quotes.c
 redir.c
 rimney
@@ -20,3 +23,4 @@ utils_2.c
 wc
 yasiin
 yassine
+      10      52     485
