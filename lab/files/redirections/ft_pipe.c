@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/24 15:46:46 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/25 23:34:41 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ void	ft_pipe(int in, t_pipe *tpipe, t_exec *exec, int index)
 
  void   ft_apply_input_redirection_after_pipe(int in, int out, t_pipe *tpipe, t_exec *exec, int index)
  {
-    if(exec->command[index + 2] == NULL)
-        printf("%s << DDD\n", exec->command[index + 2]);
+    printf("PASSED\n");
+    if(exec->command[index + 2] != NULL)
+        printf("%s MMMM<\n", exec->command[index + 2]);
     if(in != -1)
     {
         dup2(in, 0);

@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 19:44:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/25 00:57:29 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/25 15:27:56 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i, int fd)
 		&& ft_is_another_flag(exec, i + 1) != REDIRIN && ft_is_another_flag(exec, i + 2) != REDIROUT)
 			|| exec->command[i + 2] == NULL)
 	{
-	//	fd = open(exec->command[i - 2], O_RDONLY);
-		//printf("%s << here\n", exec->command[i - exec->redirection_count]);
-		printf("%d <<< fd", fd);
 		if(exec->command[i + 2] && ft_strcmp(exec->command[i + 2], ">>") == 0)
 		{
 			exec->append_count = ft_count_till_other_token(exec, i + 2, ">>");
@@ -33,14 +30,11 @@ int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i, int fd)
 			i += 2;
 		}
 		else
-		{
-			printf("sss\n");
 			ft_mini_pipe(exec, tpipe, fd, i - 1, i);
-		}
-			
 		i += exec->pipe_count;
+		wait(NULL);
 	}
-    return (i);
+    return (i - 1);
 }
 
 int ft_apply_redin_middle(t_exec *exec, t_pipe *tpipe,  int i)
