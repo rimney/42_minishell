@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/24 22:59:19 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/25 01:06:10 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,7 +399,7 @@ int	ft_mini_append(t_exec *exec, t_pipe *tpipe, int i)
 			{
 				exec->pipe_count = ft_count_till_other_token(exec, i, "|");
 				fd = open(exec->command[i - 1], O_RDWR);
-				ft_apply_pipe_middle(exec, tpipe, i);
+				ft_apply_pipe_middle(exec, tpipe, i, fd);
 				i += exec->pipe_count;
 			}
 		}
@@ -450,7 +450,8 @@ int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int i)
 			{
 				exec->pipe_count = ft_count_till_other_token(exec, i, "|");
 				fd = open(exec->command[i - 1], O_RDWR);
-				ft_apply_pipe_middle(exec, tpipe, i);
+				printf("%d << df\n", fd);
+				ft_apply_pipe_middle(exec, tpipe, i, fd);
 				i += exec->pipe_count;
 			}
 		}
@@ -505,7 +506,8 @@ int	ft_mini_heredoc(t_exec *exec, t_pipe *tpipe, int i)
 			{
 				exec->pipe_count = ft_count_till_other_token(exec, i, "|");
 				fd = open(exec->command[i - 1], O_RDWR);
-				ft_apply_pipe_middle(exec, tpipe, i);
+				close(fd);
+				ft_apply_pipe_middle(exec, tpipe, i, fd);
 				i += exec->pipe_count;
 			}
 		}

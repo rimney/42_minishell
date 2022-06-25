@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 01:54:28 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/24 23:04:49 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/25 01:16:58 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,18 @@ int ft_exec_heredoc(t_exec *exec, int index, int fd[2], int command_loaction)
     return(0); 
 }
 
-void ft_heredoc(t_exec *exec, int command_location)
+void ft_heredoc(t_exec *exec, int command_location, int index)
 {
     int i;
     int pid;
 
     i = 1;
+    printf("%s <<<<<<< LAST\n", exec->command[ft_get_last_delimiter(exec, index - 1)]);
     int fd[2];
     pipe(fd);
     pid = fork();
     if(pid == 0)
-        ft_exec_heredoc(exec, ft_get_last_delimiter(exec, 0), fd, command_location);
+        ft_exec_heredoc(exec, index, fd, command_location);
     else
     {
         close(fd[0]);
@@ -121,7 +122,7 @@ void    ft_advanced_heredoc(t_exec *exec, int index, int command_location)
     //         ft_basic_heredoc(exec, i);
     //     i++;
     // }
-    ft_heredoc(exec, command_location);
+    ft_heredoc(exec, command_location, index);
         
     
 }
@@ -139,10 +140,10 @@ int ft_execute_heredoc(t_exec *exec, t_pipe *pipes, int index)
         ft_basic_heredoc(exec, index);
         return (1);
     }
-    else if(ft_get_last_delimiter(exec, index) == 1)
+    else if(ft_strcmp(exec->command[index], "<<") == 0 && exec->command[index + 2] == NULL)
     { 
         printf("FLAAAAAAGGGGG\n");
-        ft_heredoc(exec, command_location);
+        ft_heredoc(exec, command_location, index);
         return (1);
     }
     else

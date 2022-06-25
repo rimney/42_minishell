@@ -3,27 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_middle_operations.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 19:44:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/22 16:21:12 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/25 00:57:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i)
+int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i, int fd)
 {
-    int fd;
+  //  int fd;
 
-    fd = -1;
+   // fd = -1;
 	exec->pipe_count = ft_count_till_other_token(exec, i, "|");
 	fd = open(exec->command[i - 1], O_RDWR);
 	if((exec->command[i + 2] && ft_is_another_flag(exec, i + 2) != HEREDOC
 		&& ft_is_another_flag(exec, i + 1) != REDIRIN && ft_is_another_flag(exec, i + 2) != REDIROUT)
 			|| exec->command[i + 2] == NULL)
 	{
-		fd = open(exec->command[i - 3], O_RDONLY);
+	//	fd = open(exec->command[i - 2], O_RDONLY);
+		//printf("%s << here\n", exec->command[i - exec->redirection_count]);
+		printf("%d <<< fd", fd);
 		if(exec->command[i + 2] && ft_strcmp(exec->command[i + 2], ">>") == 0)
 		{
 			exec->append_count = ft_count_till_other_token(exec, i + 2, ">>");
