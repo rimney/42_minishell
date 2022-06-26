@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 19:44:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/25 15:27:56 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/26 01:49:28 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,10 @@ int	ft_middle_rediout(t_exec *exec, t_pipe *tpipe, int i)
 
 	if(exec->command[i] && ft_is_another_flag(exec, i) == REDIROUT && exec->pipe_count == 2)
 	{
-		tpipe->fd[0] = 0;
+		tpipe->in = 0;
 	//	printf("%s <<<<<<< herehre\n", exec->command[i - exec->pipe_count - 1]);
 		fd = open(exec->command[i - exec->pipe_count - 1], O_RDWR);
+		printf("%s << fd\n", exec->command[i - exec->pipe_count - 1]);
 		ft_dup_and_redirect(fd, exec, i);
 		if(exec->command[i + 2])
 			i += exec->redirection_count - 1;

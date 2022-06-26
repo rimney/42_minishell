@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/25 17:21:46 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/26 02:17:53 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,17 @@ int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 
 	i = index;
 	count++;
-	if(exec->command[i + exec->pipe_count] && ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0 && exec->pipe_count > 2)
+	if(exec->pipe_flag == 1)
+	{
+		if(ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0)
+		{
+			exec->redirecion_flag = 1;
+			exec->redirection_count = ft_count_till_other_token(exec, i + exec->pipe_count, ">");
+			printf("%d <<<<\n", exec->redirection_count);
+			printf("founded\n");
+		}
+	}
+	if(exec->command[i + exec->pipe_count] && ft_strcmp(exec->command[i + exec->pipe_count], ">") == 0 && exec->pipe_count > 2 && exec->pipe_flag == 0)
 	{
 		printf("REDIFFF\n");
 		exec->redirecion_flag = 1;
@@ -206,6 +216,7 @@ int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 	ft_assign_tpipe(pipes, exec->pipe_count + i - 1);
 	execute_pipe(exec, i + 1, in, pipes);
 	exec->input_count = 0;
+
 	return i;
 }
 
@@ -290,23 +301,20 @@ int ft_is_another_flag(t_exec *exec, int index)
 
 int	ft_dup_and_redirect(int fd_in, t_exec *exec, int index)
 {
-
 	int fd_out;
 	int pid;
-
-
 
 	pid = fork();
 	if(pid == 0)
 	{
 		if(ft_strcmp(exec->command[index], ">>") == 0)
 		{
-		printf("passed rediappend\n");
-		fd_out = open(exec->command[index + 1], O_CREAT | O_APPEND | O_RDWR, 0644);
-		dup2(fd_in, 0);
-		close(fd_in);
-		dup2(fd_out, 1);
-		close(fd_out);
+			printf("passed rediappend\n");
+			fd_out = open(exec->command[index + 1], O_CREAT | O_APPEND | O_RDWR, 0644);
+			dup2(fd_in, 0);
+			close(fd_in);
+			dup2(fd_out, 1);
+			close(fd_out);
 		}
 		if(ft_is_another_flag(exec, index) == REDIROUT)
 		{
@@ -397,6 +405,115 @@ int	ft_mini_redirect_output(t_exec *exec, t_pipe *tpipe, int i)
 				fd = open(exec->command[i - 1], O_RDWR);
 				i = ft_apply_pipe_middle(exec, tpipe, i, fd) - 1;
 			//	i += exec->pipe_count;
+			}
+		}
+		if(exec->command[i] && ft_is_another_flag(exec, i) == REDIROUT && exec->pipe_count <= 2)
+		{
+			exec->redirection_count = ft_count_till_other_token(exec, i, ">");
+			ft_middle_rediout(exec, tpipe, i);
+			if(exec->command[i + 2])
+				i += exec->redirection_count - 1;
+			else
+				i += exec->redirection_count;
+		}
+		if(exec->command[i] && ft_is_another_flag(exec, i) == REDIRIN)
+		{
+			exec->input_count = ft_count_till_other_token(exec, i, "<");
+			i = ft_apply_redin_middle(exec, tpipe, i);
+		}
+		 if(exec->command[i] && ft_is_another_flag(exec, i) == HEREDOC)
+		{
+			ft_execute_heredoc(exec, tpipe, i);
+			if(exec->command[i + 2])
+			 	i += exec->heredoc_count - 1;
+			else
+				i += exec->heredoc_count;
+		}
+		i++;
+	}
+	wait(NULL);
+	return(i);
+}
+
+int	ft_mini_pipe_a(t_exec *exec, t_pipe *tpipe, int i)
+{
+	int fd;
+	fd = -1;
+
+	exec->initial_flag = 1;
+	while(exec->command[i + 1] != NULL)
+	{
+		if(ft_strcmp(exec->command[i], "|") == 0 && i == 1)
+		{
+			exec->pipe_flag = 1;
+			exec->pipe_count = ft_count_till_other_token(exec, i, "|");
+			ft_mini_pipe(exec, tpipe, -1, 0, i);
+			i += exec->pipe_count + exec->redirection_count;
+			printf("%s << \n", exec->command[i]);
+		}
+		if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
+		{
+			printf("PAADSSEd\n");
+			exec->pipe_count = ft_count_till_other_token(exec, i, "|");;
+			if((exec->command[i + 2] && (ft_is_another_flag(exec, i + 2) == PIPE || ft_is_another_flag(exec, i + 2) == APPEND)) || exec->command[i + 2] == NULL)
+			{
+				exec->pipe_count = ft_count_till_other_token(exec, i, "|");
+				fd = open(exec->command[i - 1], O_RDWR);
+				i = ft_apply_pipe_middle(exec, tpipe, i, fd) - 1;
+			}
+		}
+		// if(exec->command[i] && ft_is_another_flag(exec, i) == REDIROUT && exec->pipe_count <= 2)
+		// {
+		// 	printf("PASSED OUT\n");
+		// 	exec->redirection_count = ft_count_till_other_token(exec, i, ">");
+		// 	ft_middle_rediout(exec, tpipe, i);
+		// 	if(exec->command[i + 2])
+		// 		i += exec->redirection_count - 1;
+		// 	else
+		// 		i += exec->redirection_count;
+		// }
+		if(exec->command[i] && ft_is_another_flag(exec, i) == REDIRIN)
+		{
+			exec->input_count = ft_count_till_other_token(exec, i, "<");
+			i = ft_apply_redin_middle(exec, tpipe, i);
+		}
+		 if(exec->command[i] && ft_is_another_flag(exec, i) == HEREDOC)
+		{
+			ft_execute_heredoc(exec, tpipe, i);
+			if(exec->command[i + 2])
+			 	i += exec->heredoc_count - 1;
+			else
+				i += exec->heredoc_count;
+		}
+		i++;
+	}
+	wait(NULL);
+	return(i);
+}
+
+int	ft_mini_redirect_input(t_exec *exec, t_pipe *tpipe, int i)
+{
+	int fd;
+	fd = -1;
+
+	exec->initial_flag = 1;
+	while(exec->command[i + 1] != NULL)
+	{
+		if(ft_strcmp(exec->command[i], "<") == 0 && i == 1)
+		{
+			exec->input_count = ft_count_till_other_token(exec, i, "<");
+			if(exec->command[i + exec->input_count + 1] == NULL)
+				ft_redirect_input(exec, tpipe, i, i - 1);
+			i += exec->input_count;
+		}
+		if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
+		{
+			exec->pipe_count = ft_count_till_other_token(exec, i, "|");;
+			if((exec->command[i + 2] && (ft_is_another_flag(exec, i + 2) == PIPE || ft_is_another_flag(exec, i + 2) == APPEND)) || exec->command[i + 2] == NULL)
+			{
+				exec->pipe_count = ft_count_till_other_token(exec, i, "|");
+				fd = open(exec->command[i - 1], O_RDWR);
+				i = ft_apply_pipe_middle(exec, tpipe, i, fd) - 1;
 			}
 		}
 		if(exec->command[i] && ft_is_another_flag(exec, i) == REDIROUT && exec->pipe_count <= 2)
@@ -550,6 +667,18 @@ void	ft_minishell(t_exec *exec, t_pipe *tpipe)
 				exec->initial_flag = 1;
 				ft_mini_heredoc(exec, tpipe, i);
 				i += exec->heredoc_count;
+			}
+			if(ft_strcmp(exec->command[i], "<") == 0 && exec->initial_flag == 0)
+			{
+				exec->initial_flag = 1;
+				ft_mini_redirect_input(exec, tpipe, i);
+				i += exec->input_count;
+			}
+			if(ft_strcmp(exec->command[i], "|") == 0 && exec->initial_flag == 0)
+			{
+				exec->initial_flag = 1;
+				ft_mini_pipe_a(exec, tpipe, i);
+				i += exec->pipe_count;
 			}
 
 		wait(NULL);
