@@ -6,7 +6,7 @@
 /*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 19:44:08 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/26 01:49:28 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/26 17:42:29 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,8 @@
 
 int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i, int fd)
 {
-  //  int fd;
-
-   // fd = -1;
-	exec->pipe_count = ft_count_till_other_token(exec, i, "|");
-	fd = open(exec->command[i - 1], O_RDWR);
 	if((exec->command[i + 2] && ft_is_another_flag(exec, i + 2) != HEREDOC
-		&& ft_is_another_flag(exec, i + 1) != REDIRIN && ft_is_another_flag(exec, i + 2) != REDIROUT)
+		&& ft_is_another_flag(exec, i + 1) != REDIRIN)
 			|| exec->command[i + 2] == NULL)
 	{
 		if(exec->command[i + 2] && ft_strcmp(exec->command[i + 2], ">>") == 0)
@@ -33,6 +28,7 @@ int ft_apply_pipe_middle(t_exec *exec, t_pipe *tpipe, int i, int fd)
 			ft_mini_pipe(exec, tpipe, fd, i - 1, i);
 		i += exec->pipe_count;
 		wait(NULL);
+		exec->pipe_flag = 0;
 	}
     return (i - 1);
 }

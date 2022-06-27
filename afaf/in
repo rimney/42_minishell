@@ -1,3 +1,21 @@
+Makefile
+ft_count_tokens.c
+ft_middle_operations.c
+in
+minishell
+minishell.c
+minishell.dSYM
+out
+out zzwc
+parse.c
+parse_token.c
+parsing.h
+quotes.c
+redir.c
+signals.c
+utils.c
+utils_2.c
+wc
 usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]
            [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
            [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
