@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 04:47:20 by rimney            #+#    #+#             */
-/*   Updated: 2022/06/27 02:31:34 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/28 23:39:51 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,9 @@ void    ft_redirect_after_pipe_flag(t_exec *exec, t_pipe *tpipe, int fd, int ind
     //     fd = open(exec->command[i + 2])
     // }
     printf("PASSED\n");
+    printf("%s <<|| \n", exec->command[index + exec->redirection_count + 2]);
     if(exec->pipe_flag == 1)
-        fd = open(exec->command[index + 1], O_CREAT | O_TRUNC | O_RDWR, 0644);
+        fd = open(exec->command[index + exec->redirection_count + 2], O_CREAT | O_TRUNC | O_RDWR, 0644);
     if(exec->redirecion_flag == 1)
         fd = open(exec->command[index + exec->redirection_count + 2], O_RDWR | O_CREAT | O_TRUNC, 0644);
     if(exec->append_flag == 1)
@@ -154,9 +155,12 @@ int execute_pipe(t_exec *exec, int index, int in,  t_pipe *tpipe)
     }
     if (index < tpipe->max)
     {
-        printf("%d << exec->pipe\n", exec->pipe_flag);
+      //  printf("%d << exec->pipe\n", exec->pipe_flag);
         if(exec->pipe_flag && index == tpipe->max - 2)
+        {
+            printf("DDDDDDDD\n");
             ft_redirect_after_pipe_flag(exec, tpipe, fd, index , in_save);
+        }
         execute_pipe(exec, index + 2, in_save , tpipe);
     }
     wait(NULL);

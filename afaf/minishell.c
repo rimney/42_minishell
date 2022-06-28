@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rimney <rimney@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rimney < rimney@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:07:32 by atarchou          #+#    #+#             */
-/*   Updated: 2022/06/27 02:43:43 by rimney           ###   ########.fr       */
+/*   Updated: 2022/06/28 23:42:05 by rimney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,11 +219,14 @@ int	ft_mini_pipe(t_exec *exec, t_pipe *pipes, int in, int count, int index)
 		exec->input_count = ft_count_till_other_token(exec, i + exec->pipe_count, "<");
 		printf("%d << \n", exec->input_count);
 	}
-	ft_assign_tpipe(pipes, exec->pipe_count);
-	// if(exec->pipe_flag)
+	ft_assign_tpipe(pipes, index + exec->pipe_count - 1);
+	 if(exec->pipe_flag)
+	 {
 		execute_pipe(exec, i - 1, in, pipes); ////////// SHOULD START FROM HERE !!!
-	// else
-	// 	execute_pipe(exec, i + 1, in, pipes);
+		exec->pipe_flag = 0;
+	 }
+	else
+		execute_pipe(exec, i + 1, in, pipes);
 	exec->pipe_flag = 0;
 	exec->input_count = 0;
 
@@ -464,10 +467,12 @@ int	ft_mini_pipe_a(t_exec *exec, t_pipe *tpipe, int i)
 		}
 		if(exec->command[i] && ft_is_another_flag(exec, i) == PIPE)
 		{
+			printf("FLAG << %d\n", exec->pipe_flag);
 			exec->pipe_count = ft_count_till_other_token(exec, i, "|");
 			fd = open(exec->command[i - 1], O_RDWR);
-			ft_apply_pipe_middle(exec, tpipe, i, fd);
-			i += exec->pipe_count;
+			i = ft_apply_pipe_middle(exec, tpipe, i, fd) - 1;
+			// i += exec->pipe_count;
+			printf("%d << \n", exec->pipe_count);
 		}
 		// if(exec->command[i] && ft_is_another_flag(exec, i) == REDIROUT && exec->pipe_count <= 2)
 		// {

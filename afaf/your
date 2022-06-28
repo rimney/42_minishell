@@ -1,0 +1,21 @@
+Makefile
+ft_count_tokens.c
+ft_middle_operations.c
+in
+minishell
+minishell.c
+minishell.dSYM
+our
+out
+out zzwc
+parse.c
+parse_token.c
+parsing.h
+quotes.c
+redir.c
+signals.c
+utils.c
+utils_2.c
+wc
+your
+|
